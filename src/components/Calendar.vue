@@ -48,9 +48,11 @@
           :event-margin-bottom="3"
           :now="today"
           :type="type"
+          @moved="sendDate"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
+          @click:interval="sendDateAndTime"
           @change="updateRange"
         ></v-calendar>
         <v-menu
@@ -98,8 +100,8 @@
 </template>
 
 <script>
-
 import eventService from '@/services/eventService'
+import { bus } from '@/main'
 
   export default {
     data: () => ({
@@ -148,7 +150,8 @@ import eventService from '@/services/eventService'
       },
       monthFormatter () {
         return this.$refs.calendar.getFormatter({
-          timeZone: 'UTC', month: 'long',
+          timeZone: 'UTC',
+          month: 'long',
         })
       },
     },
@@ -156,12 +159,23 @@ import eventService from '@/services/eventService'
       this.$refs.calendar.checkChange()
     },
     methods: {
+      sendDateAndTime(dayAndTime){
+        console.log(dayAndTime,'hi')
+        this.sendDate(dayAndTime)
+        const startTime = dayAndTime.hour < 10  ?  `0${dayAndTime.hour}:00` : `${dayAndTime.hour}:00`
+        console.log(startTime)
+        bus.$emit('sendSelectedTime Start Time', startTime)
+      },
+      sendDate( dayAndTime ){
+        bus.$emit('sendSelectedDate', dayAndTime.date )
+      },
       refreshEvents(){
         this.events = eventService.getAll()
       },
-      viewDay ({ date }) {
-        this.focus = date
+      viewDay ( dayAndTime ) {
+        this.focus = dayAndTime.date
         this.type = 'day'
+        bus.$emit('sendSelectedDate', dayAndTime )
       },
       getEventColor (event) {
         return event.color
@@ -193,7 +207,6 @@ import eventService from '@/services/eventService'
       },
       updateRange ({ start, end }) {
         // You could load events from an outside source (like database) now that we have the start and end dates on the calendar
-        console.log(start)
         this.start = start
         this.end = end
       },
@@ -205,6 +218,11 @@ import eventService from '@/services/eventService'
     },
     created(){
         this.refreshEvents()
+    },
+    watch: {
+        focus(){
+           bus.$emit('sendSelectedDate', this.focus)
+        }
     }
   }
 </script>

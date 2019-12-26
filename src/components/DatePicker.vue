@@ -31,7 +31,7 @@
 
 
 <script>
-    import { bus } from '../main'
+  import { bus } from '../main'
 
   export default {
     props: ['label','defaultDate'],
@@ -42,12 +42,13 @@
     methods: {
         sendData() {
           console.log(this.dates)
-          bus.$emit('sendDates', this.dates)
+          bus.$emit('sendPickedDates', this.dates)
         },
     },
     watch: {
-        defaultTime: function(){
-            this.dates = [this.defaultDate.start.date, this.defaultDate.end.date]
+        defaultDate: function(){
+          console.log('inside default date watch')
+          this.dates = this.defaultDate
         }
     },
     computed: {
@@ -66,7 +67,7 @@
       }
     },
     created(){
-        this.dates = [this.defaultDate.start.date, this.defaultDate.end.date]
+        this.dates = this.defaultDate
     }
   }
 </script>

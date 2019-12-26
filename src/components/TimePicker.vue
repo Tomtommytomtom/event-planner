@@ -52,11 +52,12 @@
     methods: {
         sendData(){
           console.log('sent time', this.time)
-          bus.$emit(`send${this.label}`, this.time)
+          bus.$emit(`sendSelectedTime ${this.label}`, this.time)
         }
     },
     watch: {
       defaultTime(){
+        console.log('inside Default time watch')
         this.time = this.defaultTime
       }
     },

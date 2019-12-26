@@ -27,7 +27,7 @@
             <v-container>
                 <v-row>
                     <v-col cols="6">
-                        <DatePicker :defaultDate="eventDate" label="Event Duration"></DatePicker>
+                        <DatePicker :default-date="pickedDates" label="Event Duration"></DatePicker>
                     </v-col>
                     <v-col>
                         <v-select
@@ -45,10 +45,10 @@
             <v-container>
                 <v-row>
                     <v-col cols="6">
-                        <TimePicker :defaultTime="eventDate.start.time" label="Start Time"></TimePicker>
+                        <TimePicker :default-time="pickedTimes[0]" label="Start Time"></TimePicker>
                     </v-col>
                     <v-col cols="6">
-                        <TimePicker :defaultTime="eventDate.end.time" label="End Time"></TimePicker>
+                        <TimePicker :default-time="pickedTimes[1]" label="End Time"></TimePicker>
                     </v-col>
                 </v-row>
             </v-container>
@@ -67,6 +67,8 @@
 import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
 
+import { bus } from '@/main'
+
 export default {
    components: {
        TimePicker,
@@ -80,41 +82,49 @@ export default {
         detailsInput: '',
         repeatOptionSelected: "Doesn't repeat",
         reocurringOptions: [
-          "Doesn't repeat",
-          "Daily",
-          "Weekly",
-          "Monthly",
-          "Annualy",
-          "Every Weekday (Monday to Friday)",
+            "Doesn't repeat",
+            "Daily",
+            "Weekly",
+            "Monthly",
+            "Annualy",
+            "Every Weekday (Monday to Friday)",
         ],
         dialog: false,
-        eventDate: {},
-        pickedDates: {},
-        pickedTimes: {}
+        pickedDates: [],
+        pickedTimes: []
 
    }),
     methods : {
         setToday(){
-            const todayString = new Date().toISOString().substr(0,10)
-            const [year, month, day] = todayString.split('-')
-            this.eventDate.start = {
-                date: todayString,
-                year,
-                month,
-                day
-            }
-            this.eventDate.end = this.eventDate.start
+            const today = new Date().toISOString().substr(0,10)
+            this.pickedDates = [today, today]
+            console.log(this.pickedDates)
         }
    },
    created(){
        this.setToday()
-       this.pickedDates = {
-           start: this.eventDate.start.date,
-           end: this.eventDate.end.date
-       }
-       this.pickedTimes = {
-           start: this.eventDate.start.time,
-           end: this.eventDate.end.time
+
+       bus.$on('sendSelectedDate', date => {
+           this.pickedDates = [date, date]
+       })
+       bus.$on('sendPickedDates', (dates) => {
+           const [startDate, endDate] = dates
+           console.log(startDate,'-', endDate)
+       }),
+       bus.$on('sendSelectedTime Start Time', time => {
+           console.log(time)
+           this.pickedTimes[0] = time
+       })
+       bus.$on('sendSelectedTime End Time', time => {
+           this.pickedTimes[1] = time
+       })
+   },
+   watch:{
+       pickedDates(){
+           console.log('pickedDateChanged')
+       },
+       pickedTimes(){
+           console.log('picked times changed')
        }
    }
 
