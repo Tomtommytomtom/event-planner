@@ -34,7 +34,7 @@
   import { bus } from '../main'
 
   export default {
-    props: ['label','defaultDate'],
+    props: ['label','defaultDateStart','defaultDateEnd'],
     data: () => ({
       dates: [],
       menu: false,
@@ -44,10 +44,16 @@
           console.log(this.dates)
           bus.$emit('sendPickedDates', this.dates)
         },
+        setDates(){
+          this.dates = [this.defaultDateStart, this.defaultDateEnd]
+        }
     },
     watch: {
-        defaultDate: function(){
-          this.dates = this.defaultDate
+        defaultDateStart: function(){
+          this.setDates()
+        },
+        defaultDateEnd: function(){
+          this.setDates()
         }
     },
     computed: {
@@ -66,7 +72,7 @@
       }
     },
     created(){
-        this.dates = this.defaultDate
+        this.dates = [this.defaultDateStart, this.defaultDateEnd]
     }
   }
 </script>

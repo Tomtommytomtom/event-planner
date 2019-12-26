@@ -25,7 +25,7 @@
         <v-form ref="form" v-model="valid">
             <v-container class="ms-auto">
                 <v-card-title>
-                <span class="headline">{{ formTitle }} | debug-dialog: {{ dialog }} | debug-valid: {{ valid }}</span>
+                <span class="headline">{{ formTitle }} | debug-dialog: {{ dialog }} | debug-valid: {{ valid }} id: {{id}}</span>
                 </v-card-title>
                 <v-text-field
                     v-model="nameInput"
@@ -46,7 +46,8 @@
                 <v-row>
                     <v-col>
                         <DatePicker 
-                            :default-date="pickedDates" 
+                            :default-date-start="startDate"
+                            :default-date-end="endDate" 
                             label="Event Duration"
                         ></DatePicker>
                     </v-col>
@@ -128,25 +129,30 @@ export default {
             "Every Weekday (Monday to Friday)",
         ],
         dialog: false,
-        pickedDates: [],
-        selecteDates: [],
+        selectedDate: [],
+        startDate: '',
+        endDate: '',
         startTime: null,
-        endTime: null
+        endTime: null,
+        id: undefined
    }),
     methods : {
         submitForm(){
             console.log('added', this.currEvent)
             eventService.addOrUpdate(this.currEvent)
+            bus.$emit('refreshEvents')
         },
         clearForm(){
             this.dialog = false
 
+            this.id = undefined
             this.resetDatePicker()
             this.resetTextInputFields()
             this.resetTimePickers()
         },
         resetDatePicker(){
-            this.pickedDates = this.selecteDates
+            this.startDate = this.selectedDate
+            this.endDate = this.selectedDate
         },
         resetTextInputFields(){
             this.nameInput = ''
@@ -158,20 +164,22 @@ export default {
         },
         setToday(){
             const today = new Date().toISOString().substr(0,10)
-            this.pickedDates = [today, today]
-            this.selecteDates = this.pickedDates
-            console.log(this.pickedDates)
+            this.startDate = today
+            this.endDate = today
+            this.selectedDate = today
         },
    },
    created(){
        this.setToday()
 
        bus.$on('sendSelectedDate', date => {
-           this.pickedDates = [date, date]
-           this.selecteDates = this.pickedDates
+           this.startDate = date
+           this.endDate = date
+           this.selectedDate = date
        })
        bus.$on('sendPickedDates', (dates) => {
-           this.pickedDates = dates
+           this.startDate = dates[0]
+           this.endDate = dates[1]
        })
        bus.$on('sendSelectedTime Start Time', time => {
            console.log(time)
@@ -181,6 +189,11 @@ export default {
            this.endTime = time
        })
        bus.$on('openForm', () => this.dialog = true)
+       bus.$on('editEvent', event => {
+           this.currEvent = event
+           console.log('succeeded')
+           this.dialog = true
+       })
 
    },
    watch:{
@@ -211,23 +224,51 @@ export default {
                return ' ' + this.endTime
            }
        },
-       startDateAndTime(){
-           return this.pickedDates[0] + this.startTimeAutocomplete
-       },
-       endDateAndTime(){
-           return this.pickedDates[1] + this.endTimeAutocomplete
-       },
-       currEvent(){
-           console.log(this.startDateAndTime)
-           const event = {
-               name: this.nameInput,
-               details: this.detailsInput,
-               start: this.startDateAndTime,
-               end: this.endDateAndTime,
-               color: 'secondary'
+       startDateAndTime:{
+           get(){
+              return this.startDate + this.startTimeAutocomplete
+           },
+           set(newDateAndTime){
+               const [date,time] = newDateAndTime.split(' ')
+               this.startDate = date
+               if(!time) {
+                  this.startTime = time
+               }
            }
-           console.log(event)
-           return event
+       },
+       endDateAndTime:{
+           get(){
+                return this.endDate + this.endTimeAutocomplete
+           },
+           set(newDateAndTime){
+               const [date,time] = newDateAndTime.split(' ')
+               this.endDate = date
+               if(!time){
+                  this.endTime = time 
+               } 
+           }
+       },
+       currEvent:{
+           get(){
+                console.log(this.startDateAndTime)
+                const event = {
+                    name: this.nameInput,
+                    details: this.detailsInput,
+                    start: this.startDateAndTime,
+                    end: this.endDateAndTime,
+                    id: this.id,
+                    color: 'secondary'
+                }
+                console.log(event)
+                return event
+           },
+           set(newEvent){
+               this.nameInput = newEvent.name
+               this.detailsInput = newEvent.details
+               this.startDateAndTime = newEvent.start
+               this.endDateAndTime = newEvent.end
+               this.id = newEvent.id
+           }
        }
    }
 

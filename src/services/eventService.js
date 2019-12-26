@@ -64,6 +64,7 @@ const addOne = event => {
 const updateEvent = eventToUpdate => {
   staticEvents = staticEvents.filter( event => event.id !== eventToUpdate.id )
   staticEvents.push(eventToUpdate) 
+  console.log('updated', staticEvents)
 }
 
 const deleteEvent = (eventToDelete, identifier) => {
