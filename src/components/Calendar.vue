@@ -75,10 +75,7 @@
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
               <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>mdi-dots-vertical</v-icon>
+                <v-icon>mdi-delete</v-icon>
               </v-btn>
             </v-toolbar>
             <v-card-text>
@@ -101,10 +98,13 @@
 </template>
 
 <script>
+
+import eventService from '@/services/eventService'
+
   export default {
     data: () => ({
-      today: '2019-01-01',
-      focus: '2019-01-01',
+      today: new Date().toISOString().substr(0,10),
+      focus: new Date().toISOString().substr(0,10),
       type: 'month',
       typeToLabel: {
         month: 'Month',
@@ -116,6 +116,7 @@
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
+      events: []
     }),
     computed: {
       title () {
@@ -155,6 +156,9 @@
       this.$refs.calendar.checkChange()
     },
     methods: {
+      refreshEvents(){
+        this.events = eventService.getAll()
+      },
       viewDay ({ date }) {
         this.focus = date
         this.type = 'day'
@@ -198,5 +202,8 @@
           : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
       },
     },
+    created(){
+        this.refreshEvents()
+    }
   }
 </script>
