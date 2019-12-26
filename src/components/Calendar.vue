@@ -1,108 +1,142 @@
 <template>
-  <v-row class="fill-height">
-    <v-col>
-      <v-sheet height="64">
-        <v-toolbar flat color="white">
-          <v-btn primary outlined class="mr-4" @click="setToday">
-            Today
-          </v-btn>
-          <v-btn fab text small @click="prev">
-            <v-icon small>mdi-chevron-left</v-icon>
-          </v-btn>
-          <v-btn fab text small @click="next">
-            <v-icon small>mdi-chevron-right</v-icon>
-          </v-btn>
-          <v-toolbar-title>{{ title }}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-menu bottom right>
-            <template v-slot:activator="{ on }">
-              <v-btn
-                outlined
-                v-on="on"
-              >
-                <span>{{ typeToLabel[type] }}</span>
-                <v-icon right>mdi-menu-down</v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item @click="type = 'day'">
-                <v-list-item-title>Day</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'week'">
-                <v-list-item-title>Week</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'month'">
-                <v-list-item-title>Month</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-toolbar>
-      </v-sheet>
-      
-      <v-sheet height="750px">
-        <v-calendar
-          ref="calendar"
-          v-model="focus"
-          color="primary"
-          :events="events"
-          :event-color="getEventColor"
-          :event-margin-bottom="3"
-          :now="today"
-          :type="type"
-          @moved="sendDate"
-          @click:event="showEvent"
-          @click:more="viewDay"
-          @click:date="viewDay"
-          @click:interval="sendDateAndTime"
-          @click:time="sendDateAndTime"
-          @change="updateRange"
-        ></v-calendar>
-        <v-menu
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
-          full-width
-          offset-x
-        >
-          <v-card
-            color="grey lighten-4"
-            min-width="400px"
-            flat
+  <v-container class="pa-4" width="80%">
+    <v-row class="fill-height">
+      <v-col >
+        <v-sheet height="64" class="elevation-4">
+          <v-toolbar flat color="white">
+            <v-btn color="primary" text class="mr-4" @click="setToday">
+              Today
+            </v-btn>
+            <v-btn fab text small @click="prev">
+              <v-icon small>mdi-chevron-left</v-icon>
+            </v-btn>
+            <v-btn fab text small @click="next">
+              <v-icon small>mdi-chevron-right</v-icon>
+            </v-btn>
+            <v-toolbar-title>{{ title }}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-menu bottom right>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  text
+                  color="primary"
+                  v-on="on"
+                >
+                  <span>{{ typeToLabel[type] }}</span>
+                  <v-icon right>mdi-menu-down</v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item @click="type = 'day'">
+                  <v-list-item-title>Day</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="type = 'week'">
+                  <v-list-item-title>Week</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="type = 'month'">
+                  <v-list-item-title>Month</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </v-toolbar>
+        </v-sheet>
+        
+        <v-sheet height="750px">
+          <v-calendar
+            ref="calendar"
+            v-model="focus"
+            color="primary"
+            :events="events"
+            :event-color="getEventColor"
+            :event-margin-bottom="3"
+            :now="today"
+            :type="type"
+            @moved="sendDate"
+            @click:event="showEvent"
+            @click:more="viewDay"
+            @click:date="viewDay"
+            @click:interval="sendDateAndTime"
+            @click:time="sendDateAndTime"
+            @change="updateRange"
+          ></v-calendar>
+          <v-menu
+            v-model="selectedOpen"
+            :close-on-content-click="false"
+            :activator="selectedElement"
+            full-width
+            offset-x
           >
-            <v-toolbar
-              :color="selectedEvent.color"
-              dark
+            <v-card
+              color="grey lighten-4"
+              min-width="200px"
+              flat
             >
-              <v-btn
-               icon
-               @click="editEvent(selectedEvent)"
+              <v-toolbar
+                :color="selectedEvent.color"
+                dark
               >
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-btn icon>
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </v-toolbar>
-            <v-card-text>
-              <span v-html="selectedEvent.details"></span>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                text
-                color="secondary"
-                @click="selectedOpen = false"
-              >
-                Cancel
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
-      </v-sheet>
+                <v-btn
+                icon
+                @click="editEvent(selectedEvent)"
+                >
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn 
+                  icon
+                  @click="deleteDialog = true"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
 
-    </v-col>
-  </v-row>
+                <v-dialog
+                  v-model="deleteDialog"
+                  width="80%"
+                >
+                  <v-card>
+                    <v-card-title>Delete {{selectedEvent.name}} ?</v-card-title>
+                    <v-card-text>Are you sure you want to delete?</v-card-text>
+                    <v-card flat class="d-flex ma-0 pa-3">
+                      <v-btn
+                        @click="deleteDialog = false"
+                        text
+                        color="primary"
+                      >
+                        Close
+                      </v-btn>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        @click="deleteSelectedEvent(selectedEvent)"
+                        text
+                        color="primary"
+                      >
+                        Delete
+                      </v-btn>
+                    </v-card>
+                  </v-card>
+                </v-dialog>
+
+              </v-toolbar>
+              <v-card-text>
+                <span v-html="selectedEvent.details"></span>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn
+                  text
+                  color="secondary"
+                  @click="selectedOpen = false"
+                >
+                  Cancel
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-menu>
+        </v-sheet>
+
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -111,6 +145,7 @@ import { bus } from '@/main'
 
   export default {
     data: () => ({
+      deleteDialog: false,
       today: new Date().toISOString().substr(0,10),
       focus: new Date().toISOString().substr(0,10),
       type: 'month',
@@ -165,6 +200,12 @@ import { bus } from '@/main'
       this.$refs.calendar.checkChange()
     },
     methods: {
+      deleteSelectedEvent(event){
+        eventService.deleteEvent(event,'id')
+        this.deleteDialog = false
+        this.selectedOpen = false
+        this.refreshEvents()
+      },
       editEvent(event){
         bus.$emit('editEvent', event)
       },

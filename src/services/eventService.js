@@ -68,7 +68,9 @@ const updateEvent = eventToUpdate => {
 }
 
 const deleteEvent = (eventToDelete, identifier) => {
-  staticEvents.filter(event => event[identifier] !== eventToDelete[identifier])  
+  console.log('deleted')
+  staticEvents = staticEvents.filter(event => event[identifier] !== eventToDelete[identifier])  
+  console.log(staticEvents)
 }
 
 
