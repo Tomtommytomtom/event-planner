@@ -45,6 +45,50 @@ const getAll = () => {
   return staticEvents
 }
 
+const addOrUpdate = event => {
+  if(event.id){
+    updateEvent(event)
+  } else {
+    addOne(event)
+  }
+}
+
+
+
+const addOne = event => {
+  const eventToAdd = giveNewEventAnId(event)
+  staticEvents.push(eventToAdd)
+  console.log(staticEvents)
+}
+
+const updateEvent = eventToUpdate => {
+  staticEvents = staticEvents.filter( event => event.id !== eventToUpdate.id )
+  staticEvents.push(eventToUpdate) 
+}
+
+const deleteEvent = (eventToDelete, identifier) => {
+  staticEvents.filter(event => event[identifier] !== eventToDelete[identifier])  
+}
+
+
+
+const giveNewEventAnId = event => {
+  return {
+    ...event,
+    id: getHighestAttribute('id') + 1
+  }
+}
+
+const getHighestAttribute = (attribute) => {
+  return staticEvents.reduce((prev, curr) => {
+    return prev[attribute] >= curr[attribute]
+        ? prev[attribute]
+        : curr[attribute]
+  })
+}
+
 export default {
-  getAll
+  getAll,
+  addOrUpdate,
+  deleteEvent
 }

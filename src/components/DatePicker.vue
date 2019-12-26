@@ -47,7 +47,6 @@
     },
     watch: {
         defaultDate: function(){
-          console.log('inside default date watch')
           this.dates = this.defaultDate
         }
     },

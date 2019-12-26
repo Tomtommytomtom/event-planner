@@ -57,8 +57,8 @@
     },
     watch: {
       defaultTime(){
-        console.log('inside Default time watch')
         this.time = this.defaultTime
+        console.log(this.label,'   ', this.time)
       }
     },
     created() {

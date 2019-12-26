@@ -3,7 +3,7 @@
     <v-col>
       <v-sheet height="64">
         <v-toolbar flat color="white">
-          <v-btn outlined class="mr-4" @click="setToday">
+          <v-btn primary outlined class="mr-4" @click="setToday">
             Today
           </v-btn>
           <v-btn fab text small @click="prev">
@@ -38,7 +38,8 @@
           </v-menu>
         </v-toolbar>
       </v-sheet>
-      <v-sheet height="750">
+      
+      <v-sheet height="750px">
         <v-calendar
           ref="calendar"
           v-model="focus"
@@ -53,6 +54,7 @@
           @click:more="viewDay"
           @click:date="viewDay"
           @click:interval="sendDateAndTime"
+          @click:time="sendDateAndTime"
           @change="updateRange"
         ></v-calendar>
         <v-menu
@@ -95,6 +97,7 @@
           </v-card>
         </v-menu>
       </v-sheet>
+
     </v-col>
   </v-row>
 </template>
@@ -160,11 +163,10 @@ import { bus } from '@/main'
     },
     methods: {
       sendDateAndTime(dayAndTime){
-        console.log(dayAndTime,'hi')
         this.sendDate(dayAndTime)
         const startTime = dayAndTime.hour < 10  ?  `0${dayAndTime.hour}:00` : `${dayAndTime.hour}:00`
-        console.log(startTime)
         bus.$emit('sendSelectedTime Start Time', startTime)
+        bus.$emit('openForm')
       },
       sendDate( dayAndTime ){
         bus.$emit('sendSelectedDate', dayAndTime.date )
@@ -175,7 +177,7 @@ import { bus } from '@/main'
       viewDay ( dayAndTime ) {
         this.focus = dayAndTime.date
         this.type = 'day'
-        bus.$emit('sendSelectedDate', dayAndTime )
+        bus.$emit('sendSelectedDate', dayAndTime.date )
       },
       getEventColor (event) {
         return event.color
