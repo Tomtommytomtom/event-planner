@@ -27,7 +27,7 @@
             <v-container>
                 <v-row>
                     <v-col cols="6">
-                        <DatePicker label="Event Duration"></DatePicker>
+                        <DatePicker :defaultDate="eventDate" label="Event Duration"></DatePicker>
                     </v-col>
                     <v-col>
                         <v-select
@@ -45,10 +45,10 @@
             <v-container>
                 <v-row>
                     <v-col cols="6">
-                        <TimePicker :defaultTime="eventTime.start.time" label="Start Time"></TimePicker>
+                        <TimePicker :defaultTime="eventDate.start.time" label="Start Time"></TimePicker>
                     </v-col>
                     <v-col cols="6">
-                        <TimePicker :defaultTime="eventTime.end.time" label="End Time"></TimePicker>
+                        <TimePicker :defaultTime="eventDate.end.time" label="End Time"></TimePicker>
                     </v-col>
                 </v-row>
             </v-container>
@@ -68,6 +68,12 @@ import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
 
 export default {
+   components: {
+       TimePicker,
+       DatePicker
+   },
+
+
    data: () => ({
         formTitle: 'Add a new Event',
         nameInput: '',
@@ -82,23 +88,34 @@ export default {
           "Every Weekday (Monday to Friday)",
         ],
         dialog: false,
-        eventTime: {},
+        eventDate: {},
+        pickedDates: {},
+        pickedTimes: {}
+
    }),
     methods : {
         setToday(){
             const todayString = new Date().toISOString().substr(0,10)
             const [year, month, day] = todayString.split('-')
-            this.eventTime.start = {
+            this.eventDate.start = {
                 date: todayString,
                 year,
                 month,
                 day
             }
-            this.eventTime.end = this.eventTime.start
+            this.eventDate.end = this.eventDate.start
         }
    },
    created(){
        this.setToday()
+       this.pickedDates = {
+           start: this.eventDate.start.date,
+           end: this.eventDate.end.date
+       }
+       this.pickedTimes = {
+           start: this.eventDate.start.time,
+           end: this.eventDate.end.time
+       }
    }
 
 }

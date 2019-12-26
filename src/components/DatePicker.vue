@@ -34,7 +34,7 @@
     import { bus } from '../main'
 
   export default {
-    props: ['label','selectedDay'],
+    props: ['label','defaultDate'],
     data: () => ({
       dates: [],
       menu: false,
@@ -46,28 +46,27 @@
         },
     },
     watch: {
-        clear: function(){
-            this.dates = this.selectedDay
+        defaultTime: function(){
+            this.dates = [this.defaultDate.start.date, this.defaultDate.end.date]
         }
     },
     computed: {
       dateRangeText() {
-          if((this.dates[0] === this.dates[1]) && (new Date().toISOString().substr(0,10) === this.dates[0])) {
-              return 'Today'
-          } else if (this.dates[0] === this.dates[1]){
-              return this.dates[0]
-          } else {
-              return this.dates.join(' ~ ')
-          }
-
-        },
-        isSecondClick() {
-            return this.dates.length === 2;
+        if((this.dates[0] === this.dates[1]) && (new Date().toISOString().substr(0,10) === this.dates[0])) {
+          return 'Today'
+        } else if (this.dates[0] === this.dates[1]){
+          return this.dates[0]
+        } else {
+          return this.dates.join(' ~ ')
         }
+
+      },
+      isSecondClick() {
+        return this.dates.length === 2;
+      }
     },
     created(){
-        this.dates = this.selectedDay
-        bus.$emit('sendDates', this.dates)
+        this.dates = [this.defaultDate.start.date, this.defaultDate.end.date]
     }
   }
 </script>
