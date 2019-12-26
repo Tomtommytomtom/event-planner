@@ -38,7 +38,7 @@
           </v-menu>
         </v-toolbar>
       </v-sheet>
-      <v-sheet height="600">
+      <v-sheet height="750">
         <v-calendar
           ref="calendar"
           v-model="focus"
@@ -62,7 +62,7 @@
         >
           <v-card
             color="grey lighten-4"
-            min-width="350px"
+            min-width="400px"
             flat
           >
             <v-toolbar
@@ -193,6 +193,7 @@ import eventService from '@/services/eventService'
       },
       updateRange ({ start, end }) {
         // You could load events from an outside source (like database) now that we have the start and end dates on the calendar
+        console.log(start)
         this.start = start
         this.end = end
       },

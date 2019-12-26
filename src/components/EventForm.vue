@@ -45,17 +45,17 @@
             <v-container>
                 <v-row>
                     <v-col cols="6">
-                        <TimePicker :defaultTime="times[0]" label="Start Time"></TimePicker>
+                        <TimePicker :defaultTime="eventTime.start.time" label="Start Time"></TimePicker>
                     </v-col>
                     <v-col cols="6">
-                        <TimePicker :defaultTime="times[1]" label="End Time"></TimePicker>
+                        <TimePicker :defaultTime="eventTime.end.time" label="End Time"></TimePicker>
                     </v-col>
                 </v-row>
             </v-container>
             <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="clear">Close</v-btn>
-            <v-btn color="primary" text :disabled="!valid" @click="saveEvent">Save</v-btn>
+            <v-btn color="primary" text @click="dialog = false">Close</v-btn>
+            <v-btn color="primary" text :disabled="!valid" @click="dialog = false">Save</v-btn>
             </v-card-actions>
         </v-form>
       </v-card>
@@ -68,6 +68,38 @@ import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
 
 export default {
-    
+   data: () => ({
+        formTitle: 'Add a new Event',
+        nameInput: '',
+        detailsInput: '',
+        repeatOptionSelected: "Doesn't repeat",
+        reocurringOptions: [
+          "Doesn't repeat",
+          "Daily",
+          "Weekly",
+          "Monthly",
+          "Annualy",
+          "Every Weekday (Monday to Friday)",
+        ],
+        dialog: false,
+        eventTime: {},
+   }),
+    methods : {
+        setToday(){
+            const todayString = new Date().toISOString().substr(0,10)
+            const [year, month, day] = todayString.split('-')
+            this.eventTime.start = {
+                date: todayString,
+                year,
+                month,
+                day
+            }
+            this.eventTime.end = this.eventTime.start
+        }
+   },
+   created(){
+       this.setToday()
+   }
+
 }
 </script>
