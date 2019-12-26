@@ -58,7 +58,6 @@ const addOrUpdate = event => {
 const addOne = event => {
   const eventToAdd = giveNewEventAnId(event)
   staticEvents.push(eventToAdd)
-  console.log(staticEvents)
 }
 
 const updateEvent = eventToUpdate => {
@@ -78,20 +77,36 @@ const deleteEvent = (eventToDelete, identifier) => {
 const giveNewEventAnId = event => {
   return {
     ...event,
-    id: getHighestAttribute('id') + 1
+    id: getHighestAttributeInArray(staticEvents,'id') + 1
   }
 }
 
-const getHighestAttribute = (attribute) => {
-  return staticEvents.reduce((prev, curr) => {
+const getHighestAttributeInArray = (array,attribute) => {
+  return array.reduce((prev, curr) => {
     return prev[attribute] >= curr[attribute]
         ? prev[attribute]
         : curr[attribute]
   })
 }
 
+const getAllEventsInMonth = date => {
+  return staticEvents.filter(event => doesEventStartInMonth(event, date))
+}
+
+const doesEventStartInMonth = (event, date) => {
+  const [eventYear, eventMonth, ] = event.start.split('-')
+  const [dateYear, dateMonth, ] = date.split('-')
+
+  if(eventYear != dateYear) return false
+  if(eventMonth != dateMonth) return false
+  return true
+}
+
 export default {
+  addOne,
   getAll,
   addOrUpdate,
-  deleteEvent
+  deleteEvent,
+  getHighestAttributeInArray,
+  getAllEventsInMonth
 }
