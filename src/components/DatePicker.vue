@@ -25,7 +25,6 @@
           no-title
           scrollable
           @change="sendData"
-          @input="sendOnlyOneSelected"
         >
         </v-date-picker>
       </v-menu>
@@ -42,12 +41,6 @@
       menu: false,
     }),
     methods: {
-        sendOnlyOneSelected(date){
-          if(this.dates[0] && !this.dates[1]){
-            console.log('sent in sendONly', this.dates[1])
-            bus.$emit('sendPickedDates', [date,date])
-          }
-        },
         sendData() {
           bus.$emit('sendPickedDates', this.dates)
         },
@@ -63,10 +56,19 @@
     },
     watch: {
         defaultDateStart: function(){
+          console.log('props changed start')
           this.setDates()
         },
         defaultDateEnd: function(){
+          console.log('props changed end')
           this.setDates()
+        },
+        menu: function(){
+          if(!this.menu){
+             if(this.dates[0] && !this.dates[1]){
+             bus.$emit('sendPickedDates', [this.dates[0],this.dates[0]])
+            }
+          }
         }
     },
     computed: {
