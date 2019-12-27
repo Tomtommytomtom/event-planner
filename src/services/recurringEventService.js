@@ -124,7 +124,6 @@ const getNextEvent = event => {
             break
         case 'weekdays':
             nextDateAndTime = getNextTimeAndDateForWeekdays(event)
-
             break
     }
     const nextEvent = {
@@ -153,9 +152,13 @@ const getNextTimeAndDateForMonthly = event => {
 
     const weekday = dateArithmetic.getWeekday(event.start)
     const nextMonth = getNextMonth(event.start)
+
+    const eventStart = dateArithmetic.getFirstWeekdayOfMonth(weekday, nextMonth)
+    const eventEnd = dateArithmetic.addDaysToDate(eventStart, getDurationOfEvent(event))
+    
     return {
-        start: dateArithmetic.getFirstWeekdayOfMonth(weekday, nextMonth) + getEventTime(event.start),
-        end: dateArithmetic.getFirstWeekdayOfMonth(weekday, nextMonth) + getEventTime(event.start)
+        start: eventStart + getEventTime(event.start),
+        end: eventEnd + getEventTime(event.end)
     }
 }
 
@@ -177,6 +180,16 @@ const getEventTime = dateAndTime => {
     return !time 
         ? '' 
         : ' ' + time
+}
+
+const getDurationOfEvent = event => {
+    const [startDate] = event.start.split(' ')
+    const [endDate] = event.end.split(' ')
+    if(startDate === endDate){
+        return 0
+    } else {
+        return dateArithmetic.getDifference(endDate, startDate)
+    }
 }
 
 const updateEvent = recurringEvent => {

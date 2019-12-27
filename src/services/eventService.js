@@ -53,8 +53,6 @@ const addOrUpdate = event => {
   }
 }
 
-
-
 const addOne = event => {
   const eventToAdd = giveNewEventAnId(event)
 

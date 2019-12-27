@@ -65,6 +65,14 @@ const getNextWeekday = date => {
     }
 }
 
+const getDifference = (endDate, startDate) => {
+    const startDateObject = dateStringToObject(startDate)
+    const endDateObject = dateStringToObject(endDate)
+    const secondsBetween = Math.abs(endDateObject - startDateObject) / 1000
+    const daysBetween = Math.floor(secondsBetween / (60 * 60 * 24))
+    return daysBetween
+}
+
 
 
 
@@ -73,5 +81,6 @@ export default {
     doesEventStartBeforeDate,
     getWeekday,
     getFirstWeekdayOfMonth,
-    getNextWeekday
+    getNextWeekday,
+    getDifference
 }
