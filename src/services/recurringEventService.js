@@ -89,6 +89,7 @@ const addOne = event => {
     recurringEvents.push(eventToAdd)
 }
 
+
 const giveNewEventARecurringId = event => {
     return {
         ...event,
@@ -117,6 +118,8 @@ const applyRecurringToStaticEventsUntil = date => {
         let nextEvent = getNextEvent(event)
         if(event.name === 'Susi'){
             console.log(dateArithmetic.doesEventStartBeforeDate(nextEvent.start, date))
+            console.log(event, 'current susi event')
+            console.log(nextEvent, 'nextSusiEvent')
         }
         
         while(dateArithmetic.doesEventStartBeforeDate(nextEvent.start, date)){
@@ -225,6 +228,7 @@ const updateEvent = recurringEvent => {
 }
 
 const getEventsToApplyForMonth = date => {
+    console.log(date)
     return recurringEvents.filter(event => !isAlrdyInStaticForMonth(event, date))
 }
 
@@ -233,9 +237,7 @@ const isAlrdyInStaticForMonth = (event, date) => {
         .getAllEventsInMonth(date)
         .map(staticEvent => staticEvent.recurringId)
         .includes(event.recurringId)
-
     return result
-
 }
 
 export default {

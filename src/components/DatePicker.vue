@@ -41,35 +41,55 @@
       menu: false,
     }),
     methods: {
-        sendData() {
-          bus.$emit('sendPickedDates', this.dates)
-        },
-        setDates(){
-          this.dates = [this.defaultDateStart, this.defaultDateEnd]
-        },
-        formatDate(date){
-          if(!date) return null
-
-          const [year, month, day] = date.split('-')
-          return `${day}/${month}/${year}`
-        }
-    },
-    watch: {
-        defaultDateStart: function(){
-          console.log('props changed start')
-          this.setDates()
-        },
-        defaultDateEnd: function(){
-          console.log('props changed end')
-          this.setDates()
-        },
-        menu: function(){
-          if(!this.menu){
-             if(this.dates[0] && !this.dates[1]){
-             bus.$emit('sendPickedDates', [this.dates[0],this.dates[0]])
-            }
+      preventInvalidDateCombination(){
+        console.log('preventing called')
+        if(this.dates[0] && this.dates[1]){
+          const [startYear, startMonth, startDay] = this.dates[0].split('-')
+          const [endYear, endMonth, endDay] = this.dates[1].split('-')
+          if(startYear <= endYear && startMonth <= endMonth && startDay <= endDay){
+            console.log('WHEYRFEDUWYFRDUYFDREUDTF')
+            return
+          }
+          else {
+            const temp = this.dates[0]
+            this.dates[0] = this.dates[1]
+            this.dates[1] = temp
+            console.log(dates, ' dates were swapped')
           }
         }
+      },
+      sendData() {
+        bus.$emit('sendPickedDates', this.dates)
+      },
+      setDates(){
+        this.dates = [this.defaultDateStart, this.defaultDateEnd]
+      },
+      formatDate(date){
+        if(!date) return null
+
+        const [year, month, day] = date.split('-')
+        return `${day}/${month}/${year}`
+      }
+    },
+    watch: {
+      dates: function(){
+        this.preventInvalidDateCombination()
+      },
+      defaultDateStart: function(){
+        console.log('props changed start')
+        this.setDates()
+      },
+      defaultDateEnd: function(){
+        console.log('props changed end')
+        this.setDates()
+      },
+      menu: function(){
+        if(!this.menu){
+          if(this.dates[0] && !this.dates[1]){
+          bus.$emit('sendPickedDates', [this.dates[0],this.dates[0]])
+          }
+        }
+      }
     },
     computed: {
       dateRangeText() {
