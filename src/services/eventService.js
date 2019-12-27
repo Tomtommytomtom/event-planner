@@ -57,19 +57,21 @@ const addOrUpdate = event => {
 
 const addOne = event => {
   const eventToAdd = giveNewEventAnId(event)
+
   staticEvents.push(eventToAdd)
+
 }
 
 const updateEvent = eventToUpdate => {
   staticEvents = staticEvents.filter( event => event.id !== eventToUpdate.id )
   staticEvents.push(eventToUpdate) 
-  console.log('updated', staticEvents)
+
 }
 
 const deleteEvent = (eventToDelete, identifier) => {
-  console.log('deleted')
+
   staticEvents = staticEvents.filter(event => event[identifier] !== eventToDelete[identifier])  
-  console.log(staticEvents)
+
 }
 
 
@@ -82,6 +84,7 @@ const giveNewEventAnId = event => {
 }
 
 const getHighestAttributeInArray = (array,attribute) => {
+
   return array.reduce((prev, curr) => {
     return prev[attribute] >= curr[attribute]
         ? prev[attribute]

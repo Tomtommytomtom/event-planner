@@ -45,7 +45,7 @@ let recurringEvents = [
       {
       recurringId: 5,
       name: 'On every Weekday',
-      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
+      details: 'From Monday to Friday',
       start: '2019-12-2',
       end: '2019-12-2',
       type: 'weekdays',
@@ -56,7 +56,7 @@ let recurringEvents = [
 
 const getNextMonth = date => {
     const [year, month, day] = date.split('-')
-    console.log('insinde getNextMonth now is',year, month)
+
     if(+month + 1 < 13){
       return `${year}-${+month + 1}-01` 
     } else {
@@ -72,30 +72,29 @@ const addOne = event => {
 const giveNewEventARecurringId = event => {
     return {
         ...event,
-        recurringId: eventService.getHighestAttribute(recurringEvents, 'recurringId') + 1
+        recurringId: eventService.getHighestAttributeInArray(recurringEvents, 'recurringId') + 1
     }
 }
 
 const applyRecurringEventsUntilEndOfNextMonth = date => {
+
     const dateUntil = getNextMonth(date)
+
     applyRecurringToStaticEventsUntil(date)
-    console.log(dateUntil)
+
     applyRecurringToStaticEventsUntil(dateUntil) 
 }
 
 const applyRecurringToStaticEventsUntil = date => {
     const eventsToApply = getEventsToApplyForMonth(date)
-    console.log('for this month',date.split('-')[1], ' i have to add these events:',eventsToApply)
+
 
     if(!eventsToApply){
         return
     }
 
     eventsToApply.forEach(event => {
-
         let nextEvent = getNextEvent(event)
-
-        let counter = 32
 
         while(dateArithmetic.doesEventStartBeforeDate(nextEvent.start, date)){
             eventService.addOne(nextEvent)
@@ -109,7 +108,7 @@ const applyRecurringToStaticEventsUntil = date => {
 }
 
 const getNextEvent = event => {
-    console.log(event, event.type)
+
     let nextDateAndTime = {}
     switch(event.type){
         case 'daily':
@@ -125,7 +124,7 @@ const getNextEvent = event => {
             break
         case 'weekdays':
             nextDateAndTime = getNextTimeAndDateForWeekdays(event)
-            console.log('boutta add', nextDateAndTime, 'coz its a weekday')
+
             break
     }
     const nextEvent = {
@@ -151,7 +150,7 @@ const getNextTimeAndDateForAnnual = event => {
 }
 
 const getNextTimeAndDateForMonthly = event => {
-    console.log(event.start, 'inside of monthly')
+
     const weekday = dateArithmetic.getWeekday(event.start)
     const nextMonth = getNextMonth(event.start)
     return {
@@ -194,11 +193,12 @@ const isAlrdyInStaticForMonth = (event, date) => {
         .getAllEventsInMonth(date)
         .map(staticEvent => staticEvent.recurringId)
         .includes(event.recurringId)
-    console.log(result, ' have already been applied this month')
+
     return result
 
 }
 
 export default {
-    applyRecurringEventsUntilEndOfNextMonth
+    applyRecurringEventsUntilEndOfNextMonth,
+    addOne
 }

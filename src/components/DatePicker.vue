@@ -41,7 +41,7 @@
     }),
     methods: {
         sendData() {
-          console.log(this.dates)
+
           bus.$emit('sendPickedDates', this.dates)
         },
         setDates(){

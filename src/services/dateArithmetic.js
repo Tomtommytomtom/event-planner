@@ -1,16 +1,23 @@
 
 const addDaysToDate = (date, days) => {
-    let dateObject = dateStringToObject(date)
+    const dateWithoutTime = date.split(' ')[0]
+    let dateObject = dateStringToObject(dateWithoutTime)
+
     dateObject.setDate(dateObject.getDate() + days + 1)
+
     return dateObjectToString(dateObject)
 }
 
 const dateStringToObject = (date) => {
     const [year, month, day] = date.split('-')
-    return new Date(year, month - 1, day)
+
+    const dateObject = new Date(year, +month - 1, day)
+
+    return dateObject
 }
 
 const dateObjectToString = (dateObject) => {
+
     return dateObject.toISOString().substr(0,10)
 }
 
@@ -50,10 +57,10 @@ const isNotWeekend = date => {
 const getNextWeekday = date => {
     const tomorrow = getTomorrow(date)
     if(isNotWeekend(tomorrow)){
-        console.log(tomorrow, 'is a weekday')
+
         return tomorrow
     } else {
-        console.log(tomorrow,' is not a weekday')
+
         return getNextWeekday(tomorrow)
     }
 }
