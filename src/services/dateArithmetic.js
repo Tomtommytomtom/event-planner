@@ -27,10 +27,44 @@ const doesEventStartBeforeDate = (eventStart, date) => {
     return true
 }
 
+const getFirstWeekdayOfMonth = (weekday, date) => {
+    let [year, month] = date.split('-')
+    var day = 1
+    for(day = 1 ; new Date(year, +month - 1, day).getDay() !== weekday; day++ ){
+    }
+    return [year, month, day].join('-')
+}
+
+const getWeekday = (date) => {
+    return dateStringToObject(date).getDay()
+}
+
+const getTomorrow = date => {
+    return addDaysToDate(date, 1)
+}
+
+const isNotWeekend = date => {
+    return dateStringToObject(date).getDay() > 0 && dateStringToObject(date).getDay() < 6
+}
+
+const getNextWeekday = date => {
+    const tomorrow = getTomorrow(date)
+    if(isNotWeekend(tomorrow)){
+        console.log(tomorrow, 'is a weekday')
+        return tomorrow
+    } else {
+        console.log(tomorrow,' is not a weekday')
+        return getNextWeekday(tomorrow)
+    }
+}
+
 
 
 
 export default {
     addDaysToDate,
     doesEventStartBeforeDate,
+    getWeekday,
+    getFirstWeekdayOfMonth,
+    getNextWeekday
 }

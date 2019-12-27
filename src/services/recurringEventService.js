@@ -4,17 +4,17 @@ import dateArithmetic from './dateArithmetic'
 let recurringEvents = [
     {
       recurringId: 1,
-      name: 'DAILY',
+      name: 'Bi-Weekly Event',
       details: 'dummy event reocurring weekly',
-      type: 'daily',
+      type: 'custom',
       start: '2019-12-03',
       end: '2019-12-03',
       color: 'secondary',
-      frequenzy: 1
+      frequenzy: 14
     },
     {
       recurringId: 2,
-      name: 'WEEKLY',
+      name: 'Weekly Event',
       details: 'dummy event reocurring weekly',
       type: 'weekly',
       start: '2019-12-05',
@@ -24,19 +24,39 @@ let recurringEvents = [
     },
     {
         recurringId: 3,
-        name: 'anuualy',
+        name: 'Annual Event',
         details: 'dummy event reocurring weekly',
         type: 'annualy',
         start: '2018-12-11',
-        end: '2019-12-11',
+        end: '2018-12-11',
         color: 'secondary',
         frequenzy: 0
+      },
+      {
+        recurringId: 4,
+        name: 'Monthly',
+        details: 'On Every first Saturday of Month',
+        type: 'monthly',
+        start: '2019-12-7',
+        end: '2019-12-7',
+        color: 'secondary',
+        frequenzy: 0
+      },
+      {
+      recurringId: 5,
+      name: 'On every Weekday',
+      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
+      start: '2019-12-2',
+      end: '2019-12-2',
+      type: 'weekdays',
+      color: 'secondary',
+      frequenzy: 0
       },
 ]
 
 const getNextMonth = date => {
     const [year, month, day] = date.split('-')
-    console.log('insinde getNextMonth now',year, month)
+    console.log('insinde getNextMonth now is',year, month)
     if(+month + 1 < 13){
       return `${year}-${+month + 1}-01` 
     } else {
@@ -89,6 +109,7 @@ const applyRecurringToStaticEventsUntil = date => {
 }
 
 const getNextEvent = event => {
+    console.log(event, event.type)
     let nextDateAndTime = {}
     switch(event.type){
         case 'daily':
@@ -97,10 +118,15 @@ const getNextEvent = event => {
             nextDateAndTime = getNextTimeAndDateByFrequenzy(event)
             break
         case 'monthly':
+            nextDateAndTime = getNextTimeAndDateForMonthly(event)
+            break
         case 'annualy':
             nextDateAndTime = getNextTimeAndDateForAnnual(event)
             break
         case 'weekdays':
+            nextDateAndTime = getNextTimeAndDateForWeekdays(event)
+            console.log('boutta add', nextDateAndTime, 'coz its a weekday')
+            break
     }
     const nextEvent = {
         ...event,
@@ -119,13 +145,30 @@ const getNextTimeAndDateByFrequenzy = event => {
 
 const getNextTimeAndDateForAnnual = event => {
     return {
-        start: getSameDateNextYear(event) + getEventTime(event.start),
-        end: getSameDateNextYear(event) + getEventTime(event.end)
+        start: getSameDateNextYear(event.start) + getEventTime(event.start),
+        end: getSameDateNextYear(event.end) + getEventTime(event.end)
+    }
+}
+
+const getNextTimeAndDateForMonthly = event => {
+    console.log(event.start, 'inside of monthly')
+    const weekday = dateArithmetic.getWeekday(event.start)
+    const nextMonth = getNextMonth(event.start)
+    return {
+        start: dateArithmetic.getFirstWeekdayOfMonth(weekday, nextMonth) + getEventTime(event.start),
+        end: dateArithmetic.getFirstWeekdayOfMonth(weekday, nextMonth) + getEventTime(event.start)
+    }
+}
+
+const getNextTimeAndDateForWeekdays = event => {
+    return {
+        start: dateArithmetic.getNextWeekday(event.start) + getEventTime(event.start),
+        end: dateArithmetic.getNextWeekday(event.end) + getEventTime(event.end)
     }
 }
 
 const getSameDateNextYear = event => {
-    const[year, month , day] = event.start.split('-')
+    const[year, month , day] = event.split('-')
     return [+year + 1, month, day].join('-')
 }
 

@@ -1,7 +1,7 @@
 let staticEvents = [
     {
       id: 1,
-      name: 'Lorem',
+      name: 'Event 1',
       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
       start: '2019-12-02',
       end: '2019-12-06',
@@ -9,7 +9,7 @@ let staticEvents = [
     },
     {
       id: 2,
-      name: 'ipsum',
+      name: 'Event 2',
       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
       start: '2019-12-02',
       end: '2019-12-12',
@@ -17,7 +17,7 @@ let staticEvents = [
     },
     {
       id:3,
-      name: 'dolor',
+      name: 'Event 3',
       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
       start: '2019-12-15',
       end: '2019-12-15',
@@ -25,7 +25,7 @@ let staticEvents = [
     },
     {
       id: 4,
-      name: 'sit',
+      name: 'Event 4',
       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
       start: '2019-12-02',
       end: '2019-12-05',
@@ -33,7 +33,7 @@ let staticEvents = [
     },
     {
       id: 5,
-      name: 'amet',
+      name: 'Event 5',
       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
       start: '2019-12-21',
       end: '2019-12-24',
