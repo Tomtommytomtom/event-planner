@@ -20,10 +20,12 @@
         </template>
         <v-date-picker
           v-model="dates"
+          reactive
           range
           no-title
           scrollable
           @change="sendData"
+          @input="sendOnlyOneSelected"
         >
         </v-date-picker>
       </v-menu>
@@ -40,12 +42,23 @@
       menu: false,
     }),
     methods: {
+        sendOnlyOneSelected(date){
+          if(this.dates[0] && !this.dates[1]){
+            console.log('sent in sendONly', this.dates[1])
+            bus.$emit('sendPickedDates', [date,date])
+          }
+        },
         sendData() {
-
           bus.$emit('sendPickedDates', this.dates)
         },
         setDates(){
           this.dates = [this.defaultDateStart, this.defaultDateEnd]
+        },
+        formatDate(date){
+          if(!date) return null
+
+          const [year, month, day] = date.split('-')
+          return `${day}/${month}/${year}`
         }
     },
     watch: {
@@ -61,11 +74,18 @@
         if((this.dates[0] === this.dates[1]) && (new Date().toISOString().substr(0,10) === this.dates[0])) {
           return 'Today'
         } else if (this.dates[0] === this.dates[1]){
-          return this.dates[0]
+          return this.formattedStartDate
         } else {
-          return this.dates.join(' ~ ')
+          console.log('in else')
+          return [this.formattedStartDate, this.formattedEndDate].join(' ~ ')
         }
 
+      },
+      formattedStartDate() {
+        return this.formatDate(this.dates[0])
+      },
+      formattedEndDate(){
+        return this.formatDate(this.dates[1])
       },
       isSecondClick() {
         return this.dates.length === 2;

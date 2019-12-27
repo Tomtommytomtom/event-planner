@@ -231,7 +231,7 @@ export default {
            this.selectedDate = date
        })
        bus.$on('sendPickedDates', (dates) => {
-           console.log('sent ', dates)
+           console.log('received ', dates)
            this.startDate = dates[0]
            this.endDate = dates[1]
        })

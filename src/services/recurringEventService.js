@@ -52,6 +52,26 @@ let recurringEvents = [
       color: 'secondary',
       frequenzy: 0
       },
+      {
+        recurringId: 6,
+        name: 'My Birthday',
+        details: '11th of july',
+        start: '2019-07-11',
+        end: '2019-07-12',
+        type: 'annualy',
+        color: 'primary',
+        frequenzy: 0
+      },
+      {
+        recurringId: 7,
+        name: 'Lauras Birthday',
+        details: '11th of july',
+        start: '2019-04-02',
+        end: '2019-04-02',
+        type: 'annualy',
+        color: 'primary',
+        frequenzy: 0
+      },
 ]
 
 const getNextMonth = date => {
@@ -88,14 +108,17 @@ const applyRecurringEventsUntilEndOfNextMonth = date => {
 const applyRecurringToStaticEventsUntil = date => {
     const eventsToApply = getEventsToApplyForMonth(date)
 
-
     if(!eventsToApply){
         return
     }
+    console.log(eventsToApply.map(event => event.name))
 
     eventsToApply.forEach(event => {
         let nextEvent = getNextEvent(event)
-
+        if(event.name === 'Susi'){
+            console.log(dateArithmetic.doesEventStartBeforeDate(nextEvent.start, date))
+        }
+        
         while(dateArithmetic.doesEventStartBeforeDate(nextEvent.start, date)){
             eventService.addOne(nextEvent)
             const eventToUpdate = nextEvent
@@ -130,6 +153,10 @@ const getNextEvent = event => {
         ...event,
         ...nextDateAndTime
     }
+
+    if(event.type === 'annualy'){
+    }
+
     return nextEvent
 
 }
