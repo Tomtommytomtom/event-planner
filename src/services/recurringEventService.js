@@ -31,18 +31,18 @@ let recurringEvents = [
         end: '2018-12-11',
         color: 'secondary',
         frequenzy: 0
-      },
-      {
+    },
+    {
         recurringId: 4,
         name: 'Monthly',
-        details: 'On Every first Saturday of Month',
+        details: 'On Every second Saturday of wednesday',
         type: 'monthly',
-        start: '2019-12-7',
-        end: '2019-12-7',
+        start: '2019-12-28',
+        end: '2019-12-28',
         color: 'secondary',
         frequenzy: 0
-      },
-      {
+    },
+    {
       recurringId: 5,
       name: 'On every Weekday',
       details: 'From Monday to Friday',
@@ -51,8 +51,8 @@ let recurringEvents = [
       type: 'weekdays',
       color: 'secondary',
       frequenzy: 0
-      },
-      {
+    },
+    {
         recurringId: 6,
         name: 'My Birthday',
         details: '11th of july',
@@ -61,8 +61,8 @@ let recurringEvents = [
         type: 'annualy',
         color: 'primary',
         frequenzy: 0
-      },
-      {
+    },
+    {
         recurringId: 7,
         name: 'Lauras Birthday',
         details: 'better not forget',
@@ -71,7 +71,7 @@ let recurringEvents = [
         type: 'annualy',
         color: 'primary',
         frequenzy: 0
-      },
+    },
 ]
 
 const getNextMonth = date => {
@@ -89,7 +89,6 @@ const addOne = event => {
     recurringEvents.push(eventToAdd)
 }
 
-
 const giveNewEventARecurringId = event => {
     return {
         ...event,
@@ -97,12 +96,10 @@ const giveNewEventARecurringId = event => {
     }
 }
 
+
 const applyRecurringEventsUntilEndOfNextMonth = date => {
-
     const dateUntil = getNextMonth(date)
-
     applyRecurringToStaticEventsUntil(date)
-
     applyRecurringToStaticEventsUntil(dateUntil) 
 }
 
@@ -112,25 +109,31 @@ const applyRecurringToStaticEventsUntil = date => {
     if(!eventsToApply){
         return
     }
-    console.log(eventsToApply.map(event => event.name))
+
+    console.log(eventsToApply.map(event => event).filter(event => event.name === 'Susi'), 'looking to apply this month', date)
 
     eventsToApply.forEach(event => {
         let nextEvent = getNextEvent(event)
-        if(event.name === 'Susi'){
-            console.log(dateArithmetic.doesEventStartBeforeDate(nextEvent.start, date))
+        let prevEvent = event
+
+        if(event.name === 'Susi'){        //debug
+            console.log(shouldBeApplied(nextEvent.start, date))
             console.log(event, 'current susi event')
             console.log(nextEvent, 'nextSusiEvent')
         }
         
-        while(dateArithmetic.doesEventStartBeforeDate(nextEvent.start, date)){
+        while(shouldBeApplied(nextEvent.start, date)){
             eventService.addOne(nextEvent)
-            const eventToUpdate = nextEvent
+            prevEvent = nextEvent
             nextEvent = getNextEvent(nextEvent)
-            if(!dateArithmetic.doesEventStartBeforeDate(nextEvent.start, date)){
-                updateEvent(eventToUpdate)
-            }
         }
+
+        updateEvent(prevEvent)
     })
+}
+
+const shouldBeApplied = (eventStart, date) => {
+    return dateArithmetic.doesEventStartBeforeDate(eventStart, date)
 }
 
 const getNextEvent = event => {
@@ -154,7 +157,7 @@ const getNextEvent = event => {
     }
     const nextEvent = {
         ...event,
-        ...nextDateAndTime
+        ...addEventTimeBack(nextDateAndTime, event)
     }
 
     if(event.type === 'annualy'){
@@ -164,38 +167,47 @@ const getNextEvent = event => {
 
 }
 
+const addEventTimeBack = (dateAndTime,event) => {
+    return {
+        start: dateAndTime.start + getEventTime(event.start),
+        end: dateAndTime.end + getEventTime(event.end)
+    }
+}
+
 const getNextTimeAndDateByFrequenzy = event => {
     return {
-        start: dateArithmetic.addDaysToDate(event.start, event.frequenzy) + getEventTime(event.start),
-        end: dateArithmetic.addDaysToDate(event.end, event.frequenzy) + getEventTime(event.end)
+        start: dateArithmetic.addDaysToDate(event.start, event.frequenzy),
+        end: dateArithmetic.addDaysToDate(event.end, event.frequenzy)
     }
 }
 
 const getNextTimeAndDateForAnnual = event => {
     return {
-        start: getSameDateNextYear(event.start) + getEventTime(event.start),
-        end: getSameDateNextYear(event.end) + getEventTime(event.end)
+        start: getSameDateNextYear(event.start) ,
+        end: getSameDateNextYear(event.end)
     }
 }
 
 const getNextTimeAndDateForMonthly = event => {
 
-    const weekday = dateArithmetic.getWeekday(event.start)
+    const [nth,weekday] = dateArithmetic.getNthWeekday(event.start)
     const nextMonth = getNextMonth(event.start)
 
-    const eventStart = dateArithmetic.getFirstWeekdayOfMonth(weekday, nextMonth)
+    console.log(nth, weekday, ' nth and weekday vars //', nextMonth, 'nextMonthvar')
+
+    const eventStart = dateArithmetic.getNthWeekdayOfMonth(nth,weekday, nextMonth)
     const eventEnd = dateArithmetic.addDaysToDate(eventStart, getDurationOfEvent(event))
     
     return {
-        start: eventStart + getEventTime(event.start),
-        end: eventEnd + getEventTime(event.end)
+        start: eventStart,
+        end: eventEnd
     }
 }
 
 const getNextTimeAndDateForWeekdays = event => {
     return {
-        start: dateArithmetic.getNextWeekday(event.start) + getEventTime(event.start),
-        end: dateArithmetic.getNextWeekday(event.end) + getEventTime(event.end)
+        start: dateArithmetic.getNextWeekday(event.start),
+        end: dateArithmetic.getNextWeekday(event.end)
     }
 }
 
@@ -223,12 +235,13 @@ const getDurationOfEvent = event => {
 }
 
 const updateEvent = recurringEvent => {
+    console.log('been updated', recurringEvent.name)
     recurringEvents = recurringEvents.filter(event => recurringEvent.recurringId !== event.recurringId)
     recurringEvents.push(recurringEvent)
 }
 
 const getEventsToApplyForMonth = date => {
-    console.log(date)
+    console.log(recurringEvents, 'these are the recurring events that are checked against being in static alrdy')
     return recurringEvents.filter(event => !isAlrdyInStaticForMonth(event, date))
 }
 

@@ -46,6 +46,43 @@ const getWeekday = (date) => {
     return dateStringToObject(date).getDay()
 }
 
+const getNthWeekday = (date) => {
+    const weekday = getWeekday(date)
+    const [year, month, day] = date.split('-')
+
+    let numberOfWeekdaysUpUntilDate = 0
+    let dateCounter = `${year}-${month}-01`
+
+    while(dateStringToObject(dateCounter) <= dateStringToObject(date)){
+        if(getWeekday(dateCounter) === weekday){
+            numberOfWeekdaysUpUntilDate++
+        }                
+        dateCounter = getTomorrow(dateCounter)
+        console.log('increased date counter = ', dateCounter, 'nth is ', numberOfWeekdaysUpUntilDate)
+    }
+    return [numberOfWeekdaysUpUntilDate, weekday]
+}
+
+const getNthWeekdayOfMonth = (nth, weekday, date) => {
+    let currNth = 0
+    let currWeekday = date
+    
+    while(nth !== currNth){
+        if(weekday === dateStringToObject(currWeekday).getDay()){
+            currNth++
+            console.log(currWeekday, 'is a ',weekday, '!', currNth)
+            
+            console.log(currWeekday)
+            if(currNth === nth){
+                break
+            }
+        }
+        currWeekday = getTomorrow(currWeekday)
+    }
+    console.log(currWeekday, nth)
+    return currWeekday
+}
+
 const getTomorrow = date => {
     return addDaysToDate(date, 1)
 }
@@ -82,5 +119,7 @@ export default {
     getWeekday,
     getFirstWeekdayOfMonth,
     getNextWeekday,
-    getDifference
+    getDifference,
+    getNthWeekday,
+    getNthWeekdayOfMonth
 }

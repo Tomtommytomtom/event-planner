@@ -42,11 +42,11 @@
     }),
     methods: {
       preventInvalidDateCombination(){
-        console.log('preventing called')
+
       },
       sendData() {
-        console.log(this.dates, 'sent Data through sendData method')
-        console.log(this.isDateComboValid)
+
+
         if(!this.isDateComboValid){
           this.swapDates()
         }
@@ -67,22 +67,22 @@
     },
     watch: {
       dates: function(){
-        console.log(this.isDateComboValid,'hellooo')
+
         //this.sendData(this.dates)
       },
       defaultDateStart: function(){
-        console.log('props changed start')
+
         this.setDates()
       },
       defaultDateEnd: function(){
-        console.log('props changed end')
+
         this.setDates()
       },
       menu: function(){
         if(!this.menu){
           if(this.dates[0] && !this.dates[1]){
           bus.$emit('sendPickedDates', [this.dates[0],this.dates[0]])
-          console.log('sent Data with the menu watcher function')
+
           }
         }
       }
