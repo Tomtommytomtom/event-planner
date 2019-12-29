@@ -1,6 +1,6 @@
 import eventService from './eventService'
 import dateArithmetic from './dateArithmetic'
-
+//let recurringEvents = []
 let recurringEvents = [
     {
       recurringId: 1,

@@ -95,7 +95,17 @@
         else{
           const [startYear, startMonth, startDay] = this.dates[0].split('-')
           const [endYear, endMonth, endDay] = this.dates[1].split('-')
-          return (startYear <= endYear && startMonth <= endMonth && startDay <= endDay)
+
+          if(startYear > endYear){
+            return false
+          } 
+          if(startMonth > endMonth){
+            return false
+          } 
+          if(startDay > endDay){
+            return false
+          } 
+          return true
         }
       },
       dateRangeText() {

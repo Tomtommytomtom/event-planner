@@ -87,7 +87,7 @@ const getHighestAttributeInArray = (array,attribute) => {
     return prev[attribute] >= curr[attribute]
         ? prev[attribute]
         : curr[attribute]
-  })
+  },0)
 }
 
 const getAllEventsInMonth = date => {

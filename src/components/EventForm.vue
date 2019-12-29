@@ -25,7 +25,7 @@
         <v-form ref="form" v-model="valid">
             <v-container class="ms-auto">
                 <v-card-title>
-                <span class="headline">{{ formTitle }} | debug-dialog: {{ dialog }} | debug-valid: {{ valid }} id: {{id}}</span>
+                <span class="headline">{{ formTitle }}</span>
                 </v-card-title>
                 <v-text-field
                     v-model="nameInput"
@@ -179,23 +179,50 @@ export default {
    }),
     methods : {
         submitForm(){
-            if(this.isRepeating){
-               console.log(this.currEvent)
-               recurringEventService.addOne(this.currEvent)
+            // if(this.isRepeating){
+            //    console.log(this.currEvent)
+            //    recurringEventService.addOne(this.currEvent)
 
-               recurringEventService.applyRecurringEventsUntilEndOfNextMonth(this.selectedDate)
-               eventService.addOne(this.currEvent)
-            } else {
-               eventService.addOrUpdate(this.currEvent)
+            //    recurringEventService.applyRecurringEventsUntilEndOfNextMonth(this.selectedDate)
+            //    eventService.addOne(this.currEvent)
+            // } else {
+            //    eventService.addOrUpdate(this.currEvent)
+            // }
+
+            if(this.isEditing){
+                if(this.isRepeating){
+
+                } else {
+                    eventService.addOrUpdate(this.currEvent)
+                }
+            } else {    
+                if(this.isRepeating){
+                    recurringEventService.addOne(this.currEvent)
+                    recurringEventService.applyRecurringEventsUntilEndOfNextMonth(this.selectedDate)
+                    eventService.addOne(this.currEvent)
+                } else {
+                    eventService.addOne(this.currEvent)
+                }
             }
-
+            this.clearForm()
             bus.$emit('refreshEvents') 
+        },
+        editEvent(){
+            if(this.isRepeating){
+                
+            } else {
+
+            }
+            this.formTitle = `Edit event ${this.currEvent.name}`
+            this.dialog = true
         },
         setColor(colorObject){
             this.color = colorObject.hex
         },
         clearForm(){
             this.dialog = false
+            this.formTitle = "Add a new Event"
+
 
             this.id = undefined
             this.recurringOptionSelected = "Doesn't repeat"
@@ -245,8 +272,7 @@ export default {
        bus.$on('openForm', () => this.dialog = true)
        bus.$on('editEvent', event => {
            this.currEvent = event
-
-           this.dialog = true
+           this.editEvent()
        })
 
    },
@@ -256,20 +282,34 @@ export default {
         }
    },
    computed: {
+       isEditing(){
+           if(this.currEvent.id){
+               console.log(true)
+               return true
+           } else {
+               console.log(false)
+               return false
+           }
+       },
        isRepeating(){
           return this.recurringOptionSelected !== "Doesn't repeat"
        },
        recurringType:{
            get(){
-                const [ discard , ...recurringOptionsOnly] = this.recurringOptions
+                const [ none , ...recurringOptionsOnly] = this.recurringOptions
                 const index = recurringOptionsOnly.indexOf(this.recurringOptionSelected)
                 return this.recurringOptionsToType[index]
            },
            set(newType){
-                const [ discard , ...recurringOptionsOnly] = this.recurringOptions
+                const [ none , ...recurringOptionsOnly] = this.recurringOptions
                 const index = this.recurringOptionsToType.indexOf(newType)
 
-               this.recurringOptionSelected = recurringOptionsOnly[index]
+                if(newType){
+                    this.recurringOptionSelected = recurringOptionsOnly[index]
+                } else {
+                    this.recurringOptionSelected = none
+                }
+                
            }
        },
        frequenzy:{
@@ -323,7 +363,6 @@ export default {
        },
        currEvent:{
            get(){
-
                 const event = {
                     name: this.nameInput,
                     details: this.detailsInput,
