@@ -57,7 +57,7 @@ let recurringEvents = [
         name: 'My Birthday',
         details: '11th of july',
         start: '2019-07-11',
-        end: '2019-07-12',
+        end: '2019-07-11',
         type: 'annualy',
         color: 'primary',
         frequenzy: 0
@@ -65,7 +65,7 @@ let recurringEvents = [
       {
         recurringId: 7,
         name: 'Lauras Birthday',
-        details: '11th of july',
+        details: 'better not forget',
         start: '2019-04-02',
         end: '2019-04-02',
         type: 'annualy',

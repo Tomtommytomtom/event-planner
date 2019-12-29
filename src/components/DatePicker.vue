@@ -43,22 +43,13 @@
     methods: {
       preventInvalidDateCombination(){
         console.log('preventing called')
-        if(this.dates[0] && this.dates[1]){
-          const [startYear, startMonth, startDay] = this.dates[0].split('-')
-          const [endYear, endMonth, endDay] = this.dates[1].split('-')
-          if(startYear <= endYear && startMonth <= endMonth && startDay <= endDay){
-            console.log('WHEYRFEDUWYFRDUYFDREUDTF')
-            return
-          }
-          else {
-            const temp = this.dates[0]
-            this.dates[0] = this.dates[1]
-            this.dates[1] = temp
-            console.log(dates, ' dates were swapped')
-          }
-        }
       },
       sendData() {
+        console.log(this.dates, 'sent Data through sendData method')
+        console.log(this.isDateComboValid)
+        if(!this.isDateComboValid){
+          this.swapDates()
+        }
         bus.$emit('sendPickedDates', this.dates)
       },
       setDates(){
@@ -69,11 +60,15 @@
 
         const [year, month, day] = date.split('-')
         return `${day}/${month}/${year}`
+      },
+      swapDates(){
+        this.dates = [this.dates[1], this.dates[0]]
       }
     },
     watch: {
       dates: function(){
-        this.preventInvalidDateCombination()
+        console.log(this.isDateComboValid,'hellooo')
+        //this.sendData(this.dates)
       },
       defaultDateStart: function(){
         console.log('props changed start')
@@ -87,18 +82,28 @@
         if(!this.menu){
           if(this.dates[0] && !this.dates[1]){
           bus.$emit('sendPickedDates', [this.dates[0],this.dates[0]])
+          console.log('sent Data with the menu watcher function')
           }
         }
       }
     },
     computed: {
+      isDateComboValid(){
+        if(!this.dates[1]){
+          return true
+        }
+        else{
+          const [startYear, startMonth, startDay] = this.dates[0].split('-')
+          const [endYear, endMonth, endDay] = this.dates[1].split('-')
+          return (startYear <= endYear && startMonth <= endMonth && startDay <= endDay)
+        }
+      },
       dateRangeText() {
         if((this.dates[0] === this.dates[1]) && (new Date().toISOString().substr(0,10) === this.dates[0])) {
           return 'Today'
         } else if (this.dates[0] === this.dates[1]){
           return this.formattedStartDate
         } else {
-          console.log('in else')
           return [this.formattedStartDate, this.formattedEndDate].join(' ~ ')
         }
 
