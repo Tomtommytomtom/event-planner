@@ -112,6 +112,40 @@
         </v-form>
       </v-card>
     </v-dialog>
+    <v-dialog
+            v-model="editDialog"
+            width="80%"
+        >
+            <v-card>
+            <v-card-title>You're editing {{ currEvent.type }} recurring Event: {{ currEvent.name }} ?</v-card-title>
+            <v-container class="d-flex px-5">
+                <v-card-text>Do you want to edit all sibling Events or just the selected one?</v-card-text>
+                <v-checkbox
+                    color="primary"
+                    class="text-no-wrap"    
+                    v-model="editCheckbox"
+                    label="Edit all"
+                ></v-checkbox>
+            </v-container>
+                <v-card flat class="d-flex ma-0 pa-3">
+                    <v-btn
+                        @click="editDialog = false"
+                        text
+                        color="primary"
+                    >
+                        Close
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                        @click="submitRecurringEdit"
+                        text
+                        color="primary"
+                    >
+                        Apply Changes
+                    </v-btn>
+                </v-card>
+            </v-card>
+        </v-dialog>
   </v-row>
 </template>
 
@@ -159,6 +193,8 @@ export default {
             0,
             0
         ],
+        editDialog: false,
+        editCheckbox: true,
         dialog: false,
         selectedDate: '',
         startDate: '',
@@ -175,23 +211,27 @@ export default {
             ['#909090'],
             ['#A9A9A9'],
         ],
-        id: undefined
+        id: undefined,
+        recurringId: undefined
    }),
     methods : {
+        submitRecurringEdit(){
+            if(this.editCheckbox){
+                console.log('we in this')
+                eventService.updateRecurringEventsinStatic(this.currEvent)
+            } else {
+                console.log('we in else')
+                eventService.addOrUpdate(this.currEvent)
+            }
+            this.editDialog = false
+            this.clearForm()
+            bus.$emit('refreshEvents')
+        },
         submitForm(){
-            // if(this.isRepeating){
-            //    console.log(this.currEvent)
-            //    recurringEventService.addOne(this.currEvent)
-
-            //    recurringEventService.applyRecurringEventsUntilEndOfNextMonth(this.selectedDate)
-            //    eventService.addOne(this.currEvent)
-            // } else {
-            //    eventService.addOrUpdate(this.currEvent)
-            // }
-
             if(this.isEditing){
                 if(this.isRepeating){
-
+                    this.openEditDialog()
+                    return
                 } else {
                     eventService.addOrUpdate(this.currEvent)
                 }
@@ -206,6 +246,9 @@ export default {
             }
             this.clearForm()
             bus.$emit('refreshEvents') 
+        },
+        openEditDialog(){
+            this.editDialog = true
         },
         editEvent(){
             if(this.isRepeating){
@@ -371,7 +414,8 @@ export default {
                     id: this.id,
                     color: this.color,
                     type: this.recurringType,
-                    frequenzy: this.frequenzy
+                    frequenzy: this.frequenzy,
+                    recurringId: this.recurringId
                 }
 
                 return event
@@ -384,6 +428,7 @@ export default {
                this.id = newEvent.id
                this.color = newEvent.color
                this.recurringType = newEvent.type
+               this.recurringId = newEvent.recurringId
            }
        }
    }

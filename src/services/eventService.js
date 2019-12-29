@@ -1,3 +1,5 @@
+import recurringEventService from "./recurringEventService"
+
 let staticEvents = [
     {
       id: 1,
@@ -66,6 +68,27 @@ const updateEvent = eventToUpdate => {
 
 }
 
+const updateRecurringEventsinStatic = eventToUpdate => {
+  console.log(eventToUpdate.recurringId, 'update every event with this ID.')
+  recurringEventService.updateOneEvent(eventToUpdate)
+  let updatedEvents = []
+  staticEvents = staticEvents.filter(event => {
+    if(eventToUpdate.recurringId === event.recurringId){
+      const eventWithCorrectId = {
+        ...eventToUpdate,
+        start: event.start,
+        end: event.end,
+        id: event.id
+      }
+      updatedEvents.push(eventWithCorrectId)
+      return false
+    } else {
+      return true
+    }
+  })
+  staticEvents = staticEvents.concat(updatedEvents)
+}
+
 const deleteEvent = (eventToDelete, identifier) => {
 
   staticEvents = staticEvents.filter(event => event[identifier] !== eventToDelete[identifier])  
@@ -109,5 +132,6 @@ export default {
   addOrUpdate,
   deleteEvent,
   getHighestAttributeInArray,
-  getAllEventsInMonth
+  getAllEventsInMonth,
+  updateRecurringEventsinStatic
 }

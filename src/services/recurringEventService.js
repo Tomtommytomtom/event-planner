@@ -89,6 +89,8 @@ const addOne = event => {
     recurringEvents.push(eventToAdd)
 }
 
+
+
 const giveNewEventARecurringId = event => {
     return {
         ...event,
@@ -116,12 +118,6 @@ const applyRecurringToStaticEventsUntil = date => {
         let nextEvent = getNextEvent(event)
         let prevEvent = event
 
-        if(event.name === 'Susi'){        //debug
-            console.log(shouldBeApplied(nextEvent.start, date))
-            console.log(event, 'current susi event')
-            console.log(nextEvent, 'nextSusiEvent')
-        }
-        
         while(shouldBeApplied(nextEvent.start, date)){
             eventService.addOne(nextEvent)
             prevEvent = nextEvent
@@ -235,9 +231,25 @@ const getDurationOfEvent = event => {
 }
 
 const updateEvent = recurringEvent => {
-    console.log('been updated', recurringEvent.name)
     recurringEvents = recurringEvents.filter(event => recurringEvent.recurringId !== event.recurringId)
     recurringEvents.push(recurringEvent)
+}
+
+const updateOneEvent = recurringEvent => {
+    let newEvent
+    recurringEvents = recurringEvents.filter(event => {
+        if(recurringEvent.recurringId !== event.recurringId){
+            return true
+        } else {
+            newEvent = {
+                ...recurringEvent,
+                start: event.start,
+                end: event.end
+            }
+            return false
+        }
+    })
+    recurringEvents.push(newEvent)
 }
 
 const getEventsToApplyForMonth = date => {
@@ -253,7 +265,14 @@ const isAlrdyInStaticForMonth = (event, date) => {
     return result
 }
 
+const deleteEvent = recurringEvent => {
+    recurringEvents = recurringEvents.filter(event => recurringEvent.recurringId !== event.recurringId)
+}
+
+
 export default {
     applyRecurringEventsUntilEndOfNextMonth,
-    addOne
+    addOne,
+    updateOneEvent,
+    updateEvent
 }
