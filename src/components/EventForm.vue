@@ -119,7 +119,7 @@
             <v-card>
             <v-card-title>You're editing {{ currEvent.type }} recurring Event: {{ currEvent.name }} ?</v-card-title>
             <v-container class="d-flex px-5">
-                <v-card-text>Do you want to edit all sibling Events or just the selected one?</v-card-text>
+                <v-card-text>Do you want to edit all sibling Events too?</v-card-text>
                 <v-checkbox
                     color="primary"
                     class="text-no-wrap"    

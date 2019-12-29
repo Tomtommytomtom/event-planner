@@ -1,4 +1,5 @@
 import recurringEventService from "./recurringEventService"
+import { stat } from "fs"
 
 let staticEvents = [
     {
@@ -89,10 +90,13 @@ const updateRecurringEventsinStatic = eventToUpdate => {
   staticEvents = staticEvents.concat(updatedEvents)
 }
 
+const deleteStaticEventsAndRecurring = recurringEvent => {
+  deleteEvent(recurringEvent, 'recurringId')
+  recurringEventService.deleteEvent(recurringEvent)
+}
+
 const deleteEvent = (eventToDelete, identifier) => {
-
   staticEvents = staticEvents.filter(event => event[identifier] !== eventToDelete[identifier])  
-
 }
 
 
@@ -133,5 +137,6 @@ export default {
   deleteEvent,
   getHighestAttributeInArray,
   getAllEventsInMonth,
-  updateRecurringEventsinStatic
+  updateRecurringEventsinStatic,
+  deleteStaticEventsAndRecurring
 }

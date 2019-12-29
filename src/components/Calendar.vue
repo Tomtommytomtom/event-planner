@@ -94,7 +94,7 @@
                   v-model="deleteDialog"
                   width="80%"
                 >
-                  <v-card>
+                  <v-card v-if="deleteNonRecurring">
                     <v-card-title>Delete {{selectedEvent.name}} ?</v-card-title>
                     <v-card-text>Are you sure you want to delete?</v-card-text>
                     <v-card flat class="d-flex ma-0 pa-3">
@@ -108,6 +108,35 @@
                       <v-spacer></v-spacer>
                       <v-btn
                         @click="deleteSelectedEvent(selectedEvent)"
+                        text
+                        color="primary"
+                      >
+                        Delete
+                      </v-btn>
+                    </v-card>
+                  </v-card>
+                  <v-card v-else>
+                    <v-card-title>You're deleting a {{ selectedEvent.type }} recurring Event {{selectedEvent.name}}</v-card-title>
+                    <v-container class="d-flex px-5">
+                        <v-card-text>Do you want to delete all sibling Events too?</v-card-text>
+                        <v-checkbox
+                            color="primary"
+                            class="text-no-wrap"    
+                            v-model="deleteCheckbox"
+                            label="Delete all"
+                        ></v-checkbox>
+                    </v-container>
+                    <v-card flat class="d-flex ma-0 pa-3">
+                      <v-btn
+                        @click="deleteDialog = false"
+                        text
+                        color="primary"
+                      >
+                        Close
+                      </v-btn>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        @click="deleteSelectedRecurringEvent(selectedEvent)"
                         text
                         color="primary"
                       >
@@ -161,7 +190,8 @@ import { bus } from '@/main'
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
-      events: []
+      events: [],
+      deleteCheckbox: true
     }),
     computed: {
       title () {
@@ -191,6 +221,13 @@ import { bus } from '@/main'
         }
         return ''
       },
+      deleteNonRecurring(){
+        if(!this.selectedEvent.recurringId){
+          return true
+        } else {
+          return false
+        }
+      },
       monthFormatter () {
         return this.$refs.calendar.getFormatter({
           timeZone: 'UTC',
@@ -204,6 +241,17 @@ import { bus } from '@/main'
     methods: {
       deleteSelectedEvent(event){
         eventService.deleteEvent(event,'id')
+        this.deleteDialog = false
+        this.selectedOpen = false
+        this.refreshEvents()
+      },
+      deleteSelectedRecurringEvent(event){
+        if(this.deleteCheckbox){
+          eventService.deleteStaticEventsAndRecurring(event)
+        }else {
+          eventService.deleteEvent(event,'id')
+        }
+        
         this.deleteDialog = false
         this.selectedOpen = false
         this.refreshEvents()

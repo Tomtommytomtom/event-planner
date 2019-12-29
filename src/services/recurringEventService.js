@@ -274,5 +274,6 @@ export default {
     applyRecurringEventsUntilEndOfNextMonth,
     addOne,
     updateOneEvent,
-    updateEvent
+    updateEvent,
+    deleteEvent
 }
