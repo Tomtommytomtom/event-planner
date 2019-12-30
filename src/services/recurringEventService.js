@@ -171,6 +171,9 @@ const getNextEvent = event => {
         case 'monthly':
             nextDateAndTime = getNextDateForMonthly(event)
             break
+        case 'monthly-last':
+            nextDateAndTime = getLastWeekdayForMonthly(event)
+            break
         case 'annualy':
             if(!event.frequenzy){
                 nextDateAndTime = getNextDateForAnnual(event)
@@ -189,7 +192,6 @@ const getNextEvent = event => {
         ...event,
         ...addEventTimeBack(nextDateAndTime, event)
     }
-    console.log('next Event i am adding', nextEvent)
 
     return nextEvent
 }
@@ -230,12 +232,14 @@ const getNthWeekdayForMonthly = (event) => {
 }
 
 const getLastWeekdayForMonthly = (event) => {
-    const weekday = dateArithmetic.getWeekday(event)
+    const weekday = dateArithmetic.getWeekday(event.start)
     const duration = getDurationOfEvent(event)
     
-    const start = dateArithmetic.getDateofLastWeekdayInMonth(weekday,event.start)
-    const end = dateArithmetic.addDaysToDate(start, duration)
+    const nextMonth = getNextMonth(event.start)
 
+    const start = dateArithmetic.getDateofLastWeekdayInMonth(weekday,nextMonth)
+    const end = dateArithmetic.addDaysToDate(start, duration)
+    
     return { start, end }
 }
 

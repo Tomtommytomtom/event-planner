@@ -17,7 +17,6 @@ const dateStringToObject = (date) => {
 }
 
 const dateObjectToString = (dateObject) => {
-
     return dateObject.toISOString().substr(0,10)
 }
 
@@ -81,10 +80,12 @@ const getNthWeekdayOfMonth = (nth, weekday, date) => {
 }
 
 const getDateofLastWeekdayInMonth = (weekday,date) => {
+    console.log(weekday,' , ',date,'weekday and date respectively')
     let lastWeekOfMonth = getLastDayOfMonth(date)
+    let result
 
     for(let i = 0 ; i < 7 ; i++){
-        if(weekday === dateObjectToString(lastWeekOfMonth).getDay()){
+        if(weekday === dateStringToObject(lastWeekOfMonth).getDay()){
             result = lastWeekOfMonth
         }
         lastWeekOfMonth = getYesterday(lastWeekOfMonth)
@@ -94,11 +95,12 @@ const getDateofLastWeekdayInMonth = (weekday,date) => {
 
 const isLastWeekdayOfMonth = (date) => {
     let result = false
-    let lastWeekOfMonth = getLastDayOfMontn(date)
+    let lastWeekOfMonth = getLastDayOfMonth(date)
 
     for(let i = 0 ; i < 7 ; i++){
         if(date === lastWeekOfMonth){
             result = true
+            break
         }
         lastWeekOfMonth = getYesterday(lastWeekOfMonth)
     }
@@ -151,7 +153,7 @@ const nth = (day) => {
 
 const getLastDayOfMonth = date => {
     const [year, month, day] = date.split('-')
-    return new Date(year, month - 1, 0)
+    return new Date(year, month, 1).toISOString().substr(0,10)
 }
 
 

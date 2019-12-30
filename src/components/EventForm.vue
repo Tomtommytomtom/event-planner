@@ -326,19 +326,12 @@ export default {
    },
    watch:{
         selectedDate(){
-
         }
    },
    computed: {
-       recurringOptionsWithSelectedDate(){
-           return [
-               "Doesn't repeat",
-               "Daily",
-               `Weekly on ${this.currWeekday}`,
-               `Monthly on ${this.currNthWeekday} ${this.currWeekday}`,
-               `Annually on ${this.dateInWords}`,
-               `Every Weekday (starting on ${this.dateInWords})`
-           ]
+       isCurrWeekdayLast(){
+           const result = dateArithmetic.isLastWeekdayOfMonth(this.startDate)
+           return result
        },
        currWeekday(){
            return this.weekdays[dateArithmetic.getWeekday(this.startDate)]
@@ -364,21 +357,80 @@ export default {
        isRepeating(){
           return this.currEvent.type !== "none"
        },
+       recurringOptionsWithSelectedDate(){
+            let result = [
+               "Doesn't repeat",
+               'Daily',
+               `Weekly on ${this.currWeekday}`,
+               `Monthly on ${this.currNthWeekday} ${this.currWeekday}`,
+               `Annually on ${this.dateInWords}`,
+               `Every Weekday (starting on ${this.dateInWords})`,
+               '...Custom'
+                ]
+           if(this.currNthWeekday === 'fifth'){
+               result = result.slice(0,3).concat([`Monthly on last ${this.currWeekday}`]).concat(result.slice(4))
+           } else if(this.isCurrWeekdayLast && this.currNthWeekday === 'fourth') {
+               result = result.slice(0,4).concat([`Monthly on last ${this.currWeekday}`],[]).concat(result.slice(4))
+           }
+           return result
+       },
        recurringType:{
            get(){     
-
-                const index = this.recurringOptionsWithSelectedDate.indexOf(this.recurringOptionSelected)
-                return this.recurringOptionsToType[index]
+               const selected = this.recurringOptionSelected.split(' ')[0]
+               console.log(selected)
+               switch(selected){
+                  case "Doesn't":
+                      return 'none'
+                  case "Daily":
+                      return 'daily'
+                  case "Weekly":
+                      return 'weekly' //for now
+                  case "Monthly":
+                      if(this.recurringOptionSelected.includes('last')){
+                          return 'monthly-last'
+                      } else {
+                          return 'monthly'
+                      }
+                  case "Annually":
+                       return 'annually'
+                  case "Every":
+                       return 'weekdays'
+                  case "...Custom":
+                       return 'custom'
+               }
            },
            set(newType){
-               const index = this.recurringOptionsToType.indexOf(newType)
-               this.recurringOptionSelected = this.recurringOptionsWithSelectedDate[index]
+                switch(newType){
+                    case "none":
+                        this.recurringOptionSelected = "Doesn't repeat"
+                        break
+                    case "daily":
+                        this.recurringOptionSelected = "Daily"
+                        break
+                    case "weekly":
+                        this.recurringOptionSelected = `Weekly on ${this.currWeekday}`
+                        break
+                    case "monthly-last":
+                        this.recurringOptionSelected = `Monthly on last ${this.currWeekday}`
+                        break
+                    case "monthly":
+                        this.recurringOptionSelected = `Monthly on ${this.currNthWeekday} ${this.currWeekday}`
+                        break
+                    case "annually":
+                        this.recurringOptionSelected = `Annually on ${this.dateInWords}`
+                        break
+                    case "weekdays":
+                        this.recurringOptionSelected = `Every Weekday (starting on ${this.dateInWords})`
+                        break
+                    case "custom":
+                        this.recurringOptionSelected = "...Custom" 
+                }
            }
        },
        frequenzy:{
            get(){
-               const index = this.recurringOptionsWithSelectedDate.indexOf(this.recurringOptionSelected)
-               return this.frequenzyForTypes[index]
+                const index = this.recurringOptionsWithSelectedDate.indexOf(this.recurringOptionSelected)
+                return this.frequenzyForTypes[index]
            }
        },
        startTimeAutocomplete(){
