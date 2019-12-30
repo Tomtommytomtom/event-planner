@@ -52,6 +52,7 @@
             :now="today"
             :type="type"
             @moved="sendDate"
+            @click:day="openFormAndSendDay"
             @click:event="showEvent"
             @click:more="viewDay"
             @click:date="viewDay"
@@ -239,6 +240,10 @@ import { bus } from '@/main'
       this.$refs.calendar.checkChange()
     },
     methods: {
+      openFormAndSendDay(day){
+        this.sendDate(day)
+        bus.$emit('openForm')
+      },
       deleteSelectedEvent(event){
         eventService.deleteEvent(event,'id')
         this.deleteDialog = false
@@ -261,8 +266,8 @@ import { bus } from '@/main'
       },
       sendDateAndTime(dayAndTime){
         this.sendDate(dayAndTime)
-        const startTime = dayAndTime.hour < 10  ?  `0${dayAndTime.hour}:00` : `${dayAndTime.hour}:00`
-        bus.$emit('sendSelectedTime Start Time', startTime)
+        const startTimeFullHour = `${String(dayAndTime.hour).padStart(2,'0')}:00`
+        bus.$emit('sendSelectedTime Start Time', startTimeFullHour)
         bus.$emit('openForm')
       },
       sendDate( dayAndTime ){

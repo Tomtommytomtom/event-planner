@@ -58,6 +58,7 @@
                             dense
                             outlined
                             label="Recurrence"
+                            :disabled="isEditing"
                             prepend-icon="mdi-calendar-repeat"
                         ></v-select>
                     </v-col>
