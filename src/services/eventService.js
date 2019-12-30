@@ -72,6 +72,7 @@ const updateEvent = eventToUpdate => {
 const updateRecurringEventsinStatic = eventToUpdate => {
   console.log(eventToUpdate.recurringId, 'update every event with this ID.')
   recurringEventService.updateOneEvent(eventToUpdate)
+  console.log(staticEvents.length,'before updating')
   let updatedEvents = []
   staticEvents = staticEvents.filter(event => {
     if(eventToUpdate.recurringId === event.recurringId){
@@ -88,6 +89,7 @@ const updateRecurringEventsinStatic = eventToUpdate => {
     }
   })
   staticEvents = staticEvents.concat(updatedEvents)
+  console.log(staticEvents.length, 'after updating')
 }
 
 const deleteStaticEventsAndRecurring = recurringEvent => {

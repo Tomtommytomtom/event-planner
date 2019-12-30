@@ -6,7 +6,7 @@ let recurringEvents = [
       recurringId: 1,
       name: 'Bi-Weekly Event',
       details: 'dummy event reocurring weekly',
-      type: 'custom',
+      type: 'custom-days',
       start: '2019-12-03',
       end: '2019-12-03',
       color: 'secondary',
@@ -27,10 +27,10 @@ let recurringEvents = [
         name: 'Annual Event',
         details: 'dummy event reocurring weekly',
         type: 'annualy',
-        start: '2018-12-11',
-        end: '2018-12-11',
+        start: '2017-12-11',
+        end: '2017-12-11',
         color: 'secondary',
-        frequenzy: 0
+        frequenzy: 2
     },
     {
         recurringId: 4,
@@ -99,6 +99,7 @@ const updateOneEvent = recurringEvent => {
         if(recurringEvent.recurringId !== event.recurringId){
             return true
         } else {
+            console.log(event,'event that is getting replaced')
             newEvent = {
                 ...recurringEvent,
                 start: event.start,
@@ -107,6 +108,7 @@ const updateOneEvent = recurringEvent => {
             return false
         }
     })
+    console.log(newEvent,'event that it is getting replaced with')
     recurringEvents.push(newEvent)
 }
 
@@ -163,14 +165,21 @@ const getNextEvent = event => {
     switch(event.type){
         case 'daily':
         case 'weekly':
-        case 'custom':
+        case 'custom-days':
             nextDateAndTime = getNextTimeAndDateByFrequenzy(event)
             break
         case 'monthly':
             nextDateAndTime = getNextTimeAndDateForMonthly(event)
             break
         case 'annualy':
-            nextDateAndTime = getNextTimeAndDateForAnnual(event)
+            if(!event.frequenzy){
+                nextDateAndTime = getNextTimeAndDateForAnnual(event)
+            } else {
+                nextDateAndTime = event
+                for (let i = 0; i < event.frequenzy; i++){
+                    nextDateAndTime = getNextTimeAndDateForAnnual(nextDateAndTime)
+                }
+            }
             break
         case 'weekdays':
             nextDateAndTime = getNextTimeAndDateForWeekdays(event)
@@ -181,11 +190,7 @@ const getNextEvent = event => {
         ...addEventTimeBack(nextDateAndTime, event)
     }
 
-    if(event.type === 'annualy'){
-    }
-
     return nextEvent
-
 }
 
 const getNextTimeAndDateByFrequenzy = event => {

@@ -58,7 +58,6 @@ const getNthWeekday = (date) => {
             numberOfWeekdaysUpUntilDate++
         }                
         dateCounter = getTomorrow(dateCounter)
-        console.log('increased date counter = ', dateCounter, 'nth is ', numberOfWeekdaysUpUntilDate)
     }
     return [numberOfWeekdaysUpUntilDate, weekday]
 }
@@ -70,9 +69,7 @@ const getNthWeekdayOfMonth = (nth, weekday, date) => {
     while(nth !== currNth){
         if(weekday === dateStringToObject(currWeekday).getDay()){
             currNth++
-            console.log(currWeekday, 'is a ',weekday, '!', currNth)
             
-            console.log(currWeekday)
             if(currNth === nth){
                 break
             }
