@@ -1,78 +1,78 @@
 import eventService from './eventService'
 import dateArithmetic from './dateArithmetic'
-//let recurringEvents = []
-let recurringEvents = [
-    {
-      recurringId: 1,
-      name: 'Bi-Weekly Event',
-      details: 'dummy event reocurring weekly',
-      type: 'custom-days',
-      start: '2019-12-03',
-      end: '2019-12-03',
-      color: 'secondary',
-      frequenzy: 14
-    },
-    {
-      recurringId: 2,
-      name: 'Weekly Event',
-      details: 'dummy event reocurring weekly',
-      type: 'weekly',
-      start: '2019-12-05',
-      end: '2019-12-05',
-      color: 'secondary',
-      frequenzy: 7
-    },
-    {
-        recurringId: 3,
-        name: 'Annual Event',
-        details: 'dummy event reocurring weekly',
-        type: 'annualy',
-        start: '2017-12-11',
-        end: '2017-12-11',
-        color: 'secondary',
-        frequenzy: 2
-    },
-    {
-        recurringId: 4,
-        name: 'Monthly',
-        details: 'On Every second Saturday of wednesday',
-        type: 'monthly',
-        start: '2019-12-28',
-        end: '2019-12-28',
-        color: 'secondary',
-        frequenzy: 0
-    },
-    {
-      recurringId: 5,
-      name: 'On every Weekday',
-      details: 'From Monday to Friday',
-      start: '2019-12-2',
-      end: '2019-12-2',
-      type: 'weekdays',
-      color: 'secondary',
-      frequenzy: 0
-    },
-    {
-        recurringId: 6,
-        name: 'My Birthday',
-        details: '11th of july',
-        start: '2019-07-11',
-        end: '2019-07-11',
-        type: 'annualy',
-        color: 'primary',
-        frequenzy: 0
-    },
-    {
-        recurringId: 7,
-        name: 'Lauras Birthday',
-        details: 'better not forget',
-        start: '2019-04-02',
-        end: '2019-04-02',
-        type: 'annualy',
-        color: 'primary',
-        frequenzy: 0
-    },
-]
+let recurringEvents = []
+// let recurringEvents = [
+//     {
+//       recurringId: 1,
+//       name: 'Bi-Weekly Event',
+//       details: 'dummy event reocurring weekly',
+//       type: 'custom-days',
+//       start: '2019-12-03',
+//       end: '2019-12-03',
+//       color: 'secondary',
+//       frequenzy: 14
+//     },
+//     {
+//       recurringId: 2,
+//       name: 'Weekly Event',
+//       details: 'dummy event reocurring weekly',
+//       type: 'weekly',
+//       start: '2019-12-05',
+//       end: '2019-12-05',
+//       color: 'secondary',
+//       frequenzy: 7
+//     },
+//     {
+//         recurringId: 3,
+//         name: 'Annual Event',
+//         details: 'dummy event reocurring weekly',
+//         type: 'annualy',
+//         start: '2017-12-11',
+//         end: '2017-12-11',
+//         color: 'secondary',
+//         frequenzy: 2
+//     },
+//     {
+//         recurringId: 4,
+//         name: 'Monthly',
+//         details: 'On Every second Saturday of wednesday',
+//         type: 'monthly',
+//         start: '2019-12-28',
+//         end: '2019-12-28',
+//         color: 'secondary',
+//         frequenzy: 0
+//     },
+//     {
+//       recurringId: 5,
+//       name: 'On every Weekday',
+//       details: 'From Monday to Friday',
+//       start: '2019-12-2',
+//       end: '2019-12-2',
+//       type: 'weekdays',
+//       color: 'secondary',
+//       frequenzy: 0
+//     },
+//     {
+//         recurringId: 6,
+//         name: 'My Birthday',
+//         details: '11th of july',
+//         start: '2019-07-11',
+//         end: '2019-07-11',
+//         type: 'annualy',
+//         color: 'primary',
+//         frequenzy: 0
+//     },
+//     {
+//         recurringId: 7,
+//         name: 'Lauras Birthday',
+//         details: 'better not forget',
+//         start: '2019-04-02',
+//         end: '2019-04-02',
+//         type: 'annualy',
+//         color: 'primary',
+//         frequenzy: 0
+//     },
+// ]
 
 //------------------------------------------Mutators------------------------------------
 
@@ -212,11 +212,13 @@ const getNextDateForAnnual = event => {
 }
 
 const getNextDateForMonthly = event => {
+    return getNthWeekdayForMonthly(event)
+    
+}
 
+const getNthWeekdayForMonthly = (event) => {
     const [nth,weekday] = dateArithmetic.getNthWeekday(event.start)
     const nextMonth = getNextMonth(event.start)
-
-
 
     const eventStart = dateArithmetic.getNthWeekdayOfMonth(nth,weekday, nextMonth)
     const eventEnd = dateArithmetic.addDaysToDate(eventStart, getDurationOfEvent(event))
@@ -225,6 +227,16 @@ const getNextDateForMonthly = event => {
         start: eventStart,
         end: eventEnd
     }
+}
+
+const getLastWeekdayForMonthly = (event) => {
+    const weekday = dateArithmetic.getWeekday(event)
+    const duration = getDurationOfEvent(event)
+    
+    const start = dateArithmetic.getDateofLastWeekdayInMonth(weekday,event.start)
+    const end = dateArithmetic.addDaysToDate(start, duration)
+
+    return { start, end }
 }
 
 const getNextDateForWeekdays = event => {

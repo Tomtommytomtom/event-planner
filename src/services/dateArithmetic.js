@@ -11,7 +11,7 @@ const addDaysToDate = (date, days) => {
 const dateStringToObject = (date) => {
     const [year, month, day] = date.split('-')
 
-    const dateObject = new Date(year, +month - 1, day)
+    const dateObject = new Date(year, +month - 1, day.split(' ')[0])
 
     return dateObject
 }
@@ -80,8 +80,38 @@ const getNthWeekdayOfMonth = (nth, weekday, date) => {
     return currWeekday
 }
 
+const getDateofLastWeekdayInMonth = (weekday,date) => {
+    let lastWeekOfMonth = getLastDayOfMonth(date)
+
+    for(let i = 0 ; i < 7 ; i++){
+        if(weekday === dateObjectToString(lastWeekOfMonth).getDay()){
+            result = lastWeekOfMonth
+        }
+        lastWeekOfMonth = getYesterday(lastWeekOfMonth)
+    }
+    return result
+}
+
+const isLastWeekdayOfMonth = (date) => {
+    let result = false
+    let lastWeekOfMonth = getLastDayOfMontn(date)
+
+    for(let i = 0 ; i < 7 ; i++){
+        if(date === lastWeekOfMonth){
+            result = true
+        }
+        lastWeekOfMonth = getYesterday(lastWeekOfMonth)
+    }
+
+    return result
+}
+
 const getTomorrow = date => {
     return addDaysToDate(date, 1)
+}
+
+const getYesterday = date => {
+    return addDaysToDate(date, -1)
 }
 
 const isNotWeekend = date => {
@@ -110,13 +140,18 @@ const getDifference = (endDate, startDate) => {
 const getMonthAndDayInWords = (date) => {
     const [year, month, day] = date.split('-')
     const months = ['','January','February','March','April','May','June','July','August','October','September','November','December']
-    return `${months[month]} ${day + nth(day)}`
+    return `${months[+month]} ${day + nth(day)}`
 }
 
 const nth = (day) => {
     return day > 3 && day < 21
           ? 'th'
           : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][day % 10]
+}
+
+const getLastDayOfMonth = date => {
+    const [year, month, day] = date.split('-')
+    return new Date(year, month - 1, 0)
 }
 
 
@@ -132,5 +167,7 @@ export default {
     getDifference,
     getNthWeekday,
     getNthWeekdayOfMonth,
-    getMonthAndDayInWords
+    getMonthAndDayInWords,
+    isLastWeekdayOfMonth,
+    getDateofLastWeekdayInMonth
 }
