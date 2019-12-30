@@ -99,7 +99,7 @@ const updateOneEvent = recurringEvent => {
         if(recurringEvent.recurringId !== event.recurringId){
             return true
         } else {
-            console.log(event,'event that is getting replaced')
+
             newEvent = {
                 ...recurringEvent,
                 start: event.start,
@@ -108,7 +108,7 @@ const updateOneEvent = recurringEvent => {
             return false
         }
     })
-    console.log(newEvent,'event that it is getting replaced with')
+
     recurringEvents.push(newEvent)
 }
 
@@ -147,7 +147,7 @@ const applyRecurringToStaticEventsUntil = date => {
 }
 
 const getEventsToApplyForMonth = date => {
-    console.log(recurringEvents, 'these are the recurring events that are checked against being in static alrdy')
+
     return recurringEvents.filter(event => !isAlrdyInStaticForMonth(event, date))
 }
 
@@ -189,6 +189,7 @@ const getNextEvent = event => {
         ...event,
         ...addEventTimeBack(nextDateAndTime, event)
     }
+    console.log('next Event i am adding', nextEvent)
 
     return nextEvent
 }
@@ -201,9 +202,12 @@ const getNextTimeAndDateByFrequenzy = event => {
 }
 
 const getNextTimeAndDateForAnnual = event => {
+    const start = event.start.split(' ')[0]
+    const end = event.start.split(' ')[0]
+
     return {
-        start: getSameDateNextYear(event.start) ,
-        end: getSameDateNextYear(event.end)
+        start: getSameDateNextYear(start) ,
+        end: getSameDateNextYear(end)
     }
 }
 
@@ -212,7 +216,7 @@ const getNextTimeAndDateForMonthly = event => {
     const [nth,weekday] = dateArithmetic.getNthWeekday(event.start)
     const nextMonth = getNextMonth(event.start)
 
-    console.log(nth, weekday, ' nth and weekday vars //', nextMonth, 'nextMonthvar')
+
 
     const eventStart = dateArithmetic.getNthWeekdayOfMonth(nth,weekday, nextMonth)
     const eventEnd = dateArithmetic.addDaysToDate(eventStart, getDurationOfEvent(event))

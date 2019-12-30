@@ -221,10 +221,10 @@ export default {
     methods : {
         submitRecurringEdit(){
             if(this.editCheckbox){
-                console.log('we in this')
+
                 eventService.updateRecurringEventsinStatic(this.currEvent)
             } else {
-                console.log('we in else')
+
                 eventService.addOrUpdate(this.currEvent)
             }
             this.editDialog = false
@@ -241,6 +241,7 @@ export default {
                 }
             } else {    
                 if(this.isRepeating){
+                    console.log(this.currEvent,'event i am adding')
                     recurringEventService.addOne(this.currEvent)
                     recurringEventService.applyRecurringEventsUntilEndOfNextMonth(this.selectedDate)
                     eventService.addOne(this.currEvent)
@@ -305,7 +306,7 @@ export default {
            this.selectedDate = date
        })
        bus.$on('sendPickedDates', (dates) => {
-           console.log('received ', dates)
+
            this.startDate = dates[0]
            this.endDate = dates[1]
        })
@@ -344,7 +345,7 @@ export default {
        },
        currNthWeekday(){
            const [nth, weekday] = dateArithmetic.getNthWeekday(this.startDate)
-           console.log(nth)
+
            const nthString = ['','first','second','third','fourth','fifth']
            return nthString[nth]
        },
@@ -353,10 +354,10 @@ export default {
        },
        isEditing(){
            if(this.currEvent.id){
-               console.log(true)
+
                return true
            } else {
-               console.log(false)
+
                return false
            }
        },
@@ -364,8 +365,8 @@ export default {
           return this.currEvent.type !== "none"
        },
        recurringType:{
-           get(){      //TODO: Broke this by displayin additional info in recurring select, fix this
-                console.log(this.recurringOptionsWithSelectedDate, this.recurringOptionSelected)
+           get(){     
+
                 const index = this.recurringOptionsWithSelectedDate.indexOf(this.recurringOptionSelected)
                 return this.recurringOptionsToType[index]
            },

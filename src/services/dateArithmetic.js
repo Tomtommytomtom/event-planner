@@ -76,7 +76,7 @@ const getNthWeekdayOfMonth = (nth, weekday, date) => {
         }
         currWeekday = getTomorrow(currWeekday)
     }
-    console.log(currWeekday, nth)
+
     return currWeekday
 }
 
