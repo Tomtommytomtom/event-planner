@@ -1,4 +1,7 @@
 # event-planner
+Author: Tom Pillokat
+
+Heroku link: https://event-planner-usd-task.herokuapp.com/
 
 ## Project setup
 ```
