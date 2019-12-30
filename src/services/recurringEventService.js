@@ -173,11 +173,11 @@ const getNextEvent = event => {
             break
         case 'annualy':
             if(!event.frequenzy){
-                nextDateAndTime = getNextTimeAndDateForAnnual(event)
+                nextDateAndTime = getNextDateForAnnual(event)
             } else {
                 nextDateAndTime = event
                 for (let i = 0; i < event.frequenzy; i++){
-                    nextDateAndTime = getNextTimeAndDateForAnnual(nextDateAndTime)
+                    nextDateAndTime = getNextDateForAnnual(nextDateAndTime)
                 }
             }
             break
@@ -201,7 +201,7 @@ const getNextTimeAndDateByFrequenzy = event => {
     }
 }
 
-const getNextTimeAndDateForAnnual = event => {
+const getNextDateForAnnual = event => {
     const start = event.start.split(' ')[0]
     const end = event.start.split(' ')[0]
 
