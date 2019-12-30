@@ -174,7 +174,7 @@ const getNextEvent = event => {
         case 'monthly-last':
             nextDateAndTime = getLastWeekdayForMonthly(event)
             break
-        case 'annualy':
+        case 'annually':
             if(!event.frequenzy){
                 nextDateAndTime = getNextDateForAnnual(event)
             } else {
@@ -239,7 +239,7 @@ const getLastWeekdayForMonthly = (event) => {
 
     const start = dateArithmetic.getDateofLastWeekdayInMonth(weekday,nextMonth)
     const end = dateArithmetic.addDaysToDate(start, duration)
-    
+
     return { start, end }
 }
 
