@@ -166,10 +166,10 @@ const getNextEvent = event => {
         case 'daily':
         case 'weekly':
         case 'custom-days':
-            nextDateAndTime = getNextTimeAndDateByFrequenzy(event)
+            nextDateAndTime = getNextDateByFrequenzy(event)
             break
         case 'monthly':
-            nextDateAndTime = getNextTimeAndDateForMonthly(event)
+            nextDateAndTime = getNextDateForMonthly(event)
             break
         case 'annualy':
             if(!event.frequenzy){
@@ -182,7 +182,7 @@ const getNextEvent = event => {
             }
             break
         case 'weekdays':
-            nextDateAndTime = getNextTimeAndDateForWeekdays(event)
+            nextDateAndTime = getNextDateForWeekdays(event)
             break
     }
     const nextEvent = {
@@ -194,7 +194,7 @@ const getNextEvent = event => {
     return nextEvent
 }
 
-const getNextTimeAndDateByFrequenzy = event => {
+const getNextDateByFrequenzy = event => {
     return {
         start: dateArithmetic.addDaysToDate(event.start, event.frequenzy),
         end: dateArithmetic.addDaysToDate(event.end, event.frequenzy)
@@ -211,7 +211,7 @@ const getNextDateForAnnual = event => {
     }
 }
 
-const getNextTimeAndDateForMonthly = event => {
+const getNextDateForMonthly = event => {
 
     const [nth,weekday] = dateArithmetic.getNthWeekday(event.start)
     const nextMonth = getNextMonth(event.start)
@@ -227,7 +227,7 @@ const getNextTimeAndDateForMonthly = event => {
     }
 }
 
-const getNextTimeAndDateForWeekdays = event => {
+const getNextDateForWeekdays = event => {
     return {
         start: dateArithmetic.getNextWeekday(event.start),
         end: dateArithmetic.getNextWeekday(event.end)
