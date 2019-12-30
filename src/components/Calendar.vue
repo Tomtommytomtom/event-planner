@@ -51,6 +51,7 @@
             :event-margin-bottom="3"
             :now="today"
             :type="type"
+            :short-intervals="true"
             @moved="sendDate"
             @click:day="openFormAndSendDay"
             @click:event="showEvent"

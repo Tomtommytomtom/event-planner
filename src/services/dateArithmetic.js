@@ -107,6 +107,18 @@ const getDifference = (endDate, startDate) => {
     return daysBetween
 }
 
+const getMonthAndDayInWords = (date) => {
+    const [year, month, day] = date.split('-')
+    const months = ['','January','February','March','April','May','June','July','August','October','September','November','December']
+    return `${months[month]} ${day + nth(day)}`
+}
+
+const nth = (day) => {
+    return day > 3 && day < 21
+          ? 'th'
+          : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][day % 10]
+}
+
 
 
 
@@ -115,8 +127,10 @@ export default {
     doesEventStartBeforeDate,
     getWeekday,
     getFirstWeekdayOfMonth,
+    getWeekday,
     getNextWeekday,
     getDifference,
     getNthWeekday,
-    getNthWeekdayOfMonth
+    getNthWeekdayOfMonth,
+    getMonthAndDayInWords
 }

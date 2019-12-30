@@ -54,7 +54,7 @@
                     <v-col>
                         <v-select
                             v-model="recurringOptionSelected"
-                            :items="recurringOptions"
+                            :items="recurringOptionsWithSelectedDate"
                             dense
                             outlined
                             label="Recurrence"
@@ -156,6 +156,7 @@ import TimePicker from './TimePicker'
 
 import eventService from '@/services/eventService'
 import recurringEventService from '@/services/recurringEventService'
+import dateArithmetic from '@/services/dateArithmetic'
 
 import { bus } from '@/main'
 
@@ -171,15 +172,8 @@ export default {
         nameInput: '',
         detailsInput: '',
         recurringOptionSelected: "Doesn't repeat",
-        recurringOptions: [
-            "Doesn't repeat",
-            "Daily",
-            "Weekly",
-            "Monthly",
-            "Annualy",
-            "Every Weekday (Monday to Friday)",
-        ],
         recurringOptionsToType: [
+            "none",
             "daily",
             "weekly",
             "monthly",
@@ -193,6 +187,15 @@ export default {
             0,
             0,
             0
+        ],
+        weekdays: [
+            'Sunday',
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday'
         ],
         editDialog: false,
         editCheckbox: true,
@@ -326,6 +329,28 @@ export default {
         }
    },
    computed: {
+       recurringOptionsWithSelectedDate(){
+           return [
+               "Doesn't repeat",
+               "Daily",
+               `Weekly on ${this.currWeekday}`,
+               `Monthly on ${this.currNthWeekday} ${this.currWeekday}`,
+               `Annually on ${this.dateInWords}`,
+               `Every Weekday (starting on ${this.dateInWords})`
+           ]
+       },
+       currWeekday(){
+           return this.weekdays[dateArithmetic.getWeekday(this.startDate)]
+       },
+       currNthWeekday(){
+           const [nth, weekday] = dateArithmetic.getNthWeekday(this.startDate)
+           console.log(nth)
+           const nthString = ['','first','second','third','fourth','fifth']
+           return nthString[nth]
+       },
+       dateInWords(){
+           return dateArithmetic.getMonthAndDayInWords(this.startDate)
+       },
        isEditing(){
            if(this.currEvent.id){
                console.log(true)
@@ -336,29 +361,22 @@ export default {
            }
        },
        isRepeating(){
-          return this.recurringOptionSelected !== "Doesn't repeat"
+          return this.currEvent.type !== "none"
        },
        recurringType:{
-           get(){
-                const [ none , ...recurringOptionsOnly] = this.recurringOptions
-                const index = recurringOptionsOnly.indexOf(this.recurringOptionSelected)
+           get(){      //TODO: Broke this by displayin additional info in recurring select, fix this
+                console.log(this.recurringOptionsWithSelectedDate, this.recurringOptionSelected)
+                const index = this.recurringOptionsWithSelectedDate.indexOf(this.recurringOptionSelected)
                 return this.recurringOptionsToType[index]
            },
            set(newType){
-                const [ none , ...recurringOptionsOnly] = this.recurringOptions
-                const index = this.recurringOptionsToType.indexOf(newType)
-
-                if(newType){
-                    this.recurringOptionSelected = recurringOptionsOnly[index]
-                } else {
-                    this.recurringOptionSelected = none
-                }
-                
+               const index = this.recurringOptionsToType.indexOf(newType)
+               this.recurringOptionSelected = this.recurringOptionsWithSelectedDate[index]
            }
        },
        frequenzy:{
            get(){
-               const index = this.recurringOptions.indexOf(this.recurringOptionSelected)
+               const index = this.recurringOptionsWithSelectedDate.indexOf(this.recurringOptionSelected)
                return this.frequenzyForTypes[index]
            }
        },
