@@ -3,6 +3,8 @@ Author: Tom Pillokat
 
 Heroku link: https://event-planner-usd-task.herokuapp.com/
 
+A simple Frontend of a Single Page Application Event Planner/Calender built with vue.js and vuetify
+
 ## Project setup
 ```
 npm install
