@@ -60,7 +60,6 @@ const addOrUpdate = event => {
 
 const addOne = event => {
   const eventToAdd = giveNewEventAnId(event)
-
   staticEvents.push(eventToAdd)
 
 }

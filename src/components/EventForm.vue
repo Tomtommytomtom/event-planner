@@ -241,10 +241,11 @@ export default {
                 }
             } else {    
                 if(this.isRepeating){
-                    console.log(this.currEvent,'event i am adding')
-                    recurringEventService.addOne(this.currEvent)
-                    recurringEventService.applyRecurringEventsUntilEndOfNextMonth(this.selectedDate)
-                    eventService.addOne(this.currEvent)
+                    recurringEventService.addNewToStaticAndApplyForNow(this.currEvent, this.selectedDate)
+                    // console.log(this.currEvent,'event i am adding')
+                    // recurringEventService.addOne(this.currEvent)
+                    // recurringEventService.applyRecurringEventsUntilEndOfNextMonth(this.selectedDate)
+                    // eventService.addOne(this.currEvent)
                 } else {
                     eventService.addOne(this.currEvent)
                 }

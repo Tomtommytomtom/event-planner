@@ -76,9 +76,15 @@ let recurringEvents = []
 
 //------------------------------------------Mutators------------------------------------
 
-const addOne = event => {
+const addNewToStaticAndApplyForNow = (event, date) => {
     const eventToAdd = giveNewEventARecurringId(event)
-    recurringEvents.push(eventToAdd)
+    eventService.addOne(eventToAdd)
+    addOne(eventToAdd)
+    applyRecurringEventsUntilEndOfNextMonth(date)
+}
+
+const addOne = event => {
+    recurringEvents.push(event)
 }
 
 const giveNewEventARecurringId = event => {
@@ -299,9 +305,11 @@ const getNextMonth = date => {
 
 
 export default {
+    addNewToStaticAndApplyForNow,
     applyRecurringEventsUntilEndOfNextMonth,
     addOne,
     updateOneEvent,
     updateEvent,
-    deleteEvent
+    deleteEvent,
+
 }
