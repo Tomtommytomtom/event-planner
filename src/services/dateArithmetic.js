@@ -20,9 +20,9 @@ const dateObjectToString = (dateObject) => {
     return dateObject.toISOString().substr(0,10)
 }
 
-const doesEventStartBeforeDate = (eventStart, date) => {
+const doesEventStartBeforeOrInMonth = (eventStart, dateInMonth) => {
     const [eventYear, eventMonth] = eventStart.split('-')
-    const [year, month] = date.split('-')
+    const [year, month] = dateInMonth.split('-')
 
     if(eventYear > year) {
         return false
@@ -31,6 +31,13 @@ const doesEventStartBeforeDate = (eventStart, date) => {
         return false
     }
     return true
+}
+
+const doesEventStartAfterOrOnDate = (eventStart, date) => {
+    const eventStartObj = dateStringToObject(eventStart)
+    const dateObj = dateStringToObject(date)
+
+    return eventStartObj >= dateObj
 }
 
 const getFirstWeekdayOfMonth = (weekday, date) => {
@@ -161,7 +168,7 @@ const getLastDayOfMonth = date => {
 
 export default {
     addDaysToDate,
-    doesEventStartBeforeDate,
+    doesEventStartBeforeDate: doesEventStartBeforeOrInMonth,
     getWeekday,
     getFirstWeekdayOfMonth,
     getWeekday,
@@ -171,5 +178,6 @@ export default {
     getNthWeekdayOfMonth,
     getMonthAndDayInWords,
     isLastWeekdayOfMonth,
-    getDateofLastWeekdayInMonth
+    getDateofLastWeekdayInMonth,
+    doesEventStartAfterOrOnDate
 }

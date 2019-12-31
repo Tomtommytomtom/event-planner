@@ -94,7 +94,7 @@
 
                 <v-dialog
                   v-model="deleteDialog"
-                  width="80%"
+                  width="70%"
                 >
                   <v-card v-if="deleteNonRecurring">
                     <v-card-title>Delete {{selectedEvent.name}} ?</v-card-title>
@@ -120,13 +120,22 @@
                   <v-card v-else>
                     <v-card-title>You're deleting a {{ selectedEvent.type }} recurring Event {{selectedEvent.name}}</v-card-title>
                     <v-container class="d-flex px-5">
-                        <v-card-text>Do you want to delete all sibling Events too?</v-card-text>
-                        <v-checkbox
+                        <!-- <v-checkbox
                             color="primary"
                             class="text-no-wrap"    
                             v-model="deleteCheckbox"
                             label="Delete all"
-                        ></v-checkbox>
+                        ></v-checkbox> -->
+                        <v-radio-group v-model="radioGroup">
+                          <v-radio
+                            class="text-no-wrap"
+                            color="primary"
+                            v-for="deleteOption in deleteOptions"
+                            :key="deleteOptions.indexOf(deleteOption)"
+                            :label="deleteOption"
+                            :value="deleteOption"
+                          ></v-radio>
+                        </v-radio-group>
                     </v-container>
                     <v-card flat class="d-flex ma-0 pa-3">
                       <v-btn
@@ -178,6 +187,13 @@ import { bus } from '@/main'
 
   export default {
     data: () => ({
+      radioGroup: 'Only This Event',
+      deleteOptions: [
+        'Only This Event',
+        'This and All Sibling Events',
+        'This and all following sibling Events'
+        
+      ],
       deleteDialog: false,
       today: new Date().toISOString().substr(0,10),
       focus: new Date().toISOString().substr(0,10),
@@ -252,10 +268,19 @@ import { bus } from '@/main'
         this.refreshEvents()
       },
       deleteSelectedRecurringEvent(event){
-        if(this.deleteCheckbox){
-          eventService.deleteStaticEventsAndRecurring(event)
-        }else {
-          eventService.deleteEvent(event,'id')
+        switch(this.radioGroup){
+          case 'Only This Event': 
+            console.log('only one')
+            eventService.deleteEvent(event,'id')
+            break
+          case 'This and All Sibling Events':
+            console.log('all of em')
+            eventService.deleteStaticEventsAndRecurring(event)
+            break
+          case 'This and all following sibling Events':
+            console.log('future onesd')
+            eventService.deleteStaticEventsAndRecurringAfterDate(event)
+            break
         }
         
         this.deleteDialog = false

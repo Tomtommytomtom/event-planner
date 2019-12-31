@@ -1,5 +1,6 @@
 import recurringEventService from "./recurringEventService"
 import { stat } from "fs"
+import dateArithmetic from "./dateArithmetic"
 
 let staticEvents = []
 
@@ -102,7 +103,12 @@ const deleteEvent = (eventToDelete, identifier) => {
   staticEvents = staticEvents.filter(event => event[identifier] !== eventToDelete[identifier])  
 }
 
-
+const deleteStaticEventsAndRecurringAfterDate = (recurringEvent) => {
+  staticEvents = staticEvents.filter(event => {
+    return !(event.recurringId === recurringEvent.recurringId && dateArithmetic.doesEventStartAfterOrOnDate(event.start, recurringEvent.start))
+  })
+  recurringEventService.deleteEvent(recurringEvent)
+}
 
 const giveNewEventAnId = event => {
   return {
@@ -141,5 +147,6 @@ export default {
   getHighestAttributeInArray,
   getAllEventsInMonth,
   updateRecurringEventsinStatic,
-  deleteStaticEventsAndRecurring
+  deleteStaticEventsAndRecurring,
+  deleteStaticEventsAndRecurringAfterDate
 }

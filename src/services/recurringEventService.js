@@ -78,9 +78,9 @@ let recurringEvents = []
 
 const addNewToStaticAndApplyForNow = (event, date) => {
     const eventToAdd = giveNewEventARecurringId(event)
-    eventService.addOne(eventToAdd)
     addOne(eventToAdd)
     applyRecurringEventsUntilEndOfNextMonth(date)
+    eventService.addOne(eventToAdd)
 }
 
 const addOne = event => {
