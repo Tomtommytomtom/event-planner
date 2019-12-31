@@ -120,13 +120,16 @@
             <v-card>
             <v-card-title>You're editing {{ currEvent.type }} recurring Event: {{ currEvent.name }} ?</v-card-title>
             <v-container class="d-flex px-5">
-                <v-card-text>Do you want to edit all sibling Events too?</v-card-text>
-                <v-checkbox
-                    color="primary"
-                    class="text-no-wrap"    
-                    v-model="editCheckbox"
-                    label="Edit all"
-                ></v-checkbox>
+                <v-radio-group v-model="radioGroup">
+                          <v-radio
+                            class="text-no-wrap"
+                            color="primary"
+                            v-for="editOption in editOptions"
+                            :key="editOptions.indexOf(editOption)"
+                            :label="editOption"
+                            :value="editOption"
+                          ></v-radio>
+                </v-radio-group>
             </v-container>
                 <v-card flat class="d-flex ma-0 pa-3">
                     <v-btn
@@ -168,6 +171,13 @@ export default {
 
 
    data: () => ({
+        radioGroup: 'Only This Event',
+        editOptions: [
+        'Only This Event',
+        'This and All Sibling Events',
+        'This and all following sibling Events'
+        
+        ],
         formTitle: 'Add a new Event',
         nameInput: '',
         detailsInput: '',
@@ -198,7 +208,6 @@ export default {
             'Saturday'
         ],
         editDialog: false,
-        editCheckbox: true,
         dialog: false,
         selectedDate: '',
         startDate: '',
@@ -220,13 +229,21 @@ export default {
    }),
     methods : {
         submitRecurringEdit(){
-            if(this.editCheckbox){
+            switch(this.radioGroup){
+            case 'Only This Event': 
 
-                eventService.updateRecurringEventsinStatic(this.currEvent)
-            } else {
+                eventService.updateEvent(this.currEvent)
+                break
+            case 'This and All Sibling Events':
 
-                eventService.addOrUpdate(this.currEvent)
+                eventService.updateRecurringEventsInStatic(this.currEvent)
+                break
+            case 'This and all following sibling Events':
+
+                eventService.updateRecurringEventsInStaticAfterEventStart(this.currEvent)
+                break
             }
+
             this.editDialog = false
             this.clearForm()
             bus.$emit('refreshEvents')
@@ -242,7 +259,7 @@ export default {
             } else {    
                 if(this.isRepeating){
                     recurringEventService.addNewToStaticAndApplyForNow(this.currEvent, this.selectedDate)
-                    // console.log(this.currEvent,'event i am adding')
+                    //
                     // recurringEventService.addOne(this.currEvent)
                     // recurringEventService.applyRecurringEventsUntilEndOfNextMonth(this.selectedDate)
                     // eventService.addOne(this.currEvent)
@@ -378,7 +395,7 @@ export default {
        recurringType:{
            get(){     
                const selected = this.recurringOptionSelected.split(' ')[0]
-               console.log(selected)
+
                switch(selected){
                   case "Doesn't":
                       return 'none'

@@ -87,7 +87,7 @@ const getNthWeekdayOfMonth = (nth, weekday, date) => {
 }
 
 const getDateofLastWeekdayInMonth = (weekday,date) => {
-    console.log(weekday,' , ',date,'weekday and date respectively')
+
     let lastWeekOfMonth = getLastDayOfMonth(date)
     let result
 

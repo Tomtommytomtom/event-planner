@@ -71,11 +71,10 @@ const updateEvent = eventToUpdate => {
 
 }
 
-const updateRecurringEventsinStatic = eventToUpdate => {
-
+const updateRecurringEventsInStatic = eventToUpdate => {
   recurringEventService.updateOneEvent(eventToUpdate)
-
   let updatedEvents = []
+
   staticEvents = staticEvents.filter(event => {
     if(eventToUpdate.recurringId === event.recurringId){
       const eventWithCorrectId = {
@@ -92,6 +91,27 @@ const updateRecurringEventsinStatic = eventToUpdate => {
   })
   staticEvents = staticEvents.concat(updatedEvents)
 
+}
+
+const updateRecurringEventsInStaticAfterEventStart = (eventToUpdate) => {
+  recurringEventService.updateOneEvent(eventToUpdate)
+  let updatedEvents = []
+
+  staticEvents = staticEvents.filter(event => {
+    if(eventToUpdate.recurringId === event.recurringId && dateArithmetic.doesEventStartAfterOrOnDate(event.start,eventToUpdate.start)){
+      const eventWithCorrectId = {
+        ...eventToUpdate,
+        start: event.start,
+        end: event.end,
+        id: event.id
+      }
+      updatedEvents.push(eventWithCorrectId)
+      return false
+    } else {
+      return true
+    }
+  })
+  staticEvents = staticEvents.concat(updatedEvents)
 }
 
 const deleteStaticEventsAndRecurring = recurringEvent => {
@@ -141,12 +161,14 @@ const doesEventStartInMonth = (event, date) => {
 
 export default {
   addOne,
+  updateEvent,
   getAll,
   addOrUpdate,
   deleteEvent,
   getHighestAttributeInArray,
   getAllEventsInMonth,
-  updateRecurringEventsinStatic,
+  updateRecurringEventsInStatic,
   deleteStaticEventsAndRecurring,
-  deleteStaticEventsAndRecurringAfterDate
+  deleteStaticEventsAndRecurringAfterDate,
+  updateRecurringEventsInStaticAfterEventStart
 }

@@ -120,12 +120,6 @@
                   <v-card v-else>
                     <v-card-title>You're deleting a {{ selectedEvent.type }} recurring Event {{selectedEvent.name}}</v-card-title>
                     <v-container class="d-flex px-5">
-                        <!-- <v-checkbox
-                            color="primary"
-                            class="text-no-wrap"    
-                            v-model="deleteCheckbox"
-                            label="Delete all"
-                        ></v-checkbox> -->
                         <v-radio-group v-model="radioGroup">
                           <v-radio
                             class="text-no-wrap"
@@ -209,7 +203,6 @@ import { bus } from '@/main'
       selectedElement: null,
       selectedOpen: false,
       events: [],
-      deleteCheckbox: true
     }),
     computed: {
       title () {
@@ -270,15 +263,15 @@ import { bus } from '@/main'
       deleteSelectedRecurringEvent(event){
         switch(this.radioGroup){
           case 'Only This Event': 
-            console.log('only one')
+
             eventService.deleteEvent(event,'id')
             break
           case 'This and All Sibling Events':
-            console.log('all of em')
+
             eventService.deleteStaticEventsAndRecurring(event)
             break
           case 'This and all following sibling Events':
-            console.log('future onesd')
+
             eventService.deleteStaticEventsAndRecurringAfterDate(event)
             break
         }
