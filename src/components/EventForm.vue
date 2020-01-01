@@ -81,22 +81,10 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-card-actions>
-                <v-color-picker
-                    :value="color"
-                    @update:color="setColor"
-                    mode="hexa"
-                    :hide-canvas="true"
-                    :hide-mode-switch="true"
-                    :hide-inputs="true"
-                    :show-swatches="true"
-                    width="400"
-                    disabled
-                    flat
-                    :swatches="colorArray"
-                    class="ml-5 mb-5"
-                >
-                </v-color-picker>
+            <v-card-actions class="pl-4 pb-5">
+                <ColorPicker
+                    v-model="selectedColor"
+                ></ColorPicker>
                 <v-spacer></v-spacer>
                 <v-btn 
                     color="primary"
@@ -156,6 +144,7 @@
 <script>
 import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
+import ColorPicker from './ColorPicker'
 
 import eventService from '@/services/eventService'
 import recurringEventService from '@/services/recurringEventService'
@@ -166,7 +155,8 @@ import { bus } from '@/main'
 export default {
    components: {
        TimePicker,
-       DatePicker
+       DatePicker,
+       ColorPicker
    },
 
 
@@ -214,16 +204,7 @@ export default {
         endDate: '',
         startTime: null,
         endTime: null,
-        color: '#F07F1D',
-        colorArray: [
-            ['#F07F1D'],
-            ['#303030'],
-            ['#454545'],
-            ['#606060'],
-            ['#757575'],
-            ['#909090'],
-            ['#A9A9A9'],
-        ],
+        selectedColor: '#F07F1D',
         id: undefined,
         recurringId: undefined
    }),
@@ -259,11 +240,9 @@ export default {
             } else {    
                 if(this.isRepeating){
                     recurringEventService.addNewToStaticAndApplyForNow(this.currEvent, this.selectedDate)
-                    //
-                    // recurringEventService.addOne(this.currEvent)
-                    // recurringEventService.applyRecurringEventsUntilEndOfNextMonth(this.selectedDate)
-                    // eventService.addOne(this.currEvent)
                 } else {
+                    console.log(this.currEvent)
+                    console.log(this.selectedColor)
                     eventService.addOne(this.currEvent)
                 }
             }
@@ -292,6 +271,8 @@ export default {
 
             this.id = undefined
             this.recurringOptionSelected = "Doesn't repeat"
+            this.selectedColor = '#F07F1D'
+
             this.resetDatePicker()
             this.resetTextInputFields()
             this.resetTimePickers()
@@ -502,7 +483,7 @@ export default {
                     start: this.startDateAndTime,
                     end: this.endDateAndTime,
                     id: this.id,
-                    color: this.color,
+                    color: this.selectedColor,
                     type: this.recurringType,
                     frequenzy: this.frequenzy,
                     recurringId: this.recurringId
@@ -516,7 +497,7 @@ export default {
                this.startDateAndTime = newEvent.start
                this.endDateAndTime = newEvent.end
                this.id = newEvent.id
-               this.color = newEvent.color
+               this.selectedColor = newEvent.color
                this.recurringType = newEvent.type
                this.recurringId = newEvent.recurringId
            }
@@ -525,3 +506,12 @@ export default {
 
 }
 </script>
+
+<style scoped>
+.test{
+    border-radius: 3px;
+    border-style: solid;
+    border-color: black;
+    background-color: black;
+}
+</style>
