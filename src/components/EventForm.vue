@@ -68,16 +68,16 @@
             <v-container>
                 <v-row>
                     <v-col>
-                        <TimePicker 
-                            :default-time="startTime" 
+                        <NewTimePicker 
+                            v-model="startTime" 
                             label="Start Time"
-                        ></TimePicker>
+                        ></NewTimePicker>
                     </v-col>
                     <v-col>
-                        <TimePicker 
-                            :default-time="endTime"
+                        <NewTimePicker 
+                            v-model="endTime"
                             label="End Time"
-                        ></TimePicker>
+                        ></NewTimePicker>
                     </v-col>
                 </v-row>
             </v-container>
@@ -145,6 +145,7 @@
 import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
 import ColorPicker from './ColorPicker'
+import NewTimePicker from './NewTimePicker'
 
 import eventService from '@/services/eventService'
 import recurringEventService from '@/services/recurringEventService'
@@ -156,7 +157,8 @@ export default {
    components: {
        TimePicker,
        DatePicker,
-       ColorPicker
+       ColorPicker,
+       NewTimePicker
    },
 
 
@@ -308,13 +310,6 @@ export default {
 
            this.startDate = dates[0]
            this.endDate = dates[1]
-       })
-       bus.$on('sendSelectedTime Start Time', time => {
-
-           this.startTime = time
-       })
-       bus.$on('sendSelectedTime End Time', time => {
-           this.endTime = time
        })
        bus.$on('openForm', () => this.dialog = true)
        bus.$on('editEvent', event => {

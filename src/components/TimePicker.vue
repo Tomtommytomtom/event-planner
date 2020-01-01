@@ -17,14 +17,22 @@
             placeholder="00:00"
             outlined
             dense
-            prepend-icon="mdi-calendar-clock"
-            readonly
+            :readonly="$vuetify.breakpoint.xsOnly"
             v-on="on"
-          ></v-text-field>
+          >
+            <template v-slot:prepend>
+              <v-icon
+                @click="menu2 = true"
+              >
+                mdi-calendar-clock
+              </v-icon>
+            </template>
+          </v-text-field>
         </template>
         <v-time-picker
           v-if="menu2"
           v-model="time"
+          :allowed-minutes="allowedMinutes"
           @click:minute="$refs.menu.save(time)"
           @change="sendData"
         ></v-time-picker>
@@ -41,7 +49,7 @@
       return {
         time: null,
         menu2: false,
-        
+        allowedMinutes: min => min % 5 === 0
       }
     },
     watch: {
@@ -50,10 +58,9 @@
         }
     },
     methods: {
-        sendData(){
-
-          bus.$emit(`sendSelectedTime ${this.label}`, this.time)
-        }
+      sendData(){
+        bus.$emit(`sendSelectedTime ${this.label}`, this.time)
+      }
     },
     watch: {
       defaultTime(){
