@@ -149,7 +149,7 @@ const getDifference = (endDate, startDate) => {
 const getMonthAndDayInWords = (date) => {
     const [year, month, day] = date.split('-')
     const months = ['','January','February','March','April','May','June','July','August','October','September','November','December']
-    return `${months[+month]} ${day + nth(day)}`
+    return `${months[+month]} ${+day + nth(day)}`
 }
 
 const nth = (day) => {
