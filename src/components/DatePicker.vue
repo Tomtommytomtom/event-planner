@@ -1,11 +1,7 @@
 <template>
-      <v-menu
-        ref="menu"
-        v-model="menu"
-        :close-on-content-click="isSecondClick"
-        transition="scale-transition"
-        offset-y
-        min-width="290px"
+      <v-dialog
+        width="fit-content"
+        v-model="dialog"
       >
         <template v-slot:activator="{ on }">
           <v-text-field
@@ -22,12 +18,12 @@
           v-model="dates"
           reactive
           range
-          no-title
           scrollable
           @change="sendData"
+          @input="incrementClicks"
         >
         </v-date-picker>
-      </v-menu>
+      </v-dialog>
 </template>
 
 
@@ -37,16 +33,16 @@
   export default {
     props: ['label','defaultDateStart','defaultDateEnd'],
     data: () => ({
+      clicks: 0,
       dates: [],
-      menu: false,
+      dialog: false,
     }),
     methods: {
-      preventInvalidDateCombination(){
-
+      incrementClicks(){
+        this.clicks++
       },
       sendData() {
-
-
+        console.log('clicked')
         if(!this.isDateComboValid){
           this.swapDates()
         }
@@ -66,8 +62,13 @@
       }
     },
     watch: {
+      clicks(){
+        if(this.clicks == 2){
+          this.clicks = 0
+          this.dialog = false
+        }
+      },
       dates: function(){
-
         //this.sendData(this.dates)
       },
       defaultDateStart: function(){
@@ -78,8 +79,8 @@
 
         this.setDates()
       },
-      menu: function(){
-        if(!this.menu){
+      dialog: function(){
+        if(!this.dialog){
           if(this.dates[0] && !this.dates[1]){
           bus.$emit('sendPickedDates', [this.dates[0],this.dates[0]])
 
