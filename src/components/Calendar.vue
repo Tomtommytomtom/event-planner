@@ -333,6 +333,7 @@ import { bus } from '@/main'
         this.end = end
 
         recurringEventService.applyRecurringEventsUntilEndOfNextMonth(start.date)
+
       },
       nth (d) {
         return d > 3 && d < 21

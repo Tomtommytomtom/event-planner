@@ -47,6 +47,7 @@ export default {
     }),
     methods:{
         updateColor(){
+            console.log(this.color)
             this.$emit('input', this.color)
         }
     },
