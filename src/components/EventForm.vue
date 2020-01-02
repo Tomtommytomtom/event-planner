@@ -1,20 +1,20 @@
 <template>
   <v-row justify="end">
-      <v-btn
-        right
-        bottom
-        fixed
-        app 
-        fab 
-        x-large 
-        color="primary" 
-        dark 
-        @click="dialog = true"
-        >
-            <v-icon x-large>
-                mdi-plus
-            </v-icon>
-        </v-btn>
+    <v-btn
+    right
+    bottom
+    fixed
+    app 
+    fab 
+    x-large 
+    color="primary" 
+    dark 
+    @click="dialog = true"
+    >
+        <v-icon x-large>
+            mdi-plus
+        </v-icon>
+    </v-btn>
     <v-dialog
         v-model="dialog"
         width="80%"
@@ -52,15 +52,11 @@
                         ></DatePicker>
                     </v-col>
                     <v-col>
-                        <v-select
-                            v-model="recurringOptionSelected"
-                            :items="recurringOptionsWithSelectedDate"
-                            dense
-                            outlined
-                            label="Recurrence"
-                            :disabled="isEditing"
-                            prepend-icon="mdi-calendar-repeat"
-                        ></v-select>
+                        <RecurrenceSelector
+                            v-model="recurringInfo"
+                            :curr-start-date="startDate"
+                        >
+                        </RecurrenceSelector>
                     </v-col>
                 </v-row>
             </v-container>
@@ -146,6 +142,7 @@ import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
 import ColorPicker from './ColorPicker'
 import NewTimePicker from './NewTimePicker'
+import RecurrenceSelector from './RecurrenceSelector'
 
 import eventService from '@/services/eventService'
 import recurringEventService from '@/services/recurringEventService'
@@ -158,47 +155,25 @@ export default {
        TimePicker,
        DatePicker,
        ColorPicker,
-       NewTimePicker
+       NewTimePicker,
+       RecurrenceSelector
    },
 
 
    data: () => ({
+        recurringInfo: {
+            type: 'none',
+            frequenzy: 0
+        },
         radioGroup: 'Only This Event',
         editOptions: [
         'Only This Event',
         'This and All Sibling Events',
         'This and all following sibling Events'
-        
         ],
         formTitle: 'Add a new Event',
         nameInput: '',
         detailsInput: '',
-        recurringOptionSelected: "Doesn't repeat",
-        recurringOptionsToType: [
-            "none",
-            "daily",
-            "weekly",
-            "monthly",
-            "annualy",
-            "weekdays",
-        ],
-        frequenzyForTypes: [
-            0,
-            1,
-            7,
-            0,
-            0,
-            0
-        ],
-        weekdays: [
-            'Sunday',
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Saturday'
-        ],
         editDialog: false,
         dialog: false,
         selectedDate: '',
@@ -243,8 +218,6 @@ export default {
                 if(this.isRepeating){
                     recurringEventService.addNewToStaticAndApplyForNow(this.currEvent, this.selectedDate)
                 } else {
-                    console.log(this.currEvent)
-                    console.log(this.selectedColor)
                     eventService.addOne(this.currEvent)
                 }
             }
@@ -255,11 +228,6 @@ export default {
             this.editDialog = true
         },
         editEvent(){
-            if(this.isRepeating){
-                
-            } else {
-
-            }
             this.formTitle = `Edit event ${this.currEvent.name}`
             this.dialog = true
         },
@@ -275,9 +243,16 @@ export default {
             this.recurringOptionSelected = "Doesn't repeat"
             this.selectedColor = '#F07F1D'
 
+            this.resetRecurringInfo()
             this.resetDatePicker()
             this.resetTextInputFields()
             this.resetTimePickers()
+        },
+        resetRecurringInfo(){
+            this.recurringInfo = {
+                type: 'none',
+                frequenzy: 0
+            }
         },
         resetDatePicker(){
             this.startDate = this.selectedDate
@@ -318,27 +293,7 @@ export default {
        })
 
    },
-   watch:{
-        selectedDate(){
-        }
-   },
    computed: {
-       isCurrWeekdayLast(){
-           const result = dateArithmetic.isLastWeekdayOfMonth(this.startDate)
-           return result
-       },
-       currWeekday(){
-           return this.weekdays[dateArithmetic.getWeekday(this.startDate)]
-       },
-       currNthWeekday(){
-           const [nth, weekday] = dateArithmetic.getNthWeekday(this.startDate)
-
-           const nthString = ['','first','second','third','fourth','fifth']
-           return nthString[nth]
-       },
-       dateInWords(){
-           return dateArithmetic.getMonthAndDayInWords(this.startDate)
-       },
        isEditing(){
            if(this.currEvent.id){
 
@@ -350,82 +305,6 @@ export default {
        },
        isRepeating(){
           return this.currEvent.type !== "none"
-       },
-       recurringOptionsWithSelectedDate(){
-            let result = [
-               "Doesn't repeat",
-               'Daily',
-               `Weekly on ${this.currWeekday}`,
-               `Monthly on ${this.currNthWeekday} ${this.currWeekday}`,
-               `Annually on ${this.dateInWords}`,
-               `Every Weekday (starting on ${this.dateInWords})`,
-               '...Custom'
-                ]
-           if(this.currNthWeekday === 'fifth'){
-               result = result.slice(0,3).concat([`Monthly on last ${this.currWeekday}`]).concat(result.slice(4))
-           } else if(this.isCurrWeekdayLast && this.currNthWeekday === 'fourth') {
-               result = result.slice(0,4).concat([`Monthly on last ${this.currWeekday}`],[]).concat(result.slice(4))
-           }
-           return result
-       },
-       recurringType:{
-           get(){     
-               const selected = this.recurringOptionSelected.split(' ')[0]
-
-               switch(selected){
-                  case "Doesn't":
-                      return 'none'
-                  case "Daily":
-                      return 'daily'
-                  case "Weekly":
-                      return 'weekly' //for now
-                  case "Monthly":
-                      if(this.recurringOptionSelected.includes('last')){
-                          return 'monthly-last'
-                      } else {
-                          return 'monthly'
-                      }
-                  case "Annually":
-                       return 'annually'
-                  case "Every":
-                       return 'weekdays'
-                  case "...Custom":
-                       return 'custom'
-               }
-           },
-           set(newType){
-                switch(newType){
-                    case "none":
-                        this.recurringOptionSelected = "Doesn't repeat"
-                        break
-                    case "daily":
-                        this.recurringOptionSelected = "Daily"
-                        break
-                    case "weekly":
-                        this.recurringOptionSelected = `Weekly on ${this.currWeekday}`
-                        break
-                    case "monthly-last":
-                        this.recurringOptionSelected = `Monthly on last ${this.currWeekday}`
-                        break
-                    case "monthly":
-                        this.recurringOptionSelected = `Monthly on ${this.currNthWeekday} ${this.currWeekday}`
-                        break
-                    case "annually":
-                        this.recurringOptionSelected = `Annually on ${this.dateInWords}`
-                        break
-                    case "weekdays":
-                        this.recurringOptionSelected = `Every Weekday (starting on ${this.dateInWords})`
-                        break
-                    case "custom":
-                        this.recurringOptionSelected = "...Custom" 
-                }
-           }
-       },
-       frequenzy:{
-           get(){
-                const index = this.recurringOptionsWithSelectedDate.indexOf(this.recurringOptionSelected)
-                return this.frequenzyForTypes[index]
-           }
        },
        startTimeAutocomplete(){
            if(!this.startTime && this.endTime){
@@ -479,11 +358,10 @@ export default {
                     end: this.endDateAndTime,
                     id: this.id,
                     color: this.selectedColor,
-                    type: this.recurringType,
-                    frequenzy: this.frequenzy,
+                    type: this.recurringInfo.type,
+                    frequenzy: this.recurringInfo.frequenzy,
                     recurringId: this.recurringId
                 }
-
                 return event
            },
            set(newEvent){
@@ -493,7 +371,10 @@ export default {
                this.endDateAndTime = newEvent.end
                this.id = newEvent.id
                this.selectedColor = newEvent.color
-               this.recurringType = newEvent.type
+               this.resetRecurringInfo = {
+                   type: newEvent.type,
+                   frequenzy: newEvent.frequenzy
+               },
                this.recurringId = newEvent.recurringId
            }
        }
@@ -501,12 +382,3 @@ export default {
 
 }
 </script>
-
-<style scoped>
-.test{
-    border-radius: 3px;
-    border-style: solid;
-    border-color: black;
-    background-color: black;
-}
-</style>

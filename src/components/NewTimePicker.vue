@@ -1,5 +1,7 @@
 <template>
         <v-autocomplete
+            ref="autocomplete"
+            @click:prepend="$refs.autocomplete.focus()"
             v-model="time"
             placeholder="00:00"
             :label="label"

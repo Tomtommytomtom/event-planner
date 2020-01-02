@@ -47,7 +47,6 @@ export default {
     }),
     methods:{
         updateColor(){
-            console.log('hey burh')
             this.$emit('input', this.color)
         }
     },

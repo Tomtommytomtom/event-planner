@@ -8,6 +8,7 @@
             v-model="dateRangeText"
             :label="label"
             prepend-icon="mdi-calendar"
+            @click:prepend="dialog = true"
             outlined
             dense
             readonly
