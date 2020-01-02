@@ -168,17 +168,23 @@ const isAlrdyInStaticForMonth = (event, date) => {
 const getNextEvent = event => {
 
     let nextDateAndTime = {}
-    console.log(event.type,'heloooooooooooo', event.frequenzy)
-    switch(event.type){
+    const type = event.type.split('-')[0]
+    console.log(type)
+    switch(type){
         case 'daily':
-        case 'weekly':
-        case 'custom-days':
             nextDateAndTime = getNextDateByFrequenzy(event)
+            break
+        case 'weekly':
+            const weeklyEvent = {
+                ...event,
+                frequenzy: event.frequenzy*7
+            }
+            nextDateAndTime = getNextDateByFrequenzy(weeklyEvent)
             break
         case 'monthly':
             nextDateAndTime = getNextDateForMonthly(event)
             break
-        case 'monthly-last':
+        case 'monthlylast':
             nextDateAndTime = getLastWeekdayForMonthly(event)
             break
         case 'annually':
@@ -199,7 +205,7 @@ const getNextEvent = event => {
         ...event,
         ...addEventTimeBack(nextDateAndTime, event)
     }
-
+    console.log(nextEvent,'nextevent')
     return nextEvent
 }
 

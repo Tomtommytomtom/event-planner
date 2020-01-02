@@ -123,7 +123,7 @@ export default {
                 }
            },
            set(newType){
-                console.log(newType,' in setting a new type for recurringTypeDisplay')
+                console.log('is this ever even called like ever???????????????????????????????????????????????/')
                 const selected = newType.split(' ')[0]
                 let frequenzy = this.frequenzy
                 let result = this.recurringType
@@ -136,7 +136,7 @@ export default {
                         result  = 'daily'
                         break
                     case "Weekly":
-                        frequenzy = 7
+                        frequenzy = 1
                         result  = 'weekly'
                         break
                     case "Monthly":
@@ -197,7 +197,7 @@ export default {
     watch: {
         value(){
             console.log('value changed in recurrenceselector, changing now')
-            //this.setValue()
+            this.setValue()
         },
         currStartDate(){
             console.log('currStartDate changed in recurrenceselector, changin now')

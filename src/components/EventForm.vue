@@ -241,6 +241,7 @@ export default {
             this.formTitle = "Add a new Event"
 
             this.id = undefined
+            this.recurringId = undefined
             this.recurringOptionSelected = "Doesn't repeat"
             this.selectedColor = '#F07F1D'
 
@@ -352,7 +353,6 @@ export default {
        },
        currEvent:{
            get(){
-               console.log(this.recurringInfo,'inside currEvent getter')
                 const event = {
                     name: this.nameInput,
                     details: this.detailsInput,

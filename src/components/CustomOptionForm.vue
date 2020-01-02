@@ -50,18 +50,16 @@ export default {
 
     data: () => ({
         valid: true,
-        customType: 'daily',
+        customType: 'daily-custom',
         frequenzyCounter: 1,
         typeOptions: [
             'Days',
             'Weeks',
-            'Months',
             'Years'
         ],
         typeToDisplay: [
             'daily',
             'weekly',
-            'monthly',
             'annually'
         ]
     }),
