@@ -286,7 +286,7 @@ import { bus } from '@/main'
       sendDateAndTime(dayAndTime){
         this.sendDate(dayAndTime)
         const startTimeFullHour = `${String(dayAndTime.hour).padStart(2,'0')}:00`
-        bus.$emit('sendSelectedTime Start Time', startTimeFullHour)
+        bus.$emit('sendStartTime', startTimeFullHour)
         bus.$emit('openForm')
       },
       sendDate( dayAndTime ){

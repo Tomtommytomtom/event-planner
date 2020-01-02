@@ -274,6 +274,10 @@ export default {
             this.endDate = today
             this.selectedDate = today
         },
+        setStartTime(time){
+            console.log('inside of yo mammaaaaaaaaaaa')
+            this.startTime = time
+        }
    },
    created(){
        this.setToday()
@@ -284,11 +288,13 @@ export default {
            this.selectedDate = date
        })
        bus.$on('sendPickedDates', (dates) => {
-
            this.startDate = dates[0]
            this.endDate = dates[1]
        })
        bus.$on('openForm', () => this.dialog = true)
+       bus.$on('sendStartTime', time => {
+            this.startTime = time
+       })
        bus.$on('editEvent', event => {
            console.log(event)
            this.currEvent = event
@@ -332,10 +338,13 @@ export default {
               return this.startDate + this.startTimeAutocomplete
            },
            set(newDateAndTime){
+               console.log('inside this ')
                const [date,time] = newDateAndTime.split(' ')
+               console.log(date, time,'yppppppppppppp')
                this.startDate = date
-               if(!time) {
+               if(time) {
                   this.startTime = time
+                  console.log('also time exsist,',this.startTime)
                }
            }
        },
@@ -346,7 +355,7 @@ export default {
            set(newDateAndTime){
                const [date,time] = newDateAndTime.split(' ')
                this.endDate = date
-               if(!time){
+               if(time){
                   this.endTime = time 
                } 
            }
