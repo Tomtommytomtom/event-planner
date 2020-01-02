@@ -52,7 +52,7 @@
                         ></DatePicker>
                     </v-col>
                     <v-col>
-                        <RecurrenceSelector
+                        <RecurrenceSelector           
                             v-model="recurringInfo"
                             :curr-start-date="startDate"
                         >
@@ -138,6 +138,8 @@
 </template>
 
 <script>
+//TODO: disable recurrence selector when editing or think of a smart way to hanld changing recurrence type of an existing event.
+
 import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
 import ColorPicker from './ColorPicker'
@@ -238,7 +240,6 @@ export default {
             this.dialog = false
             this.formTitle = "Add a new Event"
 
-
             this.id = undefined
             this.recurringOptionSelected = "Doesn't repeat"
             this.selectedColor = '#F07F1D'
@@ -288,6 +289,7 @@ export default {
        })
        bus.$on('openForm', () => this.dialog = true)
        bus.$on('editEvent', event => {
+           console.log(event)
            this.currEvent = event
            this.editEvent()
        })
@@ -308,7 +310,6 @@ export default {
        },
        startTimeAutocomplete(){
            if(!this.startTime && this.endTime){
-
                return " 00:00"
            } else if(!this.startTime && !this.endTime){
                return ''
@@ -351,6 +352,7 @@ export default {
        },
        currEvent:{
            get(){
+               console.log(this.recurringInfo,'inside currEvent getter')
                 const event = {
                     name: this.nameInput,
                     details: this.detailsInput,
@@ -371,13 +373,13 @@ export default {
                this.endDateAndTime = newEvent.end
                this.id = newEvent.id
                this.selectedColor = newEvent.color
-               this.resetRecurringInfo = {
+               this.recurringInfo = {
                    type: newEvent.type,
                    frequenzy: newEvent.frequenzy
                },
                this.recurringId = newEvent.recurringId
            }
-       }
+       },
    }
 
 }

@@ -1,22 +1,41 @@
 <template>
-    <v-select
-        v-model="recurringTypeDisplay"
-        :items="recurringOptionsDisplay"
-        @input="sendType"
-        dense
-        outlined
-        label="Recurrence"
-        prepend-icon="mdi-calendar-repeat"
-    ></v-select>
+    <div>
+        <v-select
+            v-model="recurringTypeDisplay"
+            :items="recurringOptionsDisplay"
+            dense
+            outlined
+            label="Recurrence"
+            prepend-icon="mdi-calendar-repeat"
+        ></v-select>
+        <v-dialog
+            width="fit-content"
+            v-model="customOptionsDialog"
+        >
+            <custom-option-form
+                @close-form="customOptionsDialog = false"
+                @reset-form="resetCustom"
+                v-model="customOptionSelected"
+            >
+            </custom-option-form>
+        </v-dialog>
+    </div>
 </template>
 
 <script>
 import dateArithmetic from '@/services/dateArithmetic'
+import CustomOptionForm from './CustomOptionForm'
 
 export default {
     props: ['value','currStartDate'], //value = { type, frequenzy }
 
+    components: {
+        CustomOptionForm
+    },
+
     data: () => ({
+        customString: '',
+        customOptionsDialog: false,
         recurringType: '',
         frequenzy: 0,
         startDate: new Date().toISOString().substr(0,10),
@@ -32,10 +51,8 @@ export default {
     }),
     methods:{
         sendType(){
-            this.$emit('input', {
-                frequenzy: this.frequenzy,
-                type: this.recurringType
-            })
+            console.log('sent, ', this.customOptionSelected)
+            this.$emit('input', this.customOptionSelected)
         },
         setValue(){
             this.frequenzy = this.value.frequenzy
@@ -43,6 +60,10 @@ export default {
         },
         setStartDate(){
             this.startDate = this.currStartDate.split(' ')[0]
+        },
+        resetCustom(){
+            this.customOptionsDialog = false
+            this.recurringType = 'none'
         }
     },
     created(){
@@ -72,7 +93,12 @@ export default {
         },
         recurringTypeDisplay:{
             get(){
-                switch(this.recurringType){
+                const [selected, custom] = this.recurringType.split('-')
+                console.log(selected, custom,'why would custom be undefined')
+                if(custom){
+                    return this.customString
+                }
+                switch(selected){
                     case "none":
                         return "Doesn't repeat"
                         break
@@ -82,7 +108,7 @@ export default {
                     case "weekly":
                         return `Weekly on ${this.currWeekday}`
                         break
-                    case "monthly-last":
+                    case "monthlylast":
                         return `Monthly on last ${this.currWeekday}`
                         break
                     case "monthly":
@@ -94,15 +120,13 @@ export default {
                     case "weekdays":
                         return `Every Weekday (starting on ${this.dateInWords})`
                         break
-                    case "custom":
-                        return "...Custom" 
                 }
            },
            set(newType){
-                console.log(newType)
+                console.log(newType,' in setting a new type for recurringTypeDisplay')
                 const selected = newType.split(' ')[0]
-                let frequenzy
-                let result
+                let frequenzy = this.frequenzy
+                let result = this.recurringType
                 switch(selected){
                     case "Doesn't":
                         result  = 'none'
@@ -117,7 +141,7 @@ export default {
                         break
                     case "Monthly":
                         if(this.recurringOptionSelected.includes('last')){
-                            result  = 'monthly-last'
+                            result  = 'monthlylast'
                         break
                         } else {
                             result  = 'monthly'
@@ -130,12 +154,28 @@ export default {
                         result  = 'weekdays'
                         break
                     case "...Custom":
-                        result  = 'custom'
+                        this.customOptionsDialog = true
+                        return
                         break
                 }
                 this.frequenzy = frequenzy
                 this.recurringType = result
-           }
+                this.sendType()
+           },
+        },
+        customOptionSelected: {
+               get(){
+                   return {
+                       type: this.recurringType,
+                       frequenzy: this.frequenzy
+                   }
+               },
+               set(newOption){
+                   console.log(newOption,'this is prolly where shit goes wrong')
+                   this.recurringType = newOption.type
+                   this.frequenzy = newOption.frequenzy
+                   this.customString = newOption.customString
+               }
         },
         isCurrWeekdayLast(){
         const result = dateArithmetic.isLastWeekdayOfMonth(this.startDate)
@@ -156,11 +196,17 @@ export default {
     },
     watch: {
         value(){
-            this.setValue()
+            console.log('value changed in recurrenceselector, changing now')
+            //this.setValue()
         },
         currStartDate(){
+            console.log('currStartDate changed in recurrenceselector, changin now')
             this.setStartDate()
         },
+        customOptionSelected(){
+            console.log(this.customOptionSelected,'inside customoptionselectedweatcher')
+            this.sendType()
+        }
     }
 }
 </script>

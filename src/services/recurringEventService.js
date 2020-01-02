@@ -168,6 +168,7 @@ const isAlrdyInStaticForMonth = (event, date) => {
 const getNextEvent = event => {
 
     let nextDateAndTime = {}
+    console.log(event.type,'heloooooooooooo', event.frequenzy)
     switch(event.type){
         case 'daily':
         case 'weekly':
