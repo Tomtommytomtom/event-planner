@@ -1,10 +1,10 @@
 <template>
     <v-text-field
         ref="field"
-        prepend-inner-icon="mdi-plus"
-        append-icon="mdi-minus"
-        @click:append="decrementCounter"
-        @click:prepend-inner="incrementCounter"
+        prepend-inner-icon="mdi-minus"
+        append-icon="mdi-plus"
+        @click:prepend-inner="decrementCounter"
+        @click:append="incrementCounter"
         @input="validateAndSend"
         v-model="counter"
         outlined
@@ -27,7 +27,7 @@ export default {
         },
         decrementCounter(){
             this.$refs.field.focus()
-            if(this.counter > 0){
+            if(this.counter > 1){
                 this.counter--
             }
         },

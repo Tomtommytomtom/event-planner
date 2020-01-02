@@ -55,6 +55,7 @@
                         <RecurrenceSelector           
                             v-model="recurringInfo"
                             :curr-start-date="startDate"
+                            :disabled="isEditing"
                         >
                         </RecurrenceSelector>
                     </v-col>
@@ -191,15 +192,15 @@ export default {
         submitRecurringEdit(){
             switch(this.radioGroup){
             case 'Only This Event': 
-
                 eventService.updateEvent(this.currEvent)
+                this.sendEditedEventNotification(`Edited single recurring Event ${this.currEvent.name} starting on ${this.eventStartInWords}!`)
                 break
             case 'This and All Sibling Events':
-
                 eventService.updateRecurringEventsInStatic(this.currEvent)
+                this.sendEditedEventNotification(`Edited all "${this.currEvent.name}" Events!`)
                 break
             case 'This and all following sibling Events':
-
+                this.sendEditedEventNotification(`Edited all "${this.currEvent.name}" Events starting on the ${this.eventStartInWords} and later!`)
                 eventService.updateRecurringEventsInStaticAfterEventStart(this.currEvent)
                 break
             }
@@ -209,17 +210,21 @@ export default {
             bus.$emit('refreshEvents')
         },
         submitForm(){
+            this.valid = false
             if(this.isEditing){
                 if(this.isRepeating){
                     this.openEditDialog()
                     return
                 } else {
                     eventService.addOrUpdate(this.currEvent)
+                    this.sendEditedEventNotification(`Successfully edited Event "${this.currEvent.name}!"`)
                 }
             } else {    
                 if(this.isRepeating){
                     recurringEventService.addNewToStaticAndApplyForNow(this.currEvent, this.selectedDate)
+                    this.sendAddedEventNotification(`Successfully edited ${this.currEvent.type} recurring Event "${this.currEvent.name}"`)
                 } else {
+                    this.sendAddedEventNotification(`Successfully added Event "${this.currEvent.name}"`)
                     eventService.addOne(this.currEvent)
                 }
             }
@@ -251,6 +256,7 @@ export default {
             this.resetDatePicker()
             this.resetTextInputFields()
             this.resetTimePickers()
+            
         },
         resetRecurringInfo(){
             this.recurringInfo = {
@@ -279,7 +285,28 @@ export default {
         setStartTime(time){
 
             this.startTime = time
-        }
+        },
+        sendAddedEventNotification(message){
+            bus.$emit('notification', {
+                color: 'success',
+                message,
+                timeout: 2000
+            })
+        },
+        sendEditedEventNotification(message){
+            bus.$emit('notification', {
+                color: 'success',
+                message,
+                timeout: 4000
+            })
+        },
+        sendErrorMessage(message){
+            bus.$emit('notification', {
+                color: 'error',
+                message,
+                timeout:2000
+            })
+        },
    },
    created(){
        this.setToday()
@@ -334,6 +361,9 @@ export default {
            }else{
                return ' ' + this.endTime
            }
+       },
+       eventStartInWords(){
+           return dateArithmetic.getDateInWords(this.currEvent.start)
        },
        startDateAndTime:{
            get(){

@@ -9,14 +9,14 @@
         <slot></slot>
         </v-btn>
         <v-menu
+            :close-on-content-click="false"
             v-model="menu"
-            close-on-click
             right
         >
             <v-date-picker
                 v-model="date"
-                :type="type"
                 @input="sendDate"
+                reactive
             >
             </v-date-picker>
         </v-menu>
@@ -25,32 +25,25 @@
 
 <script>
 export default {
-    props: ['value','calendarType', 'calendarEvents'],
+    props: ['value'],
 
     data: () => ({
         menu: false,
-        type: 'month',
         date: new Date().toISOString().substr(0,10),
     }),
 
     methods:{
         sendDate(){
             this.$emit('input', this.dateToSend)
-        },
-        setType(){
-            if(this.calendarType === 'month'){
-                this.type = 'month'
-            } else {
-                this.type = 'date'
-            }
+            this.menu = false
         },
         setValue(){
+            console.log(this.value)
             this.date = this.value
         },
     },
 
     created(){
-        this.setType()
         this.setValue()
     },
 
@@ -61,15 +54,12 @@ export default {
             } else {
                 return this.date
             }
-        }
+        },
     },
 
     watch: {
         value(){
             this.setValue()
-        },
-        calendarType(){
-            this.setType()
         },
     }
 }

@@ -13,7 +13,6 @@
             <v-spacer></v-spacer>
             <calendar-picker
               v-model="focus"
-              :calendar-type="type"
             >{{ title }}</calendar-picker>
             <v-spacer></v-spacer>
             <v-btn elevation="1" dark color="primary" right fab  small @click="next">

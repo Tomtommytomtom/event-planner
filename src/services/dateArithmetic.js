@@ -152,6 +152,12 @@ const getMonthAndDayInWords = (date) => {
     return `${months[+month]} ${+day + nth(day)}`
 }
 
+const getDateInWords = date => {
+    const monthsAndDay = getMonthAndDayInWords(date)
+    const year = date.split('-')[0]
+    return `${monthsAndDay} ${year}`
+}
+
 const nth = (day) => {
     return day > 3 && day < 21
           ? 'th'
@@ -179,5 +185,6 @@ export default {
     getMonthAndDayInWords,
     isLastWeekdayOfMonth,
     getDateofLastWeekdayInMonth,
-    doesEventStartAfterOrOnDate
+    doesEventStartAfterOrOnDate,
+    getDateInWords
 }
