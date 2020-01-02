@@ -7,14 +7,18 @@
             <v-btn color="primary" text class="mr-4" @click="setToday">
               Today
             </v-btn>
-            <v-btn fab text small @click="prev">
-              <v-icon small>mdi-chevron-left</v-icon>
+            <v-btn elevation="1" dark color="primary" left fab  small @click="prev">
+              <v-icon>mdi-chevron-left</v-icon>
             </v-btn>
-            <v-btn fab text small @click="next">
-              <v-icon small>mdi-chevron-right</v-icon>
-            </v-btn>
-            <v-toolbar-title>{{ title }}</v-toolbar-title>
             <v-spacer></v-spacer>
+            <calendar-picker
+              v-model="focus"
+              :calendar-type="type"
+            >{{ title }}</calendar-picker>
+            <v-spacer></v-spacer>
+            <v-btn elevation="1" dark color="primary" right fab  small @click="next">
+              <v-icon >mdi-chevron-right</v-icon>
+            </v-btn>
             <v-menu bottom right>
               <template v-slot:activator="{ on }">
                 <v-btn
@@ -177,10 +181,18 @@
 
 import recurringEventService from '@/services/recurringEventService'
 import eventService from '@/services/eventService'
+
+import CalendarPicker from './CalendarPicker'
+
 import { bus } from '@/main'
 
   export default {
+    components: {
+        CalendarPicker
+    },
     data: () => ({
+      
+
       radioGroup: 'Only This Event',
       deleteOptions: [
         'Only This Event',
@@ -333,7 +345,6 @@ import { bus } from '@/main'
         this.end = end
 
         recurringEventService.applyRecurringEventsUntilEndOfNextMonth(start.date)
-
       },
       nth (d) {
         return d > 3 && d < 21
@@ -347,6 +358,7 @@ import { bus } from '@/main'
     },
     watch: {
         focus(){
+          console.log(this.focus)
            bus.$emit('sendSelectedDate', this.focus)
         },
     }

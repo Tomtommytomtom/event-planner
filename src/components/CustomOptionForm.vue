@@ -27,9 +27,13 @@
             </v-row>
             <v-container right>
                 <v-btn
+                    text
+                    color="primary"
                     @click="resetForm"
                 >Cancel</v-btn>
                 <v-btn
+                    text
+                    color="primary"
                     :disabled="!valid"
                     @click="saveOptions"
                 >Save</v-btn>
