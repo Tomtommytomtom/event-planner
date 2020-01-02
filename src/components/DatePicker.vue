@@ -43,7 +43,7 @@
         this.clicks++
       },
       sendData() {
-        console.log('clicked')
+
         if(!this.isDateComboValid){
           this.swapDates()
         }

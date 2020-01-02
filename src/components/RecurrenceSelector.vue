@@ -51,7 +51,6 @@ export default {
     }),
     methods:{
         sendType(){
-            console.log('sent, ', this.customOptionSelected)
             this.$emit('input', this.customOptionSelected)
         },
         setValue(){
@@ -64,6 +63,7 @@ export default {
         resetCustom(){
             this.customOptionsDialog = false
             this.recurringType = 'none'
+            this.customString = ''
         }
     },
     created(){
@@ -86,7 +86,7 @@ export default {
            } else if(this.isCurrWeekdayLast && this.currNthWeekday === 'fourth') {
                result = result.slice(0,4).concat([`Monthly on last ${this.currWeekday}`],[]).concat(result.slice(4))
            }
-           if(!result.includes(this.recurringTypeDisplay)){
+           if(this.customString){
                result = result.concat([this.recurringTypeDisplay])
            }
            return result
@@ -94,7 +94,6 @@ export default {
         recurringTypeDisplay:{
             get(){
                 const [selected, custom] = this.recurringType.split('-')
-                console.log(selected, custom,'why would custom be undefined')
                 if(custom){
                     return this.customString
                 }
@@ -123,7 +122,7 @@ export default {
                 }
            },
            set(newType){
-                console.log('is this ever even called like ever???????????????????????????????????????????????/')
+                console.log('inside setter for recurringTypeDisplay gonna set:',newType)
                 const selected = newType.split(' ')[0]
                 let frequenzy = this.frequenzy
                 let result = this.recurringType
@@ -140,7 +139,7 @@ export default {
                         result  = 'weekly'
                         break
                     case "Monthly":
-                        if(this.recurringOptionSelected.includes('last')){
+                        if(this.recurringType.includes('last')){
                             result  = 'monthlylast'
                         break
                         } else {
@@ -155,23 +154,23 @@ export default {
                         break
                     case "...Custom":
                         this.customOptionsDialog = true
-                        return
+                        result = 'custom'
                         break
                 }
                 this.frequenzy = frequenzy
                 this.recurringType = result
-                this.sendType()
            },
         },
         customOptionSelected: {
                get(){
                    return {
                        type: this.recurringType,
-                       frequenzy: this.frequenzy
+                       frequenzy: this.frequenzy,
+                       customString: this.customString
                    }
                },
                set(newOption){
-                   console.log(newOption,'this is prolly where shit goes wrong')
+
                    this.recurringType = newOption.type
                    this.frequenzy = newOption.frequenzy
                    this.customString = newOption.customString
@@ -196,15 +195,19 @@ export default {
     },
     watch: {
         value(){
-            console.log('value changed in recurrenceselector, changing now')
+
+
             this.setValue()
         },
         currStartDate(){
-            console.log('currStartDate changed in recurrenceselector, changin now')
+
             this.setStartDate()
         },
         customOptionSelected(){
-            console.log(this.customOptionSelected,'inside customoptionselectedweatcher')
+
+            this.sendType()
+        },
+        recurringType(){
             this.sendType()
         }
     }

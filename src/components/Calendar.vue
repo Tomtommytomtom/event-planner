@@ -358,7 +358,7 @@ import { bus } from '@/main'
     },
     watch: {
         focus(){
-          console.log(this.focus)
+
            bus.$emit('sendSelectedDate', this.focus)
         },
     }

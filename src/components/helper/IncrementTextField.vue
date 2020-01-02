@@ -35,7 +35,7 @@ export default {
             if(this.isValidAmount){
                 this.$emit('input',this.counter)
             } else {
-                console.log('this is invalid')
+
             }
         },
     },

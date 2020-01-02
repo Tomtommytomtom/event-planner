@@ -169,7 +169,7 @@ const getNextEvent = event => {
 
     let nextDateAndTime = {}
     const type = event.type.split('-')[0]
-    console.log(type)
+
     switch(type){
         case 'daily':
             nextDateAndTime = getNextDateByFrequenzy(event)
@@ -205,7 +205,7 @@ const getNextEvent = event => {
         ...event,
         ...addEventTimeBack(nextDateAndTime, event)
     }
-    console.log(nextEvent,'nextevent')
+
     return nextEvent
 }
 

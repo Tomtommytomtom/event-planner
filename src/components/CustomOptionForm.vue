@@ -90,7 +90,7 @@ export default {
         customTypeToDisplay(customType){
             const type = customType.split('-')[0]
             const index = this.typeToDisplay.indexOf(type)
-            console.log(index)
+
             return this.typeOptions[index]
         }
     },
@@ -103,10 +103,10 @@ export default {
                return this.customTypeToDisplay(this.customType) 
             },
             set(newValue){
-                console.log(newValue)
+
                 const index = this.typeOptions.indexOf(newValue)
                 this.customType = this.typeToDisplay[index] + '-custom'
-                console.log(this.customType)
+
             }
             
         }

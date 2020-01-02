@@ -47,7 +47,7 @@
         },
         watch: {
             value(){
-                console.log('yup this')
+
                 this.time = this.value
             }
         },

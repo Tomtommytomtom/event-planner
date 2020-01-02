@@ -245,6 +245,8 @@ export default {
             this.recurringOptionSelected = "Doesn't repeat"
             this.selectedColor = '#F07F1D'
 
+
+
             this.resetRecurringInfo()
             this.resetDatePicker()
             this.resetTextInputFields()
@@ -275,7 +277,7 @@ export default {
             this.selectedDate = today
         },
         setStartTime(time){
-            console.log('inside of yo mammaaaaaaaaaaa')
+
             this.startTime = time
         }
    },
@@ -296,7 +298,7 @@ export default {
             this.startTime = time
        })
        bus.$on('editEvent', event => {
-           console.log(event)
+
            this.currEvent = event
            this.editEvent()
        })
@@ -338,13 +340,13 @@ export default {
               return this.startDate + this.startTimeAutocomplete
            },
            set(newDateAndTime){
-               console.log('inside this ')
+
                const [date,time] = newDateAndTime.split(' ')
-               console.log(date, time,'yppppppppppppp')
+
                this.startDate = date
                if(time) {
                   this.startTime = time
-                  console.log('also time exsist,',this.startTime)
+
                }
            }
        },
