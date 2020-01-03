@@ -146,7 +146,6 @@
 </template>
 
 <script>
-//TODO: disable recurrence selector when editing or think of a smart way to hanld changing recurrence type of an existing event.
 
 import DatePicker from './DatePicker'
 import TimePicker from './TimePicker'
@@ -181,6 +180,7 @@ export default {
         'This and All Sibling Events',
         'This and all following sibling Events'
         ],
+        originalEditedEvent: {},
         formTitle: 'Add a new Event',
         nameInput: '',
         detailsInput: '',
@@ -253,6 +253,7 @@ export default {
         },
         editEvent(){
             this.formTitle = `Edit event ${this.currEvent.name}`
+            this.originalEditedEvent = this.currEvent
             this.dialog = true
         },
         setColor(colorObject){
@@ -351,13 +352,7 @@ export default {
    },
    computed: {
        isEditing(){
-           if(this.currEvent.id){
-
-               return true
-           } else {
-
-               return false
-           }
+           return !!this.currEvent.id
        },
        isRepeating(){
           return this.currEvent.type !== "none"

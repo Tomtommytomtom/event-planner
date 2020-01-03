@@ -4,7 +4,6 @@
             @click="menu = true"
             color="primary"
             outlined
-            :class="{ onWideScreens : !$vuetify.breakpoint.xsOnly}"
         >
         <slot></slot>
         </v-btn>
@@ -83,8 +82,3 @@ export default {
 }
 </script>
 
-<style>
-.onWideScreens{
-    width: 200px;
-}
-</style>
