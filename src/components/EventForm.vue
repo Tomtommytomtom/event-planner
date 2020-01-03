@@ -34,7 +34,8 @@
                     outlined
                     :rules="[rules.required, rules.nameCounter, rules.nonWhiteSpaces]"
                     counter="100"
-                ></v-text-field>
+                >
+                </v-text-field>
                 <v-textarea
                     v-model="detailsInput"
                     dense
@@ -43,6 +44,7 @@
                     clearable
                     counter="500"
                     :rules="[rules.descriptionCounter]"
+                    no-resize
                 ></v-textarea>
             </v-container>
             <v-container>
@@ -81,7 +83,7 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-card-actions class="pl-4 pb-5">
+            <v-card-actions class="pa-3">
                 <ColorPicker
                     v-model="selectedColor"
                 ></ColorPicker>
@@ -207,14 +209,14 @@ export default {
             switch(this.radioGroup){
             case 'Only This Event': 
                 eventService.updateEvent(this.currEvent)
-                this.sendEditedEventNotification(`Edited single recurring Event ${this.currEvent.name} starting on ${this.eventStartInWords}!`)
+                this.sendEditedEventNotification(`Sucessfully edited single recurring Event "${this.currEvent.name}" starting on ${this.eventStartInWords}!`)
                 break
             case 'This and All Sibling Events':
                 eventService.updateRecurringEventsInStatic(this.currEvent)
-                this.sendEditedEventNotification(`Edited all "${this.currEvent.name}" Events!`)
+                this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" Events!`)
                 break
             case 'This and all following sibling Events':
-                this.sendEditedEventNotification(`Edited all "${this.currEvent.name}" Events starting on the ${this.eventStartInWords} and later!`)
+                this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" Events starting on the ${this.eventStartInWords} and later!`)
                 eventService.updateRecurringEventsInStaticAfterEventStart(this.currEvent)
                 break
             }
@@ -235,9 +237,9 @@ export default {
             } else {    
                 if(this.isRepeating){
                     recurringEventService.addNewToStaticAndApplyForNow(this.currEvent, this.selectedDate)
-                    this.sendAddedEventNotification(`Successfully added ${this.currEvent.type} recurring Event "${this.currEvent.name}"`)
+                    this.sendAddedEventNotification(`Successfully added recurring Event "${this.currEvent.name}"!`)
                 } else {
-                    this.sendAddedEventNotification(`Successfully added Event "${this.currEvent.name}"`)
+                    this.sendAddedEventNotification(`Successfully added Event "${this.currEvent.name}"!`)
                     eventService.addOne(this.currEvent)
                 }
             }

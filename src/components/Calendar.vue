@@ -61,11 +61,12 @@
             @click:day="openFormAndSendDay"
             @click:event="showEvent"
             @click:more="viewDay"
-            @click:date="viewDay"
+            @click:date="viewDayOrOpenForm"
             @click:interval="sendDateAndTime"
             @click:time="sendDateAndTime"
             @change="updateRange"
-          ></v-calendar>
+          >
+          </v-calendar>
           <v-menu
             v-model="selectedOpen"
             :close-on-content-click="false"
@@ -264,6 +265,7 @@ import { bus } from '@/main'
     },
     methods: {
       openFormAndSendDay(day){
+        console.log('clickityclick')
         this.sendDate(day)
         bus.$emit('openForm')
       },
@@ -308,10 +310,13 @@ import { bus } from '@/main'
       refreshEvents(){
         this.events = eventService.getAll()
       },
-      viewDay ( dayAndTime ) {
+      viewDayOrOpenForm( dayAndTime ) {
         this.focus = dayAndTime.date
-        this.type = 'day'
         bus.$emit('sendSelectedDate', dayAndTime.date )
+        if(this.type === 'day'){
+          bus.$emit('openForm')
+        }
+        this.type = 'day'
       },
       getEventColor (event) {
         return event.color
