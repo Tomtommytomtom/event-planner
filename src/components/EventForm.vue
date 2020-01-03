@@ -21,12 +21,14 @@
         :fullscreen="$vuetify.breakpoint.xsOnly"
         @click:outside="clearForm"
     >
-      <v-card class="pa-2">
+      <v-card class="pa-4">
         <v-form ref="form" v-model="valid">
-            <v-container class="ms-auto">
-                <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
-                </v-card-title>
+            <v-card-title>
+                <span
+                    class="headline"
+                >{{ formTitle }}</span>
+            </v-card-title>
+                <v-container>
                 <v-text-field
                     v-model="nameInput"
                     dense
@@ -83,7 +85,7 @@
                     </v-col>
                 </v-row>
             </v-container>
-            <v-card-actions class="pa-3">
+            <v-card-actions>
                 <ColorPicker
                     v-model="selectedColor"
                 ></ColorPicker>
@@ -92,7 +94,7 @@
                     color="primary"
                     text
                     @click="clearForm"
-                >Close</v-btn>
+                >cancel</v-btn>
                 <v-btn 
                     color="primary" 
                     text 

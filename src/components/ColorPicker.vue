@@ -17,6 +17,7 @@
             width="fit-content"
         >
             <v-card
+                class="pa-2"
             >
                 <v-color-picker
                     show-swatches
@@ -32,7 +33,7 @@
                     @click="dialog = false"
                     text
                     color="primary"
-                    class="mx-3 my-1"
+                    class="mx-2 mt-2"
                 >save
                 </v-btn>
             </v-card>

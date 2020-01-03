@@ -25,7 +25,7 @@
                     </v-autocomplete>
                 </v-col>
             </v-row>
-            <v-container right>
+            <v-container class="d-flex justify-end">
                 <v-btn
                     text
                     color="primary"

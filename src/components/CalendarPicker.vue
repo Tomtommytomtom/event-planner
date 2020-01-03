@@ -1,5 +1,5 @@
 <template>
-    <v-div>
+    <div>
         <v-btn
             @click="menu = true"
             color="primary"
@@ -20,7 +20,7 @@
             >
             </v-date-picker>
         </v-menu>
-    </v-div>    
+    </div>    
 </template>
 
 <script>

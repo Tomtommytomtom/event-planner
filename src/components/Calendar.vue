@@ -60,7 +60,7 @@
             @moved="sendDate"
             @click:day="openFormAndSendDay"
             @click:event="showEvent"
-            @click:more="viewDay"
+            @click:more="viewDayOrOpenForm"
             @click:date="viewDayOrOpenForm"
             @click:interval="sendDateAndTime"
             @click:time="sendDateAndTime"
@@ -71,7 +71,6 @@
             v-model="selectedOpen"
             :close-on-content-click="false"
             :activator="selectedElement"
-            full-width
             offset-x
           >
             <v-card
