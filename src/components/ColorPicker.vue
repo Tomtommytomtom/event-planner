@@ -29,7 +29,7 @@
                     text
                     color="primary"
                     class="mx-3 my-1"
-                >close
+                >save
                 </v-btn>
             </v-card>
         </v-dialog>
@@ -47,7 +47,6 @@ export default {
     }),
     methods:{
         updateColor(){
-
             this.$emit('input', this.color)
         }
     },

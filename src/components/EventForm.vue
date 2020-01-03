@@ -32,7 +32,8 @@
                     dense
                     label="Name"
                     outlined
-                    required
+                    :rules="[rules.required, rules.nameCounter, rules.nonWhiteSpaces]"
+                    counter="100"
                 ></v-text-field>
                 <v-textarea
                     v-model="detailsInput"
@@ -40,6 +41,8 @@
                     label="Description"
                     outlined
                     clearable
+                    counter="500"
+                    :rules="[rules.descriptionCounter]"
                 ></v-textarea>
             </v-container>
             <v-container>
@@ -186,7 +189,18 @@ export default {
         endTime: null,
         selectedColor: '#F07F1D',
         id: undefined,
-        recurringId: undefined
+        recurringId: undefined,
+        valid: false,
+        rules: {
+            required: v => !!v || 'Required',
+            nameCounter: v => v.length <= 100 || 'Max 100 Characters',
+            descriptionCounter: v => v.length <= 500 || 'Max 500 Characters',
+            nonWhiteSpaces: v => { 
+                const regEx = /\S+/ //any non white space character
+                return regEx.test(v) || 'Invalid, Please enter more than just spaces.'
+            },
+
+        }
    }),
     methods : {
         submitRecurringEdit(){
@@ -210,7 +224,6 @@ export default {
             bus.$emit('refreshEvents')
         },
         submitForm(){
-            this.valid = false
             if(this.isEditing){
                 if(this.isRepeating){
                     this.openEditDialog()
@@ -222,7 +235,7 @@ export default {
             } else {    
                 if(this.isRepeating){
                     recurringEventService.addNewToStaticAndApplyForNow(this.currEvent, this.selectedDate)
-                    this.sendAddedEventNotification(`Successfully edited ${this.currEvent.type} recurring Event "${this.currEvent.name}"`)
+                    this.sendAddedEventNotification(`Successfully added ${this.currEvent.type} recurring Event "${this.currEvent.name}"`)
                 } else {
                     this.sendAddedEventNotification(`Successfully added Event "${this.currEvent.name}"`)
                     eventService.addOne(this.currEvent)
@@ -257,6 +270,7 @@ export default {
             this.resetTextInputFields()
             this.resetTimePickers()
             
+            this.$refs.form.resetValidation()
         },
         resetRecurringInfo(){
             this.recurringInfo = {

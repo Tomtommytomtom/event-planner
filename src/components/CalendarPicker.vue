@@ -4,7 +4,7 @@
             @click="menu = true"
             color="primary"
             outlined
-            min-width="200"
+            :class="{ onWideScreens : !$vuetify.breakpoint.xsOnly}"
         >
         <slot></slot>
         </v-btn>
@@ -16,7 +16,7 @@
             <v-date-picker
                 v-model="date"
                 @input="sendDate"
-                reactive
+                @click:month="sendMonth"
             >
             </v-date-picker>
         </v-menu>
@@ -25,14 +25,23 @@
 
 <script>
 export default {
-    props: ['value'],
+    props: ['value','calendarType'],
 
     data: () => ({
         menu: false,
         date: new Date().toISOString().substr(0,10),
+        type:'month'
     }),
 
     methods:{
+        sendMonth(month){
+            console.log('heya')
+            if(this.isTypeMonth){
+                this.date = month
+                this.$emit('input', this.dateToSend)
+                this.menu = false
+            }
+        },
         sendDate(){
             this.$emit('input', this.dateToSend)
             this.menu = false
@@ -41,6 +50,9 @@ export default {
             console.log(this.value)
             this.date = this.value
         },
+        setType(){
+            this.type = this.calendarType
+        }
     },
 
     created(){
@@ -55,12 +67,24 @@ export default {
                 return this.date
             }
         },
+        isTypeMonth(){
+            return this.type === 'month'
+        }
     },
 
     watch: {
         value(){
             this.setValue()
         },
+        calendarType(){
+            this.setType()
+        }
     }
 }
 </script>
+
+<style>
+.onWideScreens{
+    width: 200px;
+}
+</style>

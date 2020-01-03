@@ -4,7 +4,7 @@
       <v-col >
         <v-sheet height="64" class="elevation-4">
           <v-toolbar flat color="white">
-            <v-btn color="primary" text class="mr-4" @click="setToday">
+            <v-btn color="primary" text class="ml-2 mr-6" @click="setToday">
               Today
             </v-btn>
             <v-btn elevation="1" dark color="primary" left fab  small @click="prev">
@@ -13,6 +13,7 @@
             <v-spacer></v-spacer>
             <calendar-picker
               v-model="focus"
+              :calendar-type="type"
             >{{ title }}</calendar-picker>
             <v-spacer></v-spacer>
             <v-btn elevation="1" dark color="primary" right fab  small @click="next">
@@ -21,6 +22,7 @@
             <v-menu bottom right>
               <template v-slot:activator="{ on }">
                 <v-btn
+                 class="ml-2"
                   text
                   color="primary"
                   v-on="on"
