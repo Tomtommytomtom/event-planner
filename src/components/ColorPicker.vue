@@ -1,12 +1,16 @@
 <template>
     <div>
+        <v-btn fab small class="white--text" depressed :color="color" @click="dialog = true">
+            <v-icon >
+                mdi-brush
+            </v-icon>
+        </v-btn>
         <v-btn
-            :color="color"
+            text
             @click="dialog = true"
-            class="white--text"
-            depressed
+            color="primary"
         >
-            Pick A Color
+            pick a color
         </v-btn>
         <v-dialog
             v-model="dialog"
