@@ -32,12 +32,14 @@
   import { bus } from '../main'
 
   export default {
-    props: ['label','defaultDateStart','defaultDateEnd'],
+    props: ['value','label'],
+
     data: () => ({
       clicks: 0,
       dates: [],
       dialog: false,
     }),
+
     methods: {
       incrementClicks(){
         this.clicks++
@@ -47,7 +49,11 @@
         if(!this.isDateComboValid){
           this.swapDates()
         }
-        bus.$emit('sendPickedDates', this.dates)
+        console.log('input event sent')
+        this.$emit('input', {
+          start: this.dates[0],
+          end: this.dates[1]
+        })
       },
       setDates(){
         this.dates = [this.defaultDateStart, this.defaultDateEnd]
@@ -62,6 +68,7 @@
         this.dates = [this.dates[1], this.dates[0]]
       }
     },
+
     watch: {
       clicks(){
         if(this.clicks == 2){
@@ -83,12 +90,15 @@
       dialog: function(){
         if(!this.dialog){
           if(this.dates[0] && !this.dates[1]){
-          bus.$emit('sendPickedDates', [this.dates[0],this.dates[0]])
-
+            this.$emit('input',{
+              start: this.dates[0],
+              end: this.dates[0]
+            })
           }
         }
       }
     },
+
     computed: {
       isDateComboValid(){
         if(!this.dates[1]){
@@ -130,8 +140,15 @@
         return this.dates.length === 2;
       }
     },
+
     created(){
-        this.dates = [this.defaultDateStart, this.defaultDateEnd]
+        this.dates = [this.value.start, this.value.end]
+    },
+
+    watch:{
+      value(){
+        this.dates = [this.value.start, this.value.end]
+      }
     }
   }
 </script>

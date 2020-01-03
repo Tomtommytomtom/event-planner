@@ -53,15 +53,14 @@
                 <v-row>
                     <v-col>
                         <DatePicker 
-                            :default-date-start="startDate"
-                            :default-date-end="endDate" 
+                            v-model="dates"
                             label="Event Duration"
                         ></DatePicker>
                     </v-col>
                     <v-col>
                         <RecurrenceSelector           
                             v-model="recurringInfo"
-                            :curr-start-date="startDate"
+                            :curr-start-date="dates.start"
                             :disabled="isEditing"
                         >
                         </RecurrenceSelector>
@@ -193,6 +192,11 @@ export default {
         startDate: '',
         endDate: '',
 
+        dates:{
+            start: '',
+            end: ''
+        },
+
         startTime: null,
         endTime: null,
 
@@ -294,8 +298,10 @@ export default {
             }
         },
         resetDatePicker(){
-            this.startDate = this.selectedDate
-            this.endDate = this.selectedDate
+            this.dates = {
+                start: this.selectedDate,
+                end: this.selectedDate
+            }
         },
         resetTextInputFields(){
             this.nameInput = ''
@@ -307,8 +313,8 @@ export default {
         },
         setToday(){
             const today = new Date().toISOString().substr(0,10)
-            this.startDate = today
-            this.endDate = today
+            this.dates.start = today
+            this.dates.end = today
             this.selectedDate = today
         },
         setStartTime(time){
@@ -341,13 +347,13 @@ export default {
        this.setToday()
 
        bus.$on('sendSelectedDate', date => {
-           this.startDate = date
-           this.endDate = date
+           this.dates.start = date
+           this.dates.end = date
            this.selectedDate = date
        })
        bus.$on('sendPickedDates', (dates) => {
-           this.startDate = dates[0]
-           this.endDate = dates[1]
+           this.dates.start = dates[0]
+           this.dates.end = dates[1]
        })
        bus.$on('openForm', () => this.dialog = true)
        bus.$on('sendStartTime', time => {
@@ -389,11 +395,11 @@ export default {
        },
        startDateAndTime:{
            get(){
-              return this.startDate + this.startTimeAutocomplete
+              return this.dates.start + this.startTimeAutocomplete
            },
            set(newDateAndTime){
                const [date,time] = newDateAndTime.split(' ')
-               this.startDate = date
+               this.dates.start = date
                if(time) {
                   this.startTime = time
                }
@@ -401,11 +407,11 @@ export default {
        },
        endDateAndTime:{
            get(){
-                return this.endDate + this.endTimeAutocomplete
+                return this.dates.end + this.endTimeAutocomplete
            },
            set(newDateAndTime){
                const [date,time] = newDateAndTime.split(' ')
-               this.endDate = date
+               this.dates.end = date
                if(time){
                   this.endTime = time 
                } 
@@ -429,8 +435,8 @@ export default {
            set(newEvent){
                this.nameInput = newEvent.name
                this.detailsInput = newEvent.details
-               this.startDateAndTime = newEvent.start
-               this.endDateAndTime = newEvent.end
+               this.dates.startAndTime = newEvent.start
+               this.dates.endAndTime = newEvent.end
                this.id = newEvent.id
                this.selectedColor = newEvent.color
                this.recurringInfo = {
