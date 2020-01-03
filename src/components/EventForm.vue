@@ -112,7 +112,7 @@
             <v-card>
             <v-card-title>You're editing {{ currEvent.type }} recurring Event: {{ currEvent.name }} ?</v-card-title>
             <v-container class="d-flex px-5">
-                <v-radio-group v-model="radioGroup">
+                <v-radio-group v-model="editOptionSelected">
                           <v-radio
                             class="text-no-wrap"
                             color="primary"
@@ -174,26 +174,36 @@ export default {
             type: 'none',
             frequenzy: 0
         },
-        radioGroup: 'Only This Event',
+
+        editOptionSelected: 'Only This Event',
         editOptions: [
         'Only This Event',
         'This and All Sibling Events',
         'This and all following sibling Events'
         ],
-        originalEditedEvent: {},
+
+        originalEditedEvent: {}, //
+
         formTitle: 'Add a new Event',
+
         nameInput: '',
         detailsInput: '',
-        editDialog: false,
-        dialog: false,
+
         selectedDate: '',
         startDate: '',
         endDate: '',
+
         startTime: null,
         endTime: null,
+
         selectedColor: '#F07F1D',
+
         id: undefined,
         recurringId: undefined,
+
+        editDialog: false,
+        dialog: false,
+        
         valid: false,
         rules: {
             required: v => !!v || 'Required',
@@ -208,15 +218,17 @@ export default {
    }),
     methods : {
         submitRecurringEdit(){
-            switch(this.radioGroup){
+            switch(this.editOptionSelected){
             case 'Only This Event': 
                 eventService.updateEvent(this.currEvent)
                 this.sendEditedEventNotification(`Sucessfully edited single recurring Event "${this.currEvent.name}" starting on ${this.eventStartInWords}!`)
                 break
-            case 'This and All Sibling Events':
+
+            case 'This and all Sibling Events':
                 eventService.updateRecurringEventsInStatic(this.currEvent)
                 this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" Events!`)
                 break
+
             case 'This and all following sibling Events':
                 this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" Events starting on the ${this.eventStartInWords} and later!`)
                 eventService.updateRecurringEventsInStaticAfterEventStart(this.currEvent)
@@ -261,23 +273,21 @@ export default {
         },
         clearForm(){
             this.dialog = false
+
             this.formTitle = "Add a new Event"
 
             this.id = undefined
-            this.recurringId = undefined
-            this.recurringOptionSelected = "Doesn't repeat"
             this.selectedColor = '#F07F1D'
-
-
 
             this.resetRecurringInfo()
             this.resetDatePicker()
             this.resetTextInputFields()
             this.resetTimePickers()
-            
             this.$refs.form.resetValidation()
         },
         resetRecurringInfo(){
+            this.recurringOptionSelected = "Doesn't repeat"
+            this.recurringId = undefined
             this.recurringInfo = {
                 type: 'none',
                 frequenzy: 0
@@ -309,21 +319,21 @@ export default {
             bus.$emit('notification', {
                 color: 'success',
                 message,
-                timeout: 2000
+                timeout: 7000
             })
         },
         sendEditedEventNotification(message){
             bus.$emit('notification', {
                 color: 'success',
                 message,
-                timeout: 4000
+                timeout: 7000
             })
         },
         sendErrorMessage(message){
             bus.$emit('notification', {
                 color: 'error',
                 message,
-                timeout:2000
+                timeout:7000
             })
         },
    },
@@ -344,7 +354,6 @@ export default {
             this.startTime = time
        })
        bus.$on('editEvent', event => {
-
            this.currEvent = event
            this.editEvent()
        })
@@ -383,13 +392,10 @@ export default {
               return this.startDate + this.startTimeAutocomplete
            },
            set(newDateAndTime){
-
                const [date,time] = newDateAndTime.split(' ')
-
                this.startDate = date
                if(time) {
                   this.startTime = time
-
                }
            }
        },
