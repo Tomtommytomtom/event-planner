@@ -217,13 +217,14 @@ export default {
     }),
     methods : {
         submitRecurringEdit(){
-            switch(this.editOptionSelected){
+            switch(this.editOptionSelected){                         //TODO: Maybe make recurring options editable too now.
             case 'Only This Event': 
                 EventService.updateEvent(this.currEvent)
                 this.sendEditedEventNotification(`Sucessfully edited single recurring Event "${this.currEvent.name}" starting on ${this.eventStartInWords}!`)
                 break
 
-            case 'This and all Sibling Events':
+            case 'This and All Sibling Events':
+                console.log('why is this not going on')
                 EventService.updateRecurringEventsInStatic(this.currEvent)
                 this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" Events!`)
                 break

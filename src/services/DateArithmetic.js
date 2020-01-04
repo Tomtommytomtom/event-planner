@@ -20,6 +20,13 @@ const dateObjectToString = (dateObject) => {
     return dateObject.toISOString().substr(0,10)
 }
 
+const isEventBeforeEvent = (eventOne, eventTwo) => {
+    eventOneObj.split(' ')[0] = dateStringToObject(eventOne)
+    eventTwoObj.split(' ')[0] = dateStringToObject(eventTwo)
+
+    return eventOneObj < eventTwoObj
+}
+
 const doesEventStartBeforeOrInMonth = (eventStart, dateInMonth) => {
 
     const startObj = dateStringToObject(eventStart)
@@ -189,5 +196,6 @@ export default {
     getDateofLastWeekdayInMonth,
     doesEventStartAfterOrOnDate,
     getDateInWords,
-    isMoreThanTwoYearsInTheFuture
+    isMoreThanTwoYearsInTheFuture,
+    isEventBeforeEvent
 }

@@ -4,49 +4,6 @@ import DateArithmetic from "./DateArithmetic"
 
 let staticEvents = []
 
-// let staticEvents = [
-//     {
-//       id: 1,
-//       name: 'Event 1',
-//       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
-//       start: '2019-12-02',
-//       end: '2019-12-06',
-//       color: 'secondary'
-//     },
-//     {
-//       id: 2,
-//       name: 'Event 2',
-//       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
-//       start: '2019-12-02',
-//       end: '2019-12-12',
-//       color: 'secondary'
-//     },
-//     {
-//       id:3,
-//       name: 'Event 3',
-//       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
-//       start: '2019-12-15',
-//       end: '2019-12-15',
-//       color: 'secondary'
-//     },
-//     {
-//       id: 4,
-//       name: 'Event 4',
-//       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
-//       start: '2019-12-02',
-//       end: '2019-12-05',
-//       color: 'secondary'
-//     },
-//     {
-//       id: 5,
-//       name: 'Event 5',
-//       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eu neque id nisl viverra faucibus. Nullam ac consectetur arcu. In gravida libero in velit accumsan interdum. Cras in massa magna',
-//       start: '2019-12-21',
-//       end: '2019-12-24',
-//       color: 'secondary'
-//     },
-//   ]
-
 const getAll = () => {
   return staticEvents
 }
@@ -72,7 +29,6 @@ const updateEvent = eventToUpdate => {
 }
 
 const updateRecurringEventsInStatic = eventToUpdate => {
-  RecurringEventService.updateOneEvent(eventToUpdate)
   let updatedEvents = []
 
   staticEvents = staticEvents.filter(event => {
@@ -90,11 +46,9 @@ const updateRecurringEventsInStatic = eventToUpdate => {
     }
   })
   staticEvents = staticEvents.concat(updatedEvents)
-
 }
 
 const updateRecurringEventsInStaticAfterEventStart = (eventToUpdate) => {
-  RecurringEventService.updateOneEvent(eventToUpdate)
   let updatedEvents = []
 
   staticEvents = staticEvents.filter(event => {
@@ -133,15 +87,24 @@ const deleteStaticEventsAndRecurringAfterDate = (recurringEvent) => {
 const giveNewEventAnId = event => {
   return {
     ...event,
-    id: getHighestAttributeInArray(staticEvents,'id') + 1
+    id: getHighestAttributeInArray('id') + 1
   }
 }
 
-const getHighestAttributeInArray = (array,attribute) => {
+const getFirstEventOfRecurringId = (recurringId) => {
+  staticEvents
+    .filter(event => event.recurringId === recurringId)
+    .reduce((acc, curr) => {
+      return DateArithmetic.isEventBeforeEvent(acc, curr)
+        ? acc
+        : curr
+    })
+}
 
-  return array.reduce((prev, curr) => {
-    return prev[attribute] >= curr[attribute]
-        ? prev[attribute]
+const getHighestAttributeInArray = (attribute) => {
+  return staticEvents.reduce((acc, curr) => {
+    return acc[attribute] >= curr[attribute]
+        ? acc[attribute]
         : curr[attribute]
   },0)
 }

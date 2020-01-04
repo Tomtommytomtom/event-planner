@@ -1,57 +1,14 @@
 import EventService from './EventService'
 import DateArithmetic from './DateArithmetic'
-let recurringEvents = []
 
 //------------------------------------------Mutators------------------------------------
 
-const addNewToStaticAndApplyForNow = (event, date) => {
-    applyRecurringEventsUntilEndOfNextMonth(date)
-    EventService.addOne(eventToAdd)
-}
 
-const addOne = event => {
-    recurringEvents.push(event)
-}
-
-const giveNewEventARecurringId = event => {
-    return {
-        ...event,
-        recurringId: EventService.getHighestAttributeInArray(recurringEvents, 'recurringId') + 1
-    }
-}
-
-const updateEvent = recurringEvent => {
-    recurringEvents = recurringEvents.filter(event => recurringEvent.recurringId !== event.recurringId)
-    recurringEvents.push(recurringEvent)
-}
-
-const updateOneEvent = recurringEvent => {
-    let newEvent
-    recurringEvents = recurringEvents.filter(event => {
-        if(recurringEvent.recurringId !== event.recurringId){
-            return true
-        } else {
-
-            newEvent = {
-                ...recurringEvent,
-                start: event.start,
-                end: event.end
-            }
-            return false
-        }
-    })
-
-    recurringEvents.push(newEvent)
-}
-
-const deleteEvent = recurringEvent => {
-    recurringEvents = recurringEvents.filter(event => recurringEvent.recurringId !== event.recurringId)
-}
 
 //----------------------------------------Applicators--------------------------------------------
 
 
-const applySingleRecurringToStatic = event => {
+const applySingleRecurringToStatic = event => {                   //TODO further clean this module, before submitting.
     const eventToAdd = giveNewEventARecurringId(event)
     EventService.addOne(eventToAdd)
 
@@ -64,8 +21,13 @@ const applySingleRecurringToStatic = event => {
         EventService.addOne(nextEvent)
         nextEvent = getNextEvent(nextEvent)
     }
+}
 
-    deleteEvent(nextEvent)
+const giveNewEventARecurringId = event => {
+    return {
+        ...event,
+        recurringId: EventService.getHighestAttributeInArray('recurringId') + 1
+    }
 }
 
 const getYearsToAddInDays = (event) => {
@@ -236,10 +198,5 @@ const getNextMonth = date => {
 
 
 export default {
-    addNewToStaticAndApplyForNow,
-    addOne,
-    updateOneEvent,
-    updateEvent,
-    deleteEvent,
     applySingleRecurringToStatic
 }
