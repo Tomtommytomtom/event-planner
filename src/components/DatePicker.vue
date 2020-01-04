@@ -29,6 +29,7 @@
 
 
 <script>
+//make v-model work properly in this
   import { bus } from '../main'
 
   export default {
@@ -45,18 +46,16 @@
         this.clicks++
       },
       sendData() {
-
         if(!this.isDateComboValid){
           this.swapDates()
         }
-        console.log('input event sent')
         this.$emit('input', {
           start: this.dates[0],
           end: this.dates[1]
         })
       },
       setDates(){
-        this.dates = [this.defaultDateStart, this.defaultDateEnd]
+        this.dates = [this.value.start, this.value.end]
       },
       formatDate(date){
         if(!date) return null
@@ -68,24 +67,15 @@
         this.dates = [this.dates[1], this.dates[0]]
       }
     },
-
     watch: {
+      value(){
+        this.setDates()
+      },
       clicks(){
         if(this.clicks == 2){
           this.clicks = 0
           this.dialog = false
         }
-      },
-      dates: function(){
-        //this.sendData(this.dates)
-      },
-      defaultDateStart: function(){
-
-        this.setDates()
-      },
-      defaultDateEnd: function(){
-
-        this.setDates()
       },
       dialog: function(){
         if(!this.dialog){
@@ -109,12 +99,15 @@
           const [endYear, endMonth, endDay] = this.dates[1].split('-')
 
           if(startYear > endYear){
+            console.log(startYear, 'is bigger than', endYear)
             return false
           } 
           if(startMonth > endMonth){
+            console.log(startMonth, 'is bigger than', endMonth)
             return false
           } 
-          if(startDay > endDay){
+          if(startDay > endDay && startMonth === endMonth){console.log(
+            startDay, 'is bigger than', endDay)
             return false
           } 
           return true
@@ -144,11 +137,5 @@
     created(){
         this.dates = [this.value.start, this.value.end]
     },
-
-    watch:{
-      value(){
-        this.dates = [this.value.start, this.value.end]
-      }
-    }
   }
 </script>

@@ -140,6 +140,7 @@ const applyRecurringToStaticEventsUntil = date => {
 
     eventsToApply.forEach(event => {
         let nextEvent = getNextEvent(event)
+        console.log('next event is ',nextEvent)
         let prevEvent = event
 
         while(shouldBeApplied(nextEvent.start, date)){
@@ -218,11 +219,17 @@ const getNextDateByFrequenzy = event => {
 
 const getNextDateForAnnual = event => {
     const start = event.start.split(' ')[0]
+    console.log(start)
     const end = event.start.split(' ')[0]
 
+    const startNextYear = getSameDateNextYear(start)
+    console.log(startNextYear)
+    const duration = getDurationOfEvent(event)
+    console.log(duration)
+
     return {
-        start: getSameDateNextYear(start) ,
-        end: getSameDateNextYear(end)
+        start: startNextYear,
+        end: dateArithmetic.addDaysToDate(startNextYear,duration)
     }
 }
 

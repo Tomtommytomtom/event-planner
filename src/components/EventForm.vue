@@ -347,9 +347,11 @@ export default {
        this.setToday()
 
        bus.$on('sendSelectedDate', date => {
-           this.dates.start = date
-           this.dates.end = date
            this.selectedDate = date
+           this.dates = {
+               start:date,
+               end:date
+           }
        })
        bus.$on('sendPickedDates', (dates) => {
            this.dates.start = dates[0]
@@ -435,8 +437,10 @@ export default {
            set(newEvent){
                this.nameInput = newEvent.name
                this.detailsInput = newEvent.details
-               this.dates.startAndTime = newEvent.start
-               this.dates.endAndTime = newEvent.end
+               this.dates = {
+                   start: newEvent.start,
+                   end: newEvent.end
+               }
                this.id = newEvent.id
                this.selectedColor = newEvent.color
                this.recurringInfo = {
