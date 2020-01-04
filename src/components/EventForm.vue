@@ -1,115 +1,117 @@
 <template>
-  <v-row justify="end">
-    <v-btn
-    right
-    bottom
-    fixed
-    app 
-    fab 
-    x-large 
-    color="primary" 
-    dark 
-    @click="dialog = true"
-    >
-        <v-icon x-large>
-            mdi-plus
-        </v-icon>
-    </v-btn>
-    <v-dialog
-        v-model="dialog"
-        width="80%"
-        :fullscreen="$vuetify.breakpoint.xsOnly"
-        @click:outside="clearForm"
-    >
-      <v-card class="pa-4">
-        <v-form ref="form" v-model="valid">
-            <v-card-title>
-                <span
-                    class="headline"
-                >{{ formTitle }}</span>
-            </v-card-title>
-                <v-container>
-                <v-text-field
-                    v-model="nameInput"
-                    dense
-                    label="Name"
-                    outlined
-                    :rules="[rules.required, rules.nameCounter, rules.nonWhiteSpaces]"
-                    counter="100"
-                >
-                </v-text-field>
-                <v-textarea
-                    v-model="detailsInput"
-                    dense
-                    label="Description"
-                    outlined
-                    clearable
-                    counter="500"
-                    :rules="[rules.descriptionCounter]"
-                    no-resize
-                ></v-textarea>
-            </v-container>
-            <v-container>
-                <v-row>
-                    <v-col>
-                        <date-picker 
-                            v-model="dates"
-                            label="Event Duration"
-                        ></date-picker>
-                    </v-col>
-                    <v-col>
-                        <recurrence-selector           
-                            v-model="recurringInfo"
-                            :curr-start-date="dates.start"
-                            :disabled="isEditing"
+    <v-row justify="end">
+        <v-btn
+        right
+        bottom
+        fixed
+        app 
+        fab 
+        x-large 
+        color="primary" 
+        dark 
+        @click="dialog = true"
+        >
+            <v-icon x-large>
+                mdi-plus
+            </v-icon>
+        </v-btn>
+        <v-dialog
+            v-model="dialog"
+            width="80%"
+            :fullscreen="$vuetify.breakpoint.xsOnly"
+            @click:outside="clearForm"
+        >
+            <v-card class="pa-4">
+                <v-form ref="form" v-model="valid">
+                    <v-card-title>
+                        <span
+                            class="headline"
+                        >{{ formTitle }}</span>
+                    </v-card-title>
+                    <v-container>
+                        <v-text-field
+                            v-model="nameInput"
+                            dense
+                            label="Name"
+                            outlined
+                            :rules="[rules.required, rules.nameCounter, rules.nonWhiteSpaces]"
+                            counter="100"
                         >
-                        </recurrence-selector>
-                    </v-col>
-                </v-row>
-            </v-container>
-            <v-divider class="mb-7"></v-divider>
-            <v-container>
-                <start-and-end-time-picker
-                    v-model="times"
-                    :current-dates="dates"
-                ></start-and-end-time-picker>
-            </v-container>
-            <v-card-actions>
-                <color-picker
-                    v-model="selectedColor"
-                ></color-picker>
-                <v-spacer></v-spacer>
-                <v-btn 
-                    color="primary"
-                    text
-                    @click="clearForm"
-                >cancel</v-btn>
-                <v-btn 
-                    color="primary" 
-                    text 
-                    :disabled="!valid" 
-                    @click="submitForm"
-                >Save</v-btn>
-            </v-card-actions>
-        </v-form>
-      </v-card>
+                        </v-text-field>
+                        <v-textarea
+                            v-model="detailsInput"
+                            dense
+                            label="Description"
+                            outlined
+                            clearable
+                            counter="500"
+                            :rules="[rules.descriptionCounter]"
+                            no-resize
+                        ></v-textarea>
+                    </v-container>
+                    <v-container>
+                        <v-row>
+                            <v-col>
+                                <date-picker 
+                                    v-model="dates"
+                                    label="Event Duration"
+                                ></date-picker>
+                            </v-col>
+                            <v-col>
+                                <recurrence-selector           
+                                    v-model="recurringInfo"
+                                    :curr-start-date="dates.start"
+                                    :disabled="isEditing"
+                                >
+                                </recurrence-selector>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                    <v-divider class="mb-7"></v-divider>
+                    <v-container>
+                        <start-and-end-time-picker
+                            v-model="times"
+                            :current-dates="dates"
+                        ></start-and-end-time-picker>
+                    </v-container>
+                    <v-card-actions>
+                        <color-picker
+                            v-model="selectedColor"
+                        ></color-picker>
+                        <v-spacer></v-spacer>
+                        <v-btn 
+                            color="primary"
+                            text
+                            @click="clearForm"
+                        >cancel</v-btn>
+                        <v-btn 
+                            color="primary" 
+                            text 
+                            :disabled="!valid" 
+                            @click="submitForm"
+                    >Save</v-btn>
+                </v-card-actions>
+            </v-form>
+        </v-card>
     </v-dialog>
     <v-dialog
             v-model="editDialog"
             width="80%"
-        >
-            <v-card>
-            <v-card-title>You're editing {{ currEvent.type }} recurring Event: {{ currEvent.name }} ?</v-card-title>
+    >
+        <v-card>
+            <v-card-title>
+                You're editing {{ currEvent.type }} recurring Event: {{ currEvent.name }} ?
+            </v-card-title>
             <v-container class="d-flex px-5">
                 <v-radio-group v-model="editOptionSelected">
-                          <v-radio
-                            class="text-no-wrap"
-                            color="primary"
-                            v-for="editOption in editOptions"
-                            :key="editOptions.indexOf(editOption)"
-                            :label="editOption"
-                            :value="editOption"
-                          ></v-radio>
+                    <v-radio
+                    class="text-no-wrap"
+                    color="primary"
+                    v-for="editOption in editOptions"
+                    :key="editOptions.indexOf(editOption)"
+                    :label="editOption"
+                    :value="editOption"
+                    ></v-radio>
                 </v-radio-group>
             </v-container>
                 <v-card flat class="d-flex ma-0 pa-3">
@@ -131,32 +133,32 @@
                 </v-card>
             </v-card>
         </v-dialog>
-  </v-row>
+    </v-row>
 </template>
 
 <script>
 
-import DatePicker from './DatePicker'
-import ColorPicker from './ColorPicker'
-import RecurrenceSelector from './RecurrenceSelector'
-import StartAndEndTimePicker from './StartAndEndTimePicker'
+import DatePicker from './event-form/DatePicker'
+import ColorPicker from './event-form/ColorPicker'
+import RecurrenceSelector from './event-form/RecurrenceSelector'
+import StartAndEndTimePicker from './event-form/StartAndEndTimePicker'
 
-import eventService from '@/services/eventService'
-import recurringEventService from '@/services/recurringEventService'
-import dateArithmetic from '@/services/dateArithmetic'
+import EventService from '@/services/EventService'
+import RecurringEventService from '@/services/RecurringEventService'
+import DateArithmetic from '@/services/DateArithmetic'
 
 import { bus } from '@/main'
 
 export default {
-   components: {
+    components: {
        DatePicker,
        ColorPicker,
        RecurrenceSelector,
        StartAndEndTimePicker
-   },
+    },
 
 
-   data: () => ({
+    data: () => ({
         recurringInfo: {
             type: 'none',
             frequenzy: 0
@@ -212,23 +214,23 @@ export default {
             },
 
         }
-   }),
+    }),
     methods : {
         submitRecurringEdit(){
             switch(this.editOptionSelected){
             case 'Only This Event': 
-                eventService.updateEvent(this.currEvent)
+                EventService.updateEvent(this.currEvent)
                 this.sendEditedEventNotification(`Sucessfully edited single recurring Event "${this.currEvent.name}" starting on ${this.eventStartInWords}!`)
                 break
 
             case 'This and all Sibling Events':
-                eventService.updateRecurringEventsInStatic(this.currEvent)
+                EventService.updateRecurringEventsInStatic(this.currEvent)
                 this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" Events!`)
                 break
 
             case 'This and all following sibling Events':
                 this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" Events starting on the ${this.eventStartInWords} and later!`)
-                eventService.updateRecurringEventsInStaticAfterEventStart(this.currEvent)
+                EventService.updateRecurringEventsInStaticAfterEventStart(this.currEvent)
                 break
             }
 
@@ -242,16 +244,16 @@ export default {
                     this.openEditDialog()
                     return
                 } else {
-                    eventService.addOrUpdate(this.currEvent)
+                    EventService.addOrUpdate(this.currEvent)
                     this.sendEditedEventNotification(`Successfully edited Event "${this.currEvent.name}!"`)
                 }
             } else {    
                 if(this.isRepeating){
-                    recurringEventService.addNewToStaticAndApplyForNow(this.currEvent, this.selectedDate)
+                    RecurringEventService.addNewToStaticAndApplyForNow(this.currEvent, this.selectedDate)
                     this.sendAddedEventNotification(`Successfully added recurring Event "${this.currEvent.name}"!`)
                 } else {
                     this.sendAddedEventNotification(`Successfully added Event "${this.currEvent.name}"!`)
-                    eventService.addOne(this.currEvent)
+                    EventService.addOne(this.currEvent)
                 }
             }
             this.clearForm()
@@ -313,7 +315,6 @@ export default {
             this.selectedDate = today
         },
         setStartTime(time){
-
             this.times.start = time
         },
         sendAddedEventNotification(message){
@@ -337,129 +338,129 @@ export default {
                 timeout:7000
             })
         },
-   },
-   created(){
-       this.setToday()
+    },
+    created(){
+        this.setToday()
 
-       bus.$on('sendSelectedDate', date => {
+        bus.$on('sendSelectedDate', date => {
            this.selectedDate = date
            this.dates = {
                start:date,
                end:date
            }
-       })
-       bus.$on('sendPickedDates', (dates) => {
-           this.dates.start = dates[0]
-           this.dates.end = dates[1]
-       })
-       bus.$on('openForm', () => this.dialog = true)
-       bus.$on('sendStartTime', time => {
-            this.times = {
-                start: time,
-                end: ''
-            }
-       })
-       bus.$on('editEvent', event => {
-           this.currEvent = event
-           this.editEvent()
-       })
-
-   },
-   computed: {
-       isEditing(){
-           return !!this.currEvent.id
-       },
-       isRepeating(){
-          return this.currEvent.type !== "none"
-       },
-       startTimeAutocomplete(){
-           if(!this.times.start && this.times.end){
-               return " 00:00"
-           } else if(!this.times.start && !this.times.end){
-               return ''
-           } else {
-               return ' ' + this.times.start
-           }
-       },
-       endTimeAutocomplete(){
-           console.log('heyaaaaaaa')
-           if(this.times.start && !this.times.end){
-               return " 23:59"
-           } else if(!this.times.start && !this.times.end){
-               return ''
-           }else{
-               return ' ' + this.times.end
-           }
-       },
-       eventStartInWords(){
-           return dateArithmetic.getDateInWords(this.currEvent.start)
-       },
-       startDateAndTime:{
-           get(){
-              return this.dates.start + this.startTimeAutocomplete
-           },
-           set(newDateAndTime){
-               const [date,time] = newDateAndTime.split(' ')
-               this.dates = {
-                   ...this.dates,
-                   start: date
-               }
-               if(time) {
-                  this.times = {
-                      ...this.times,
-                      start: time
-                  }
-               }
-           }
-       },
-       endDateAndTime:{
-           get(){
-                return this.dates.end + this.endTimeAutocomplete
-           },
-           set(newDateAndTime){
-               const [date,time] = newDateAndTime.split(' ')
-               this.dates = {
-                   ...this.dates,
-                   end: date
-               }
-               if(time){
-                  this.times = {
-                      ...this.times,
-                      end: time
-                  }
-               } 
-           }
-       },
-       currEvent:{
-           get(){
-                const event = {
-                    name: this.nameInput,
-                    details: this.detailsInput,
-                    start: this.startDateAndTime,
-                    end: this.endDateAndTime,
-                    id: this.id,
-                    color: this.selectedColor,
-                    type: this.recurringInfo.type,
-                    frequenzy: this.recurringInfo.frequenzy,
-                    recurringId: this.recurringId
+        })
+        bus.$on('sendPickedDates', (dates) => {
+            this.dates.start = dates[0]
+            this.dates.end = dates[1]
+        })
+        bus.$on('openForm', () => this.dialog = true)
+        bus.$on('sendStartTime', time => {
+                this.times = {
+                    start: time,
+                    end: ''
                 }
-                return event
-           },
-           set(newEvent){
-               this.nameInput = newEvent.name
-               this.detailsInput = newEvent.details
-               this.startDateAndTime = newEvent.start
-               this.endDateAndTime = newEvent.end
-               this.id = newEvent.id
-               this.selectedColor = newEvent.color
-               this.recurringInfo = {
-                   type: newEvent.type,
-                   frequenzy: newEvent.frequenzy
-               },
-               this.recurringId = newEvent.recurringId
-           }
-       },
-   }
+        })
+        bus.$on('editEvent', event => {
+            this.currEvent = event
+            this.editEvent()
+        })
+
+    },
+    computed: {
+        isEditing(){
+            return !!this.currEvent.id
+        },
+        isRepeating(){
+            return this.currEvent.type !== "none"
+        },
+        startTimeAutocomplete(){
+            if(!this.times.start && this.times.end){
+                return " 00:00"
+            } else if(!this.times.start && !this.times.end){
+                return ''
+            } else {
+                return ' ' + this.times.start
+            }
+        },
+        endTimeAutocomplete(){
+            console.log('heyaaaaaaa')
+            if(this.times.start && !this.times.end){
+                return " 23:59"
+            } else if(!this.times.start && !this.times.end){
+                return ''
+            }else{
+                return ' ' + this.times.end
+            }
+        },
+        eventStartInWords(){
+            return DateArithmetic.getDateInWords(this.currEvent.start)
+        },
+        startDateAndTime:{
+            get(){
+                return this.dates.start + this.startTimeAutocomplete
+            },
+            set(newDateAndTime){
+                const [date,time] = newDateAndTime.split(' ')
+                this.dates = {
+                    ...this.dates,
+                    start: date
+                }
+                if(time) {
+                    this.times = {
+                        ...this.times,
+                        start: time
+                    }
+                }
+            }
+        },
+        endDateAndTime:{
+            get(){
+                    return this.dates.end + this.endTimeAutocomplete
+            },
+            set(newDateAndTime){
+                const [date,time] = newDateAndTime.split(' ')
+                this.dates = {
+                    ...this.dates,
+                    end: date
+                }
+                if(time){
+                    this.times = {
+                        ...this.times,
+                        end: time
+                    }
+                } 
+            }
+        },
+        currEvent:{
+            get(){
+                    const event = {
+                        name: this.nameInput,
+                        details: this.detailsInput,
+                        start: this.startDateAndTime,
+                        end: this.endDateAndTime,
+                        id: this.id,
+                        color: this.selectedColor,
+                        type: this.recurringInfo.type,
+                        frequenzy: this.recurringInfo.frequenzy,
+                        recurringId: this.recurringId
+                    }
+                    return event
+            },
+            set(newEvent){
+                this.nameInput = newEvent.name
+                this.detailsInput = newEvent.details
+                this.startDateAndTime = newEvent.start
+                this.endDateAndTime = newEvent.end
+                this.id = newEvent.id
+                this.selectedColor = newEvent.color
+                this.recurringInfo = {
+                    type: newEvent.type,
+                    frequenzy: newEvent.frequenzy
+                },
+                this.recurringId = newEvent.recurringId
+            }
+        },
+    }
 
 }
 </script>

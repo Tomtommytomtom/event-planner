@@ -24,8 +24,9 @@
 </template>
 
 <script>
-import dateArithmetic from '@/services/dateArithmetic'
-import CustomOptionForm from './CustomOptionForm'
+import DateArithmetic from '@/services/DateArithmetic'
+
+import CustomOptionForm from './recurrence-selector/CustomOptionForm'
 
 export default {
     props: ['value','currStartDate','disabled'], //value = { type, frequenzy }
@@ -179,20 +180,20 @@ export default {
                }
         },
         isCurrWeekdayLast(){
-        const result = dateArithmetic.isLastWeekdayOfMonth(this.startDate)
+        const result = DateArithmetic.isLastWeekdayOfMonth(this.startDate)
         return result
         },
         currWeekday(){
-            return this.weekdays[dateArithmetic.getWeekday(this.startDate)]
+            return this.weekdays[DateArithmetic.getWeekday(this.startDate)]
         },
         currNthWeekday(){
-            const [nth, weekday] = dateArithmetic.getNthWeekday(this.startDate)
+            const [nth, weekday] = DateArithmetic.getNthWeekday(this.startDate)
 
             const nthString = ['','first','second','third','fourth','fifth']
             return nthString[nth]
         },
         dateInWords(){
-            return dateArithmetic.getMonthAndDayInWords(this.startDate)
+            return DateArithmetic.getMonthAndDayInWords(this.startDate)
         },
     },
     watch: {

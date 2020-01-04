@@ -1,78 +1,6 @@
-import eventService from './eventService'
-import dateArithmetic from './dateArithmetic'
+import EventService from './EventService'
+import DateArithmetic from './DateArithmetic'
 let recurringEvents = []
-// let recurringEvents = [
-//     {
-//       recurringId: 1,
-//       name: 'Bi-Weekly Event',
-//       details: 'dummy event reocurring weekly',
-//       type: 'custom-days',
-//       start: '2019-12-03',
-//       end: '2019-12-03',
-//       color: 'secondary',
-//       frequenzy: 14
-//     },
-//     {
-//       recurringId: 2,
-//       name: 'Weekly Event',
-//       details: 'dummy event reocurring weekly',
-//       type: 'weekly',
-//       start: '2019-12-05',
-//       end: '2019-12-05',
-//       color: 'secondary',
-//       frequenzy: 7
-//     },
-//     {
-//         recurringId: 3,
-//         name: 'Annual Event',
-//         details: 'dummy event reocurring weekly',
-//         type: 'annualy',
-//         start: '2017-12-11',
-//         end: '2017-12-11',
-//         color: 'secondary',
-//         frequenzy: 2
-//     },
-//     {
-//         recurringId: 4,
-//         name: 'Monthly',
-//         details: 'On Every second Saturday of wednesday',
-//         type: 'monthly',
-//         start: '2019-12-28',
-//         end: '2019-12-28',
-//         color: 'secondary',
-//         frequenzy: 0
-//     },
-//     {
-//       recurringId: 5,
-//       name: 'On every Weekday',
-//       details: 'From Monday to Friday',
-//       start: '2019-12-2',
-//       end: '2019-12-2',
-//       type: 'weekdays',
-//       color: 'secondary',
-//       frequenzy: 0
-//     },
-//     {
-//         recurringId: 6,
-//         name: 'My Birthday',
-//         details: '11th of july',
-//         start: '2019-07-11',
-//         end: '2019-07-11',
-//         type: 'annualy',
-//         color: 'primary',
-//         frequenzy: 0
-//     },
-//     {
-//         recurringId: 7,
-//         name: 'Lauras Birthday',
-//         details: 'better not forget',
-//         start: '2019-04-02',
-//         end: '2019-04-02',
-//         type: 'annualy',
-//         color: 'primary',
-//         frequenzy: 0
-//     },
-// ]
 
 //------------------------------------------Mutators------------------------------------
 
@@ -80,7 +8,7 @@ const addNewToStaticAndApplyForNow = (event, date) => {
     const eventToAdd = giveNewEventARecurringId(event)
     addOne(eventToAdd)
     applyRecurringEventsUntilEndOfNextMonth(date)
-    eventService.addOne(eventToAdd)
+    EventService.addOne(eventToAdd)
 }
 
 const addOne = event => {
@@ -90,7 +18,7 @@ const addOne = event => {
 const giveNewEventARecurringId = event => {
     return {
         ...event,
-        recurringId: eventService.getHighestAttributeInArray(recurringEvents, 'recurringId') + 1
+        recurringId: EventService.getHighestAttributeInArray(recurringEvents, 'recurringId') + 1
     }
 }
 
@@ -144,7 +72,7 @@ const applyRecurringToStaticEventsUntil = date => {
         let prevEvent = event
 
         while(shouldBeApplied(nextEvent.start, date)){
-            eventService.addOne(nextEvent)
+            EventService.addOne(nextEvent)
             prevEvent = nextEvent
             nextEvent = getNextEvent(nextEvent)
         }
@@ -159,7 +87,7 @@ const getEventsToApplyForMonth = date => {
 }
 
 const isAlrdyInStaticForMonth = (event, date) => {
-    const result = eventService
+    const result = EventService
         .getAllEventsInMonth(date)
         .map(staticEvent => staticEvent.recurringId)
         .includes(event.recurringId)
@@ -212,8 +140,8 @@ const getNextEvent = event => {
 
 const getNextDateByFrequenzy = event => {
     return {
-        start: dateArithmetic.addDaysToDate(event.start, event.frequenzy),
-        end: dateArithmetic.addDaysToDate(event.end, event.frequenzy)
+        start: DateArithmetic.addDaysToDate(event.start, event.frequenzy),
+        end: DateArithmetic.addDaysToDate(event.end, event.frequenzy)
     }
 }
 
@@ -229,7 +157,7 @@ const getNextDateForAnnual = event => {
 
     return {
         start: startNextYear,
-        end: dateArithmetic.addDaysToDate(startNextYear,duration)
+        end: DateArithmetic.addDaysToDate(startNextYear,duration)
     }
 }
 
@@ -239,11 +167,11 @@ const getNextDateForMonthly = event => {
 }
 
 const getNthWeekdayForMonthly = (event) => {
-    const [nth,weekday] = dateArithmetic.getNthWeekday(event.start)
+    const [nth,weekday] = DateArithmetic.getNthWeekday(event.start)
     const nextMonth = getNextMonth(event.start)
 
-    const eventStart = dateArithmetic.getNthWeekdayOfMonth(nth,weekday, nextMonth)
-    const eventEnd = dateArithmetic.addDaysToDate(eventStart, getDurationOfEvent(event))
+    const eventStart = DateArithmetic.getNthWeekdayOfMonth(nth,weekday, nextMonth)
+    const eventEnd = DateArithmetic.addDaysToDate(eventStart, getDurationOfEvent(event))
     
     return {
         start: eventStart,
@@ -252,21 +180,21 @@ const getNthWeekdayForMonthly = (event) => {
 }
 
 const getLastWeekdayForMonthly = (event) => {
-    const weekday = dateArithmetic.getWeekday(event.start)
+    const weekday = DateArithmetic.getWeekday(event.start)
     const duration = getDurationOfEvent(event)
     
     const nextMonth = getNextMonth(event.start)
 
-    const start = dateArithmetic.getDateofLastWeekdayInMonth(weekday,nextMonth)
-    const end = dateArithmetic.addDaysToDate(start, duration)
+    const start = DateArithmetic.getDateofLastWeekdayInMonth(weekday,nextMonth)
+    const end = DateArithmetic.addDaysToDate(start, duration)
 
     return { start, end }
 }
 
 const getNextDateForWeekdays = event => {
     return {
-        start: dateArithmetic.getNextWeekday(event.start),
-        end: dateArithmetic.getNextWeekday(event.end)
+        start: DateArithmetic.getNextWeekday(event.start),
+        end: DateArithmetic.getNextWeekday(event.end)
     }
 }
 
@@ -286,7 +214,7 @@ const getEventTime = dateAndTime => {
 }
 
 const shouldBeApplied = (eventStart, date) => {
-    return dateArithmetic.doesEventStartBeforeDate(eventStart, date)
+    return DateArithmetic.doesEventStartBeforeDate(eventStart, date)
 }
 
 
@@ -302,7 +230,7 @@ const getDurationOfEvent = event => {
     if(startDate === endDate){
         return 0
     } else {
-        return dateArithmetic.getDifference(endDate, startDate)
+        return DateArithmetic.getDifference(endDate, startDate)
     }
 }
 

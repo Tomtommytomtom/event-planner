@@ -1,9 +1,9 @@
 # event-planner
 Author: Tom Pillokat
 
-[Live Demo Here](https://event-planner-usd-task.herokuapp.com/)
-
 A simple Frontend of a Single Page Application Event Planner/Calender built with vue.js and vuetify
+
+[Live Demo Here](https://event-planner-usd-task.herokuapp.com/)
 
 ## Project setup
 ```

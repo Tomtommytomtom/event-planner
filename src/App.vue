@@ -1,18 +1,18 @@
 <template>
-  <v-app>
-    <v-app-bar
-        app
-        class="primary"
-        dark
-      >
-        <h1><span class="font-weight-light">EVENT</span><span class="font-weight-regular grey--text text--darken-4">PLANNER</span></h1>
-    </v-app-bar>
-    <v-content class="white">
-      <calendar></calendar>
-      <event-form></event-form>
-      <notifications></notifications>
-    </v-content>
-  </v-app>
+    <v-app>
+         <v-app-bar
+            app
+            class="primary"
+            dark
+        >
+            <h1><span class="font-weight-light">EVENT</span><span class="font-weight-regular grey--text text--darken-4">PLANNER</span></h1>
+        </v-app-bar>
+        <v-content class="white">
+            <calendar></calendar>
+            <event-form></event-form>
+            <notifications></notifications>
+       </v-content>
+    </v-app>
 </template>
 
 <script>
@@ -22,17 +22,16 @@ import Notifications from '@/components/Notifications'
 
 
 export default {
-  
-  name: 'App',
+    name: 'App',
 
-  components: {
-    Calendar,
-    EventForm,
-    Notifications    
-  },
+    components: {
+        Calendar,
+        EventForm,
+        Notifications    
+    },
 
-  data: () => ({
+    data: () => ({
 
-  }),
+    }),
 };
 </script>

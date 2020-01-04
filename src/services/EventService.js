@@ -1,6 +1,6 @@
-import recurringEventService from "./recurringEventService"
+import RecurringEventService from "./RecurringEventService"
 import { stat } from "fs"
-import dateArithmetic from "./dateArithmetic"
+import DateArithmetic from "./DateArithmetic"
 
 let staticEvents = []
 
@@ -72,7 +72,7 @@ const updateEvent = eventToUpdate => {
 }
 
 const updateRecurringEventsInStatic = eventToUpdate => {
-  recurringEventService.updateOneEvent(eventToUpdate)
+  RecurringEventService.updateOneEvent(eventToUpdate)
   let updatedEvents = []
 
   staticEvents = staticEvents.filter(event => {
@@ -94,11 +94,11 @@ const updateRecurringEventsInStatic = eventToUpdate => {
 }
 
 const updateRecurringEventsInStaticAfterEventStart = (eventToUpdate) => {
-  recurringEventService.updateOneEvent(eventToUpdate)
+  RecurringEventService.updateOneEvent(eventToUpdate)
   let updatedEvents = []
 
   staticEvents = staticEvents.filter(event => {
-    if(eventToUpdate.recurringId === event.recurringId && dateArithmetic.doesEventStartAfterOrOnDate(event.start,eventToUpdate.start)){
+    if(eventToUpdate.recurringId === event.recurringId && DateArithmetic.doesEventStartAfterOrOnDate(event.start,eventToUpdate.start)){
       const eventWithCorrectId = {
         ...eventToUpdate,
         start: event.start,
@@ -116,7 +116,7 @@ const updateRecurringEventsInStaticAfterEventStart = (eventToUpdate) => {
 
 const deleteStaticEventsAndRecurring = recurringEvent => {
   deleteEvent(recurringEvent, 'recurringId')
-  recurringEventService.deleteEvent(recurringEvent)
+  RecurringEventService.deleteEvent(recurringEvent)
 }
 
 const deleteEvent = (eventToDelete, identifier) => {
@@ -125,9 +125,9 @@ const deleteEvent = (eventToDelete, identifier) => {
 
 const deleteStaticEventsAndRecurringAfterDate = (recurringEvent) => {
   staticEvents = staticEvents.filter(event => {
-    return !(event.recurringId === recurringEvent.recurringId && dateArithmetic.doesEventStartAfterOrOnDate(event.start, recurringEvent.start))
+    return !(event.recurringId === recurringEvent.recurringId && DateArithmetic.doesEventStartAfterOrOnDate(event.start, recurringEvent.start))
   })
-  recurringEventService.deleteEvent(recurringEvent)
+  RecurringEventService.deleteEvent(recurringEvent)
 }
 
 const giveNewEventAnId = event => {

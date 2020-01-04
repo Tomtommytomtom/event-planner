@@ -172,7 +172,6 @@
             </v-card>
           </v-menu>
         </v-sheet>
-
       </v-col>
     </v-row>
   </v-container>
@@ -180,10 +179,10 @@
 
 <script>
 
-import recurringEventService from '@/services/recurringEventService'
-import eventService from '@/services/eventService'
+import RecurringEventService from '@/services/RecurringEventService'
+import EventService from '@/services/EventService'
 
-import CalendarPicker from './CalendarPicker'
+import CalendarPicker from './calendar/CalendarPicker'
 
 import { bus } from '@/main'
 
@@ -269,7 +268,7 @@ import { bus } from '@/main'
         bus.$emit('openForm')
       },
       deleteSelectedEvent(event){
-        eventService.deleteEvent(event,'id')
+        EventService.deleteEvent(event,'id')
         this.deleteDialog = false
         this.selectedOpen = false
         this.refreshEvents()
@@ -278,15 +277,15 @@ import { bus } from '@/main'
         switch(this.radioGroup){
           case 'Only This Event': 
 
-            eventService.deleteEvent(event,'id')
+            EventService.deleteEvent(event,'id')
             break
           case 'This and All Sibling Events':
 
-            eventService.deleteStaticEventsAndRecurring(event)
+            EventService.deleteStaticEventsAndRecurring(event)
             break
           case 'This and all following sibling Events':
 
-            eventService.deleteStaticEventsAndRecurringAfterDate(event)
+            EventService.deleteStaticEventsAndRecurringAfterDate(event)
             break
         }
         
@@ -307,7 +306,7 @@ import { bus } from '@/main'
         bus.$emit('sendSelectedDate', dayAndTime.date )
       },
       refreshEvents(){
-        this.events = eventService.getAll()
+        this.events = EventService.getAll()
       },
       viewDayOrOpenForm( dayAndTime ) {
         this.focus = dayAndTime.date
@@ -349,7 +348,7 @@ import { bus } from '@/main'
         this.start = start
         this.end = end
 
-        recurringEventService.applyRecurringEventsUntilEndOfNextMonth(start.date)
+        RecurringEventService.applyRecurringEventsUntilEndOfNextMonth(start.date)
       },
       nth (d) {
         return d > 3 && d < 21

@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import IncrementTextField from './helper/IncrementTextField'
+import IncrementTextField from './IncrementTextField'
 
 export default {
     props: ['value'], //value = { frequenzy, type + '-custom'}
