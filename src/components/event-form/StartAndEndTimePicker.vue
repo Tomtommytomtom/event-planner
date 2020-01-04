@@ -17,6 +17,9 @@
 
 <script>
 import TimePicker from './TimePicker'
+
+import { bus } from '@/main'
+
 export default {
     components: {
         TimePicker
@@ -44,7 +47,10 @@ export default {
                 start: this.times.end,
                 end: this.times.start
             }
-            //TODO send notification that its been swapped.
+            bus.$emit('info',{
+                message:'Times were invalid, so they have been swapped.',
+                timeout: 4000
+            })
         },
         sendTimes(){
             this.correctTimes()

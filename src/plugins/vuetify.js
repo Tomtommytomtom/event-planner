@@ -9,9 +9,9 @@ export default new Vuetify({
             light: {
                 primary: '#F07F1D',
                 secondary: '#A3A3A3',
-                success: '#006b3a',
-                info: '#1E90FF',
-                error: 	'#FF1493',
+                success: '#2baf55',
+                info: '#1e8eff',
+                error: 	'#b5294a',
             }
         }
     }

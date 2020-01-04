@@ -46,7 +46,7 @@
 import IncrementTextField from './IncrementTextField'
 
 export default {
-    props: ['value'], //value = { frequenzy, type + '-custom'}
+    props: ['value'], 
 
     components: {
         IncrementTextField

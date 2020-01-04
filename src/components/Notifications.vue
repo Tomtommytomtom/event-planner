@@ -1,19 +1,24 @@
 <template>
+    <div>
         <v-snackbar
-            v-model="snackbar"
-            bottom
-            :timeout="timeout"
-            :color="color"
+            v-for="snackbar in snackbars"
+            :key="snackbar.id"
+            v-model="snackbar.active"
+            :bottom="snackbar.bottom"
+            :top="!snackbar.bottom"
+            :timeout="snackbar.timeout"
+            :color="snackbar.color"
         >
-            {{message}}
+            {{snackbar.message}}
             <v-btn
                 color="white"
                 text
-                @click="snackbar = false"
+                @click="snackbar.active = false"
             >
                 Close
             </v-btn>
         </v-snackbar> 
+    </div>
 </template>
 
 <script>
@@ -23,21 +28,62 @@ export default {
     props: ['value'],
 
     data: () => ({
-        color: 'success',
         message: 'default',
-        timeout: 2000,
-        snackbar: false
+
+        snackbars:{
+
+            success: {
+                timeout: 2000,
+                color: 'success',
+                message: 'default',
+                active: false,
+                id:0,
+                bottom: true
+            },
+
+            info: {
+                timeout: 2000,
+                color: 'info',
+                message: 'default',
+                active: false,
+                id:1,
+                bottom: false
+            },
+
+            error: {
+                timeout: 2000,
+                color: 'error',
+                message: 'default',
+                active: false,
+                id:2,
+                bottom: true
+            }
+        }
+        
     }),
 
     methods:{
+        setSnackbar(type, args){
+            const snackbar = this.snackbars[type]
 
+            snackbar.message = args.message
+            snackbar.timeout = args.timeout
+            snackbar.active = true
+        }
     },
+
+    computed:{
+    },
+
     created(){
-        bus.$on('notification', args => {
-            this.color = args.color
-            this.message = args.message
-            this.timeout = args.timeout
-            this.snackbar = true
+        bus.$on('success', args => {
+            this.setSnackbar('success', args)
+        })
+        bus.$on('info', args => {
+            this.setSnackbar('info', args)
+        })
+        bus.$on('error', args => {
+            this.setSnackbar('error', args)
         })
     }
 }

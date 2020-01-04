@@ -249,6 +249,8 @@ export default {
                 }
             } else {    
                 if(this.isRepeating){
+                    this.limitRecurringEvents()
+
                     RecurringEventService.addNewToStaticAndApplyForNow(this.currEvent, this.selectedDate)
                     this.sendAddedEventNotification(`Successfully added recurring Event "${this.currEvent.name}"!`)
                 } else {
@@ -318,25 +320,38 @@ export default {
             this.times.start = time
         },
         sendAddedEventNotification(message){
-            bus.$emit('notification', {
-                color: 'success',
+            bus.$emit('success', {
                 message,
                 timeout: 7000
             })
         },
         sendEditedEventNotification(message){
-            bus.$emit('notification', {
-                color: 'success',
+            bus.$emit('success', {
                 message,
                 timeout: 7000
             })
         },
         sendErrorMessage(message){
-            bus.$emit('notification', {
-                color: 'error',
+            bus.$emit('sucess', {
                 message,
                 timeout:7000
             })
+        },
+        setDurationToOneDay(){
+            this.dates = {
+                ...this.dates,
+                end: this.dates.start   
+            }
+        },
+        limitRecurringEvents(){
+            if(this.isDaily && this.isLongerThanOneDay){
+                this.setDurationToOneDay()
+
+                bus.$emit('info', {
+                    message: 'Daily Events cannot be longer than one day, duration has been changed',
+                    timeout: 7000
+                })
+            }
         },
     },
     created(){
@@ -367,6 +382,12 @@ export default {
 
     },
     computed: {
+        isLongerThanOneDay(){
+            return this.dates.start !== this.dates.end
+        },
+        isDaily(){
+            return this.recurringInfo.type.includes('daily') && this.recurringInfo.frequenzy === 1
+        },
         isEditing(){
             return !!this.currEvent.id
         },

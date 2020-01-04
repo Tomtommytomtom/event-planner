@@ -65,7 +65,6 @@
             },
             swapDates(){
                 this.dates = [this.dates[1], this.dates[0]]
-                //TODO send notification that it has been swapped
             }
         },
         watch: {
