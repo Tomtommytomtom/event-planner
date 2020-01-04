@@ -127,6 +127,7 @@ export default {
                 const selected = newType.split(' ')[0]
                 let frequenzy = this.frequenzy
                 let result = this.recurringType
+                console.log(selected,' selected ', newType)
                 switch(selected){
                     case "Doesn't":
                         result  = 'none'
@@ -140,7 +141,7 @@ export default {
                         result  = 'weekly'
                         break
                     case "Monthly":
-                        if(this.recurringType.includes('last')){
+                        if(newType.includes('last')){
                             result  = 'monthlylast'
                         break
                         } else {
