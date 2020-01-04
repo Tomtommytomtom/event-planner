@@ -1,74 +1,79 @@
 <template>
-      <v-menu
-        ref="menu"
-        v-model="menu2"
-        :close-on-content-click="false"
-        :nudge-right="40"
-        :return-value.sync="time"
-        transition="scale-transition"
-        offset-y
-        max-width="290px"
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on }">
-          <v-text-field
-            v-model="time"
-            :label="label"
+        <v-autocomplete
+            ref="autocomplete"
+            @click:prepend="$refs.autocomplete.focus()"
+            v-model="timeDisplay"
             placeholder="00:00"
+            :label="label"
+            :items="items"
+            @change="updateTime"
             outlined
             dense
-            :readonly="$vuetify.breakpoint.xsOnly"
-            v-on="on"
-          >
-            <template v-slot:prepend>
-              <v-icon
-                @click="menu2 = true"
-              >
-                mdi-calendar-clock
-              </v-icon>
-            </template>
-          </v-text-field>
-        </template>
-        <v-time-picker
-          v-if="menu2"
-          v-model="time"
-          :allowed-minutes="allowedMinutes"
-          @click:minute="$refs.menu.save(time)"
-          @change="sendData"
-        ></v-time-picker>
-      </v-menu>
+            prepend-icon="mdi-calendar-clock"
+        >
+        </v-autocomplete>
 </template>
 
-
 <script>
-  import { bus } from '../main'
+    export default {
+        props: ['value','label'],
 
-  export default {
-    props: ['label','defaultTime'],
-    data () {
-      return {
-        time: null,
-        menu2: false,
-        allowedMinutes: min => min % 5 === 0
-      }
-    },
-    watch: {
-        clear: function(){
-            this.time = null
-        }
-    },
-    methods: {
-      sendData(){
-        bus.$emit(`sendSelectedTime ${this.label}`, this.time)
-      }
-    },
-    watch: {
-      defaultTime(){
-        this.time = this.defaultTime
-      }
-    },
-    created() {
-       this.time = this.defaultTime
+        data: () => ({
+            dialog: false,
+            hours: null,
+            minutes: null,
+            time: '00:00',
+            items: [] 
+        }),
+        methods :{
+            setInitialTime(){
+                this.time = this.value
+            },
+            updateTime(){
+                this.$emit('input', this.time)
+            },
+            getTimes(){
+                let listOfTimes = []
+                for(let hours = 0 ; hours < 24 ; hours++){
+                    for(let minutes = 0 ; minutes < 60 ; minutes = minutes + 5)
+                    listOfTimes.push(`${String(hours).padStart(2,'0')}:${String(minutes).padStart(2,'0')}`)
+                }
+                listOfTimes = listOfTimes.concat(['23:59','Start of Day', 'for the rest of the Day'])
+                return listOfTimes 
+            },
+        },
+
+        computed :{
+            timeDisplay:{
+                get(){
+                    if(this.time  === '00:00'){
+                        return 'Start of Day'
+                    } else if(this.time === '23:59'){
+                        return 'for the rest of the Day'
+                    } else {
+                        return this.time
+                    }
+                },
+                set(newValue){
+                    if(newValue === 'Start of Day'){
+                        this.time = '00:00'
+                    } else if(newValue === 'for the rest of the Day'){
+                        this.time = '23:59'
+                    } else {
+                        this.time = newValue
+                    }
+                }
+            }
+        },
+
+        created(){
+            this.setInitialTime()
+            this.items = this.getTimes()
+        },
+        watch: {
+            value(){
+                this.time = this.value
+            }
+        },
     }
-  }
 </script>

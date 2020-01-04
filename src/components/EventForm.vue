@@ -69,20 +69,10 @@
             </v-container>
             <v-divider class="mb-7"></v-divider>
             <v-container>
-                <v-row>
-                    <v-col>
-                        <NewTimePicker 
-                            v-model="startTime" 
-                            label="Start Time"
-                        ></NewTimePicker>
-                    </v-col>
-                    <v-col>
-                        <NewTimePicker 
-                            v-model="endTime"
-                            label="End Time"
-                        ></NewTimePicker>
-                    </v-col>
-                </v-row>
+                <start-and-end-time-picker
+                    v-model="times"
+                    :current-dates="dates"
+                ></start-and-end-time-picker>
             </v-container>
             <v-card-actions>
                 <ColorPicker
@@ -147,10 +137,9 @@
 <script>
 
 import DatePicker from './DatePicker'
-import TimePicker from './TimePicker'
 import ColorPicker from './ColorPicker'
-import NewTimePicker from './NewTimePicker'
 import RecurrenceSelector from './RecurrenceSelector'
+import StartAndEndTimePicker from './StartAndEndTimePicker'
 
 import eventService from '@/services/eventService'
 import recurringEventService from '@/services/recurringEventService'
@@ -160,11 +149,10 @@ import { bus } from '@/main'
 
 export default {
    components: {
-       TimePicker,
        DatePicker,
        ColorPicker,
-       NewTimePicker,
-       RecurrenceSelector
+       RecurrenceSelector,
+       StartAndEndTimePicker
    },
 
 
@@ -197,8 +185,13 @@ export default {
             end: ''
         },
 
-        startTime: null,
-        endTime: null,
+        times: {
+            start: null,
+            end: null
+        },
+
+        startTime: '',
+        endTime: '',
 
         selectedColor: '#F07F1D',
 
@@ -308,8 +301,10 @@ export default {
             this.detailsInput = ''
         },
         resetTimePickers(){
-            this.startTime = null
-            this.endTime = null
+            this.times = {
+                start: '',
+                end: ''
+            }
         },
         setToday(){
             const today = new Date().toISOString().substr(0,10)
@@ -319,7 +314,7 @@ export default {
         },
         setStartTime(time){
 
-            this.startTime = time
+            this.times.start = time
         },
         sendAddedEventNotification(message){
             bus.$emit('notification', {
@@ -359,7 +354,10 @@ export default {
        })
        bus.$on('openForm', () => this.dialog = true)
        bus.$on('sendStartTime', time => {
-            this.startTime = time
+            this.times = {
+                start: time,
+                end: ''
+            }
        })
        bus.$on('editEvent', event => {
            this.currEvent = event
@@ -375,21 +373,22 @@ export default {
           return this.currEvent.type !== "none"
        },
        startTimeAutocomplete(){
-           if(!this.startTime && this.endTime){
+           if(!this.times.start && this.times.end){
                return " 00:00"
-           } else if(!this.startTime && !this.endTime){
+           } else if(!this.times.start && !this.times.end){
                return ''
            } else {
-               return ' ' + this.startTime
+               return ' ' + this.times.start
            }
        },
        endTimeAutocomplete(){
-           if(this.startTime && !this.endTime){
+           console.log('heyaaaaaaa')
+           if(this.times.start && !this.times.end){
                return " 23:59"
-           } else if(!this.startTime && !this.endTime){
+           } else if(!this.times.start && !this.times.end){
                return ''
            }else{
-               return ' ' + this.endTime
+               return ' ' + this.times.end
            }
        },
        eventStartInWords(){
@@ -401,9 +400,15 @@ export default {
            },
            set(newDateAndTime){
                const [date,time] = newDateAndTime.split(' ')
-               this.dates.start = date
+               this.dates = {
+                   ...this.dates,
+                   start: date
+               }
                if(time) {
-                  this.startTime = time
+                  this.times = {
+                      ...this.times,
+                      start: time
+                  }
                }
            }
        },
@@ -413,9 +418,15 @@ export default {
            },
            set(newDateAndTime){
                const [date,time] = newDateAndTime.split(' ')
-               this.dates.end = date
+               this.dates = {
+                   ...this.dates,
+                   end: date
+               }
                if(time){
-                  this.endTime = time 
+                  this.times = {
+                      ...this.times,
+                      end: time
+                  }
                } 
            }
        },
@@ -437,10 +448,8 @@ export default {
            set(newEvent){
                this.nameInput = newEvent.name
                this.detailsInput = newEvent.details
-               this.dates = {
-                   start: newEvent.start,
-                   end: newEvent.end
-               }
+               this.startDateAndTime = newEvent.start
+               this.endDateAndTime = newEvent.end
                this.id = newEvent.id
                this.selectedColor = newEvent.color
                this.recurringInfo = {

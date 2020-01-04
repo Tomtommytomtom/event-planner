@@ -60,11 +60,14 @@
       formatDate(date){
         if(!date) return null
 
+        console.log(date)
+
         const [year, month, day] = date.split('-')
         return `${day}/${month}/${year}`
       },
       swapDates(){
         this.dates = [this.dates[1], this.dates[0]]
+        //TODO send notification that it has been swapped
       }
     },
     watch: {
