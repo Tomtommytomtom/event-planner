@@ -52,18 +52,18 @@
             <v-container>
                 <v-row>
                     <v-col>
-                        <DatePicker 
+                        <date-picker 
                             v-model="dates"
                             label="Event Duration"
-                        ></DatePicker>
+                        ></date-picker>
                     </v-col>
                     <v-col>
-                        <RecurrenceSelector           
+                        <recurrence-selector           
                             v-model="recurringInfo"
                             :curr-start-date="dates.start"
                             :disabled="isEditing"
                         >
-                        </RecurrenceSelector>
+                        </recurrence-selector>
                     </v-col>
                 </v-row>
             </v-container>
@@ -75,9 +75,9 @@
                 ></start-and-end-time-picker>
             </v-container>
             <v-card-actions>
-                <ColorPicker
+                <color-picker
                     v-model="selectedColor"
-                ></ColorPicker>
+                ></color-picker>
                 <v-spacer></v-spacer>
                 <v-btn 
                     color="primary"
