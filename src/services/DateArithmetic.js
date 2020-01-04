@@ -21,16 +21,12 @@ const dateObjectToString = (dateObject) => {
 }
 
 const doesEventStartBeforeOrInMonth = (eventStart, dateInMonth) => {
-    const [eventYear, eventMonth] = eventStart.split('-')
-    const [year, month] = dateInMonth.split('-')
 
-    if(eventYear > year) {
-        return false
-    }
-    if(eventMonth > month){
-        return false
-    }
-    return true
+    const startObj = dateStringToObject(eventStart)
+    const monthObj = dateStringToObject(getLastDayOfMonth(dateInMonth))
+    console.log(startObj<=monthObj)
+
+    return startObj <= monthObj
 }
 
 const doesEventStartAfterOrOnDate = (eventStart, date) => {
@@ -169,6 +165,12 @@ const getLastDayOfMonth = date => {
     return new Date(year, month, 1).toISOString().substr(0,10)
 }
 
+const isMoreThanTwoYearsInTheFuture = (eventDate, date) => {
+    const dayInAYear = 365
+    const difference = getDifference(date, eventDate)
+    return difference > (dayInAYear * 2)
+}
+
 
 
 
@@ -186,5 +188,6 @@ export default {
     isLastWeekdayOfMonth,
     getDateofLastWeekdayInMonth,
     doesEventStartAfterOrOnDate,
-    getDateInWords
+    getDateInWords,
+    isMoreThanTwoYearsInTheFuture
 }

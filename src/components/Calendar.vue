@@ -347,8 +347,6 @@ import { bus } from '@/main'
       updateRange ({ start, end }) {
         this.start = start
         this.end = end
-
-        RecurringEventService.applyRecurringEventsUntilEndOfNextMonth(start.date)
       },
       nth (d) {
         return d > 3 && d < 21

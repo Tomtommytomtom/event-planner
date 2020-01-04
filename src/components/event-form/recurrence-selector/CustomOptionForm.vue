@@ -71,7 +71,7 @@ export default {
     methods: {
         saveOptions(){
             this.$emit('input', {
-                frequenzy: this.frequenzyCounter,
+                frequenzy: +this.frequenzyCounter,
                 type: this.customType,
                 customString: this.customString
             })
@@ -84,7 +84,7 @@ export default {
             this.$emit('reset-form')
         },
         setValue(){
-            //this.frequenzyCounter = this.value.frequenzy  fix this being undefined
+            //this.frequenzyCounter = this.value.frequenzy  fix this being undefined           TODO: i dont know why this is commented out, fuck
             //this.customType = this.value.type
         },
         customTypeToDisplay(customType){

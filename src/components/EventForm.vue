@@ -251,7 +251,7 @@ export default {
                 if(this.isRepeating){
                     this.limitRecurringEvents()
 
-                    RecurringEventService.addNewToStaticAndApplyForNow(this.currEvent, this.selectedDate)
+                    RecurringEventService.applySingleRecurringToStatic(this.currEvent)
                     this.sendAddedEventNotification(`Successfully added recurring Event "${this.currEvent.name}"!`)
                 } else {
                     this.sendAddedEventNotification(`Successfully added Event "${this.currEvent.name}"!`)

@@ -5,8 +5,6 @@ let recurringEvents = []
 //------------------------------------------Mutators------------------------------------
 
 const addNewToStaticAndApplyForNow = (event, date) => {
-    const eventToAdd = giveNewEventARecurringId(event)
-    addOne(eventToAdd)
     applyRecurringEventsUntilEndOfNextMonth(date)
     EventService.addOne(eventToAdd)
 }
@@ -52,47 +50,38 @@ const deleteEvent = recurringEvent => {
 
 //----------------------------------------Applicators--------------------------------------------
 
-const applyRecurringEventsUntilEndOfNextMonth = date => {
-    const dateUntil = getNextMonth(date)
-    applyRecurringToStaticEventsUntil(date)
-    applyRecurringToStaticEventsUntil(dateUntil) 
-}
 
+const applySingleRecurringToStatic = event => {
+    const eventToAdd = giveNewEventARecurringId(event)
+    EventService.addOne(eventToAdd)
 
-const applyRecurringToStaticEventsUntil = date => {
-    const eventsToApply = getEventsToApplyForMonth(date)
+    let nextEvent = getNextEvent(eventToAdd)
 
-    if(!eventsToApply){
-        return
+    const daysToAdd = getYearsToAddInDays(eventToAdd)
+    const threshold = DateArithmetic.addDaysToDate(nextEvent.start, daysToAdd)
+
+    while(shouldBeApplied(nextEvent.start, threshold)){
+        EventService.addOne(nextEvent)
+        nextEvent = getNextEvent(nextEvent)
     }
 
-    eventsToApply.forEach(event => {
-        let nextEvent = getNextEvent(event)
-        console.log('next event is ',nextEvent)
-        let prevEvent = event
-
-        while(shouldBeApplied(nextEvent.start, date)){
-            EventService.addOne(nextEvent)
-            prevEvent = nextEvent
-            nextEvent = getNextEvent(nextEvent)
-        }
-
-        updateEvent(prevEvent)
-    })
+    deleteEvent(nextEvent)
 }
 
-const getEventsToApplyForMonth = date => {
-
-    return recurringEvents.filter(event => !isAlrdyInStaticForMonth(event, date))
-}
-
-const isAlrdyInStaticForMonth = (event, date) => {
-    const result = EventService
-        .getAllEventsInMonth(date)
-        .map(staticEvent => staticEvent.recurringId)
-        .includes(event.recurringId)
-    return result
-}
+const getYearsToAddInDays = (event) => {
+    const dayInAYear = 365
+    const type = event.type.split('-')[0]
+    switch(event.type){
+        case 'daily':
+            return dayInAYear * event.frequenzy * 2
+        case 'weekly':
+            return dayInAYear * event.frequenzy * 7
+        case 'monthly':
+            return dayInAYear * 50
+        case 'annually':
+            return dayInAYear * 200
+    }
+} 
 
 const getNextEvent = event => {
 
@@ -248,10 +237,9 @@ const getNextMonth = date => {
 
 export default {
     addNewToStaticAndApplyForNow,
-    applyRecurringEventsUntilEndOfNextMonth,
     addOne,
     updateOneEvent,
     updateEvent,
     deleteEvent,
-
+    applySingleRecurringToStatic
 }
