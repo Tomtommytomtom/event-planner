@@ -72,19 +72,16 @@ export default {
         },
         isTimeComboValid(){
             if(!this.startTime || !this.endTime){
-                console.log('i should not be in here')
                 return true
             }
 
-            const [startHour, startMinutes] = this.startTime.split(':')
-            const [endHour, endMinutes] = this.endTime.split(':')
+            const [startHour, startMinutes] = this.startTime.split(':').map(string => Number(string))
+            const [endHour, endMinutes] = this.endTime.split(':').map(string => Number(string))
 
-            console.log(startHour <= endHour, 'dsuyfgdsuygdsauyasdg')
-            console.log(startHour === endHour)
-            console.log(startMinutes < endMinutes)
-            console.log(this.isSameDay)
-
-            return (startHour <= endHour || ((startHour === endHour) && (startMinutes < endMinutes))) || !this.isSameDay
+            return (startHour < endHour || ((startHour === endHour) && (startMinutes < endMinutes))) || !this.isSameDay || this.isStartTimeSameAsEndTime
+        },
+        isStartTimeSameAsEndTime(){
+            return this.startTime === this.endTime
         },
         startTime: {
             get(){
@@ -92,7 +89,6 @@ export default {
             },
             set(start){
                 this.times = { ...this.times , start }
-                console.log(this.times,'inside start setter')
             }
         },
         endTime: {
