@@ -13,15 +13,23 @@
             v-model="menu"
             right
         >
-            <v-date-picker
-                ref="datepicker"
-                v-model="date"
-                @input="sendDate"
-                @click:month="sendMonth"
-                scrollable
-                :disabled="disabled"
+            <v-sheet
+                dark
             >
-            </v-date-picker>
+                <v-date-picker
+                    color="primary"
+                    ref="datepicker"
+                    v-model="date"
+                    @input="sendDate"
+                    @click:month="sendMonth"
+                    scrollable
+                >
+                </v-date-picker>
+                <v-sheet
+                    class="d-flex"
+                    color="primary"
+                ><span class="title mx-auto">Calendar Navigation</span></v-sheet>
+            </v-sheet>
         </v-menu>
     </div>    
 </template>
