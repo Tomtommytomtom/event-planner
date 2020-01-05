@@ -36,7 +36,7 @@
                             label="Name"
                             outlined
                             :rules="[rules.required, rules.nameCounter, rules.nonWhiteSpaces]"
-                            counter="100"
+                            counter="140"
                         >
                         </v-text-field>
                         <v-textarea
@@ -213,7 +213,7 @@ export default {
         valid: false,
         rules: {
             required: v => !!v || 'Required',
-            nameCounter: v => v.length <= 100 || 'Max 100 Characters',
+            nameCounter: v => v.length <= 140 || 'Max 100 Characters',
             descriptionCounter: v => v.length <= 500 || 'Max 500 Characters',
             nonWhiteSpaces: v => { 
                 const regEx = /\S+/ //any non white space character
