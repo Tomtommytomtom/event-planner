@@ -57,7 +57,7 @@ export default {
             }
         },
         sendMonth(month){
-            console.log('heya')
+
             if(this.isTypeMonth){
                 this.date = month
                 this.$emit('input', this.dateToSend)
@@ -65,12 +65,12 @@ export default {
             }
         },
         sendDate(){
-            console.log('this was called for whatever reason')
+
             this.$emit('input', this.dateToSend)
             this.menu = false
         },
         setValue(){
-            console.log(this.value)
+
             this.date = this.value
         },
         setType(){
@@ -82,8 +82,6 @@ export default {
             const events = this.getEventsInDate(date)
             const colors = events.map(event => event.color)
             const uniqueColors = this.removeDuplicates(colors)
-
-            console.log(uniqueColors.length)
 
             if(uniqueColors.length > 3) return uniqueColors.slice(0,3)
 

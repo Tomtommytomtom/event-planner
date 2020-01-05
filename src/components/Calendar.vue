@@ -254,7 +254,7 @@ import { bus } from '@/main'
         return ''
       },
       deleteNonRecurring(){
-        console.log(this.selectedEvent)
+
         if(!this.selectedEvent.recurringId){
           return true
         } else {
@@ -273,7 +273,7 @@ import { bus } from '@/main'
     },
     methods: {
       openFormAndSendDay(day){
-        console.log('clickityclick')
+
         this.sendDate(day)
         bus.$emit('openForm')
       },

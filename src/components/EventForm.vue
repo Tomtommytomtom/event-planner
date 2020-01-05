@@ -231,7 +231,7 @@ export default {
                 break
 
             case 'This and all sibling events':
-                console.log('why is this not going on')
+
                 EventService.updateRecurringEventsInStatic(this.currEvent)
                 this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" events!`)
                 break
@@ -412,7 +412,7 @@ export default {
             }
         },
         endTimeAutocomplete(){
-            console.log('heyaaaaaaa')
+
             if(this.times.start && !this.times.end){
                 return " 23:59"
             } else if(!this.times.start && !this.times.end){

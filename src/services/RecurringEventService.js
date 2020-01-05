@@ -6,7 +6,7 @@ let recurringIds = 1
 
 const applySingleRecurringToStatic = event => {                   //TODO further clean this module, before submitting.
     const eventToAdd = giveNewEventARecurringId(event)
-    console.log('recurring id', eventToAdd.recurringId)
+
     EventService.addOne(eventToAdd)
 
     let nextEvent = getNextEvent(eventToAdd)
@@ -21,7 +21,7 @@ const applySingleRecurringToStatic = event => {                   //TODO further
 }
 
 const giveNewEventARecurringId = event => {
-    console.log(recurringIds)
+
     return {
         ...event,
         recurringId: recurringIds++
@@ -31,7 +31,7 @@ const giveNewEventARecurringId = event => {
 const getYearsToAddInDays = (event) => {
     const dayInAYear = 365
     const type = event.type.split('-')[0]
-    console.log(type)
+
     switch(type){
         case 'daily':
             return dayInAYear * event.frequenzy * 2
@@ -99,13 +99,13 @@ const getNextDateByFrequenzy = event => {
 
 const getNextDateForAnnual = event => {
     const start = event.start.split(' ')[0]
-    console.log(start)
+
     const end = event.start.split(' ')[0]
 
     const startNextYear = getSameDateNextYear(start)
-    console.log(startNextYear)
+
     const duration = getDurationOfEvent(event)
-    console.log(duration)
+
 
     return {
         start: startNextYear,

@@ -60,7 +60,7 @@ export default {
         },
         correctTimes(){
             if(!this.isTimeComboValid){
-                console.log('we in here')
+
                 this.swapTimes()
             }
         }
@@ -98,7 +98,7 @@ export default {
             },
             set(end){
                 this.times = { ...this.times, end }
-                console.log(this.times,'inside end setter')
+
             }
         }
     },

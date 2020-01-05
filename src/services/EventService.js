@@ -100,7 +100,7 @@ const updateRecurringEventsInStatic = eventToUpdate => {
     }
   })
   staticEvents = staticEvents.concat(updatedEvents)
-  console.log(getFirstEventOfRecurringId(eventToUpdate.recurringId))
+
 }
 
 const updateRecurringEventsInStaticAfterEventStart = (eventToUpdate) => {
@@ -156,7 +156,7 @@ const getFirstEventOfRecurringId = (recurringId) => {
 
 const getHighestAttributeInArray = (attribute) => {
   return staticEvents.reduce((acc, curr) => {
-    console.log(acc, 'accumulator', curr, 'curr')
+
     if(!curr && !acc){
       return 0
     }

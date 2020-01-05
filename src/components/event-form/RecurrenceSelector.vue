@@ -125,11 +125,11 @@ export default {
                 }
            },
            set(newType){
-                console.log('inside setter for recurringTypeDisplay gonna set:',newType)
+
                 const selected = newType.split(' ')[0]
                 let frequenzy = this.frequenzy
                 let result = this.recurringType
-                console.log(selected,' selected ', newType)
+
                 switch(selected){
                     case "Doesn't":
                         result  = 'none'

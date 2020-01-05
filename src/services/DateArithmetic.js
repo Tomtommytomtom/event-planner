@@ -38,7 +38,7 @@ const doesEventStartBeforeOrInMonth = (eventStart, dateInMonth) => {
 
     const startObj = dateStringToObject(eventStart)
     const monthObj = dateStringToObject(getLastDayOfMonth(dateInMonth))
-    console.log(startObj<=monthObj)
+
 
     return startObj <= monthObj
 }
