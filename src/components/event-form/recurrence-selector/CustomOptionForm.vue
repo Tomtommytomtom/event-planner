@@ -87,10 +87,6 @@ export default {
         resetForm(){
             this.$emit('reset-form')
         },
-        setValue(){
-            //this.frequenzyCounter = this.value.frequenzy  fix this being undefined           TODO: i dont know why this is commented out, fuck
-            //this.customType = this.value.type
-        },
         customTypeToDisplay(customType){
             const type = customType.split('-')[0]
             const index = this.typeToDisplay.indexOf(type)
@@ -114,9 +110,6 @@ export default {
             }
             
         }
-    },
-    created(){
-        this.setValue()
     }
 }
 </script>

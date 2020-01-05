@@ -53,8 +53,7 @@ let staticEvents = [
   }
 ]
 
-//let staticEvents = []
-let ids = 2
+let ids = 6
 
 
 

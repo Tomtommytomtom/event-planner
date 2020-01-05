@@ -178,7 +178,7 @@ export default {
         'This and all following sibling events'
         ],
 
-        originalEditedEvent: {}, //
+        originalEditedEvent: {},
 
         formTitle: 'Add a New Event',
 
@@ -224,7 +224,7 @@ export default {
     }),
     methods : {
         submitRecurringEdit(){
-            switch(this.editOptionSelected){                         //TODO: Maybe make recurring options editable too now.
+            switch(this.editOptionSelected){                      
             case 'Only this event': 
                 EventService.updateEvent(this.currEvent)
                 this.sendEditedEventNotification(`Sucessfully edited single recurring event "${this.currEvent.name}" starting on ${this.eventStartInWords}!`)

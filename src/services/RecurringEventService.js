@@ -4,7 +4,7 @@ import DateArithmetic from './DateArithmetic'
 let recurringIds = 1
 
 
-const applySingleRecurringToStatic = event => {                   //TODO further clean this module, before submitting.
+const applySingleRecurringToStatic = event => {                   
     const eventToAdd = giveNewEventARecurringId(event)
 
     EventService.addOne(eventToAdd)

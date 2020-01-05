@@ -30,7 +30,7 @@ import DateArithmetic from '@/services/DateArithmetic'
 import CustomOptionForm from './recurrence-selector/CustomOptionForm'
 
 export default {
-    props: ['value','currStartDate','disabled','color'], //value = { type, frequenzy }
+    props: ['value','currStartDate','disabled','color'], 
 
     components: {
         CustomOptionForm
