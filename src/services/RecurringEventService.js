@@ -3,12 +3,6 @@ import DateArithmetic from './DateArithmetic'
 
 let recurringIds = 1
 
-//------------------------------------------Mutators------------------------------------
-
-
-
-//----------------------------------------Applicators--------------------------------------------
-
 
 const applySingleRecurringToStatic = event => {                   //TODO further clean this module, before submitting.
     const eventToAdd = giveNewEventARecurringId(event)
