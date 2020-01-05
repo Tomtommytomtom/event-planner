@@ -164,16 +164,16 @@ export default {
             frequenzy: 0
         },
 
-        editOptionSelected: 'Only This Event',
+        editOptionSelected: 'Only this event',
         editOptions: [
-        'Only This Event',
-        'This and All Sibling Events',
-        'This and all following sibling Events'
+        'Only this event',
+        'This and all sibling events',
+        'This and all following sibling events'
         ],
 
         originalEditedEvent: {}, //
 
-        formTitle: 'Add a new Event',
+        formTitle: 'Add a New Event',
 
         nameInput: '',
         detailsInput: '',
@@ -218,19 +218,19 @@ export default {
     methods : {
         submitRecurringEdit(){
             switch(this.editOptionSelected){                         //TODO: Maybe make recurring options editable too now.
-            case 'Only This Event': 
+            case 'Only this event': 
                 EventService.updateEvent(this.currEvent)
-                this.sendEditedEventNotification(`Sucessfully edited single recurring Event "${this.currEvent.name}" starting on ${this.eventStartInWords}!`)
+                this.sendEditedEventNotification(`Sucessfully edited single recurring event "${this.currEvent.name}" starting on ${this.eventStartInWords}!`)
                 break
 
-            case 'This and All Sibling Events':
+            case 'This and all sibling events':
                 console.log('why is this not going on')
                 EventService.updateRecurringEventsInStatic(this.currEvent)
-                this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" Events!`)
+                this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" events!`)
                 break
 
-            case 'This and all following sibling Events':
-                this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" Events starting on the ${this.eventStartInWords} and later!`)
+            case 'This and all following sibling events':
+                this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" events starting on the ${this.eventStartInWords} and later!`)
                 EventService.updateRecurringEventsInStaticAfterEventStart(this.currEvent)
                 break
             }
@@ -246,16 +246,16 @@ export default {
                     return
                 } else {
                     EventService.addOrUpdate(this.currEvent)
-                    this.sendEditedEventNotification(`Successfully edited Event "${this.currEvent.name}!"`)
+                    this.sendEditedEventNotification(`Successfully edited event "${this.currEvent.name}!"`)
                 }
             } else {    
                 if(this.isRepeating){
                     this.limitRecurringEvents()
 
                     RecurringEventService.applySingleRecurringToStatic(this.currEvent)
-                    this.sendAddedEventNotification(`Successfully added recurring Event "${this.currEvent.name}"!`)
+                    this.sendAddedEventNotification(`Successfully added recurring event "${this.currEvent.name}"!`)
                 } else {
-                    this.sendAddedEventNotification(`Successfully added Event "${this.currEvent.name}"!`)
+                    this.sendAddedEventNotification(`Successfully added event "${this.currEvent.name}"!`)
                     EventService.addOne(this.currEvent)
                 }
             }
@@ -266,7 +266,7 @@ export default {
             this.editDialog = true
         },
         editEvent(){
-            this.formTitle = `Edit event ${this.currEvent.name}`
+            this.formTitle = `Edit Event "${this.currEvent.name}"`
             this.originalEditedEvent = this.currEvent
             this.dialog = true
         },
@@ -276,7 +276,7 @@ export default {
         clearForm(){
             this.dialog = false
 
-            this.formTitle = "Add a new Event"
+            this.formTitle = "Add a New Event"
 
             this.id = undefined
             this.selectedColor = '#F07F1D'
@@ -349,7 +349,7 @@ export default {
                 this.setDurationToOneDay()
 
                 bus.$emit('info', {
-                    message: 'Daily Events cannot be longer than one day, duration has been changed',
+                    message: 'Daily events cannot be longer than one day, duration has been changed',
                     timeout: 7000
                 })
             }

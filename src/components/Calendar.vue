@@ -193,11 +193,11 @@ import { bus } from '@/main'
     data: () => ({
       
 
-      radioGroup: 'Only This Event',
+      radioGroup: 'Only this event',
       deleteOptions: [
-        'Only This Event',
-        'This and All Sibling Events',
-        'This and all following sibling Events'
+        'Only this event',
+        'This and all sibling events',
+        'This and all following sibling events'
         
       ],
       deleteDialog: false,
@@ -275,13 +275,13 @@ import { bus } from '@/main'
       },
       deleteSelectedRecurringEvent(event){
         switch(this.radioGroup){
-          case 'Only This Event': 
+          case 'Only this event': 
             EventService.deleteEvent(event,'id')
             break
-          case 'This and All Sibling Events':
+          case 'This and all sibling events':
             EventService.deleteStaticEventsAndRecurring(event)
             break
-          case 'This and all following sibling Events':
+          case 'This and all following sibling events':
             EventService.deleteStaticEventsAndRecurringAfterDate(event)
             break
         }
