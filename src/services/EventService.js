@@ -46,6 +46,7 @@ const updateRecurringEventsInStatic = eventToUpdate => {
     }
   })
   staticEvents = staticEvents.concat(updatedEvents)
+  console.log(getFirstEventOfRecurringId(eventToUpdate.recurringId))
 }
 
 const updateRecurringEventsInStaticAfterEventStart = (eventToUpdate) => {
@@ -70,7 +71,6 @@ const updateRecurringEventsInStaticAfterEventStart = (eventToUpdate) => {
 
 const deleteStaticEventsAndRecurring = recurringEvent => {
   deleteEvent(recurringEvent, 'recurringId')
-  RecurringEventService.deleteEvent(recurringEvent)
 }
 
 const deleteEvent = (eventToDelete, identifier) => {
@@ -81,7 +81,6 @@ const deleteStaticEventsAndRecurringAfterDate = (recurringEvent) => {
   staticEvents = staticEvents.filter(event => {
     return !(event.recurringId === recurringEvent.recurringId && DateArithmetic.doesEventStartAfterOrOnDate(event.start, recurringEvent.start))
   })
-  RecurringEventService.deleteEvent(recurringEvent)
 }
 
 const giveNewEventAnId = event => {
@@ -92,7 +91,7 @@ const giveNewEventAnId = event => {
 }
 
 const getFirstEventOfRecurringId = (recurringId) => {
-  staticEvents
+  return staticEvents
     .filter(event => event.recurringId === recurringId)
     .reduce((acc, curr) => {
       return DateArithmetic.isEventBeforeEvent(acc, curr)

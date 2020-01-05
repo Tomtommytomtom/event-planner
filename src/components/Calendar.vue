@@ -1,9 +1,9 @@
 <template>
-  <v-container class="pa-4" width="80%">
+  <v-container class="pa-0">
     <v-row class="fill-height">
-      <v-col >
-        <v-sheet height="64" class="elevation-4">
-          <v-toolbar flat color="white">
+      <v-col class="px-2 py-0">
+        <v-sheet elevation="4" height="7vh">
+          <v-toolbar flat  color="white" class="fill-height">
             <v-btn color="primary" text class="ml-2 mr-6" @click="setToday">
               Today
             </v-btn>
@@ -12,6 +12,7 @@
             </v-btn>
             <v-spacer></v-spacer>
             <calendar-picker
+              v-show="!$vuetify.breakpoint.xsOnly"
               v-model="focus"
               :calendar-type="type"
             >{{ title }}</calendar-picker>
@@ -45,8 +46,7 @@
             </v-menu>
           </v-toolbar>
         </v-sheet>
-        
-        <v-sheet height="750px">
+        <v-sheet height="86vh">
           <v-calendar
             ref="calendar"
             v-model="focus"
@@ -276,19 +276,15 @@ import { bus } from '@/main'
       deleteSelectedRecurringEvent(event){
         switch(this.radioGroup){
           case 'Only This Event': 
-
             EventService.deleteEvent(event,'id')
             break
           case 'This and All Sibling Events':
-
             EventService.deleteStaticEventsAndRecurring(event)
             break
           case 'This and all following sibling Events':
-
             EventService.deleteStaticEventsAndRecurringAfterDate(event)
             break
         }
-        
         this.deleteDialog = false
         this.selectedOpen = false
         this.refreshEvents()
