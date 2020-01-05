@@ -279,6 +279,10 @@ import { bus } from '@/main'
       },
       deleteSelectedEvent(event){
         EventService.deleteEvent(event,'id')
+        bus.$emit('success', {
+          message: `Successfully deleted event "${event.name}"`,
+          timeout: 5000
+        })
         this.deleteDialog = false
         this.selectedOpen = false
         this.refreshEvents()
@@ -287,12 +291,24 @@ import { bus } from '@/main'
         switch(this.radioGroup){
           case 'Only this event': 
             EventService.deleteEvent(event,'id')
+            bus.$emit('success', {
+              message: `Successfully deleted event "${event.name}"`,
+              timeout: 5000
+            })
             break
           case 'This and all sibling events':
             EventService.deleteStaticEventsAndRecurring(event)
+            bus.$emit('success', {
+              message: `Successfully deleted all recurring events "${event.name}"`,
+              timeout: 6000
+            })
             break
           case 'This and all following sibling events':
             EventService.deleteStaticEventsAndRecurringAfterDate(event)
+            bus.$emit('success', {
+              message: `Successfully deleted all recurring events on ${event.start} and following "${event.name}"`,
+              timeout: 7000
+            })
             break
         }
         this.deleteDialog = false
