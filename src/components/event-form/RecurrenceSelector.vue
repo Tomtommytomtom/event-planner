@@ -1,8 +1,9 @@
 <template>
     <div>
         <v-select
-            :disabled="disabled"
             v-model="recurringTypeDisplay"
+            :disabled="disabled"
+            :color="color"
             :items="recurringOptionsDisplay"
             dense
             outlined
@@ -29,7 +30,7 @@ import DateArithmetic from '@/services/DateArithmetic'
 import CustomOptionForm from './recurrence-selector/CustomOptionForm'
 
 export default {
-    props: ['value','currStartDate','disabled'], //value = { type, frequenzy }
+    props: ['value','currStartDate','disabled','color'], //value = { type, frequenzy }
 
     components: {
         CustomOptionForm

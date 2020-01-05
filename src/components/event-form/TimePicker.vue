@@ -1,6 +1,7 @@
 <template>
     <v-autocomplete
         ref="autocomplete"
+        :color="color"
         @click:prepend="$refs.autocomplete.focus()"
         v-model="timeDisplay"
         placeholder="00:00"
@@ -16,7 +17,7 @@
 
 <script>
     export default {
-        props: ['value','label'],
+        props: ['value','label','color'],
 
         data: () => ({
             dialog: false,

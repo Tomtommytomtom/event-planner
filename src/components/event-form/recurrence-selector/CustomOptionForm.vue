@@ -1,5 +1,8 @@
 <template>
-    <v-card width="500">
+    <v-card 
+        width="500"
+        dark
+    >
         <v-form
             ref="form"
             v-model="valid"

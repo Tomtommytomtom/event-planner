@@ -13,6 +13,7 @@
                 dense
                 readonly
                 v-on="on"
+                :color="color"
             ></v-text-field>
         </template>
     <v-sheet
@@ -45,7 +46,7 @@
   import DateArithmetic from '@/services/DateArithmetic'
 
     export default {
-        props: ['value','label'],
+        props: ['value','label','color'],
 
         data: () => ({
             clicks: 0,

@@ -21,7 +21,7 @@
             :fullscreen="$vuetify.breakpoint.xsOnly"
             @click:outside="clearForm"
         >
-            <v-card class="pa-4">
+            <v-card class="pa-4" dark>
                 <v-form ref="form" v-model="valid">
                     <v-card-title>
                         <span
@@ -30,6 +30,7 @@
                     </v-card-title>
                     <v-container>
                         <v-text-field
+                            :color="componentColor"
                             v-model="nameInput"
                             dense
                             label="Name"
@@ -39,6 +40,7 @@
                         >
                         </v-text-field>
                         <v-textarea
+                            :color="componentColor"
                             v-model="detailsInput"
                             dense
                             label="Description"
@@ -53,12 +55,14 @@
                         <v-row>
                             <v-col>
                                 <date-picker 
+                                    :color="componentColor"
                                     v-model="dates"
                                     label="Event Duration"
                                 ></date-picker>
                             </v-col>
                             <v-col>
-                                <recurrence-selector           
+                                <recurrence-selector
+                                    :color="componentColor"                                    
                                     v-model="recurringInfo"
                                     :curr-start-date="dates.start"
                                     :disabled="isEditing"
@@ -70,6 +74,7 @@
                     <v-divider class="mb-7"></v-divider>
                     <v-container>
                         <start-and-end-time-picker
+                            :color="componentColor"
                             v-model="times"
                             :current-dates="dates"
                         ></start-and-end-time-picker>
@@ -98,7 +103,7 @@
             v-model="editDialog"
             width="80%"
     >
-        <v-card>
+        <v-card dark>
             <v-card-title>
                 You're editing {{ currEvent.type }} recurring Event: {{ currEvent.name }} ?
             </v-card-title>
@@ -159,6 +164,8 @@ export default {
 
 
     data: () => ({
+        componentColor: 'primary',
+
         recurringInfo: {
             type: 'none',
             frequenzy: 0

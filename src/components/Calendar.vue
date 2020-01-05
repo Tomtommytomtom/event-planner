@@ -2,8 +2,8 @@
   <v-container class="pa-0">
     <v-row class="fill-height">
       <v-col class="px-2 py-0">
-        <v-sheet elevation="4" height="7vh">
-          <v-toolbar flat  color="white" class="fill-height">
+        <v-sheet elevation="4" height="7vh" dark>
+          <v-toolbar flat dark class="fill-height">
             <v-btn color="primary" text class="ml-2 mr-6" @click="setToday">
               Today
             </v-btn>
@@ -48,6 +48,8 @@
         </v-sheet>
         <v-sheet height="86vh">
           <v-calendar
+            dark
+
             ref="calendar"
             v-model="focus"
             color="primary"
@@ -74,7 +76,7 @@
             offset-x
           >
             <v-card
-              color="grey lighten-4"
+              dark
               min-width="200px"
               flat
             >
@@ -101,7 +103,7 @@
                   v-model="deleteDialog"
                   width="70%"
                 >
-                  <v-card v-if="deleteNonRecurring">
+                  <v-card v-if="deleteNonRecurring" dark>
                     <v-card-title>Delete {{selectedEvent.name}} ?</v-card-title>
                     <v-card-text>Are you sure you want to delete?</v-card-text>
                     <v-card flat class="d-flex ma-0 pa-3">
@@ -122,7 +124,7 @@
                       </v-btn>
                     </v-card>
                   </v-card>
-                  <v-card v-else>
+                  <v-card v-else dark>
                     <v-card-title>You're deleting a {{ selectedEvent.type }} recurring Event {{selectedEvent.name}}</v-card-title>
                     <v-container class="d-flex px-5">
                         <v-radio-group v-model="radioGroup">
@@ -163,7 +165,7 @@
               <v-card-actions>
                 <v-btn
                   text
-                  color="secondary"
+                  color="primary"
                   @click="selectedOpen = false"
                 >
                   Cancel
@@ -245,6 +247,7 @@ import { bus } from '@/main'
         return ''
       },
       deleteNonRecurring(){
+        console.log(this.selectedEvent)
         if(!this.selectedEvent.recurringId){
           return true
         } else {

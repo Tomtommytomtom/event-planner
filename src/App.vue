@@ -7,7 +7,7 @@
         >
             <h1><span class="font-weight-light">EVENT</span><span class="font-weight-regular grey--text text--darken-4">PLANNER</span></h1>
         </v-app-bar>
-        <v-content class="grey lighten-4 d-flex">
+        <v-content class="grey darken-4 d-flex" dark>
             <calendar></calendar>
             <event-form></event-form>
             <notifications></notifications>
