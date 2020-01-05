@@ -24,6 +24,7 @@
                     @click:month="sendMonth"
                     scrollable
                     elevation="0"
+                    :events="functionEvents"
                 >
                 </v-date-picker>
                 <v-sheet
@@ -38,13 +39,14 @@
 
 <script>
 export default {
-    props: ['value','calendarType'],
+    props: ['value','calendarType','events'],
 
     data: () => ({
         menu: false,
         date: new Date().toISOString().substr(0,10),
         type:'month',
-        disabled: false
+        disabled: false,
+        eventColors: []
     }),
 
     methods:{
@@ -73,6 +75,29 @@ export default {
         },
         setType(){
             this.type = this.calendarType
+        },
+        functionEvents(date){
+            const [year , month , day] = date.split('-')
+
+            const events = this.getEventsInDate(date)
+            const colors = events.map(event => event.color)
+            const uniqueColors = this.removeDuplicates(colors)
+
+            console.log(uniqueColors.length)
+
+            if(uniqueColors.length > 3) return uniqueColors.slice(0,3)
+
+            if(uniqueColors) return uniqueColors
+
+            return false
+
+        },
+        getEventsInDate(date){
+            return this.events.filter(event => event.start === date)
+        },
+        removeDuplicates(array){
+            const noDuplicates = [...new Set(array)]
+            return Array.from(noDuplicates)
         }
     },
 
@@ -90,7 +115,7 @@ export default {
         },
         isTypeMonth(){
             return this.type === 'month'
-        }
+        },
     },
 
     watch: {
@@ -102,7 +127,7 @@ export default {
         },
         menu(){
             this.resetDatePicker()
-        }
+        },
     }
 }
 </script>

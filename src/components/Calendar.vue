@@ -12,6 +12,7 @@
             </v-btn>
             <v-spacer></v-spacer>
             <calendar-picker
+              :events="events"
               v-show="!$vuetify.breakpoint.xsOnly"
               v-model="focus"
               :calendar-type="type"
@@ -62,7 +63,7 @@
             :short-intervals="false"
             :interval-minutes=180
             :interval-count=9
-            interval-height='100px'
+            interval-height='144px'
 
             @moved="sendDate"
             @click:day="openFormAndSendDay"

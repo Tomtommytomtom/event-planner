@@ -1,8 +1,8 @@
 <template>
-  <v-dialog
-    width="fit-content"
-    v-model="dialog"
-  >
+    <v-dialog
+        width="fit-content"
+        v-model="dialog"
+    >
         <template v-slot:activator="{ on }">
             <v-text-field
                 v-model="dateRangeText"
