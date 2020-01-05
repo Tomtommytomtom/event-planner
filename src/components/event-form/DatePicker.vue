@@ -15,26 +15,32 @@
                 v-on="on"
             ></v-text-field>
         </template>
-    <v-date-picker
-      ref="datepicker"
-      v-model="dates"
-      reactive
-      range
-      scrollable
-      @change="sendData"
-      @input="incrementClicks"
+    <v-sheet
+        dark
     >
-    </v-date-picker>
-    <v-snackbar
-        :value="true"
-        :timeout=0
-    >{{ this.dates[0] }} and {{this.dates[1]}}</v-snackbar>
+        <v-date-picker
+            color="primary"
+            ref="datepicker"
+            v-model="dates"
+            reactive
+            range
+            scrollable
+            @change="sendData"
+            @input="incrementClicks"
+            :elevation=0
+        >
+        </v-date-picker>
+        <v-sheet
+            class="d-flex"
+            color="primary"
+            tile
+        ><span class="title mx-auto">{{ tooltip }}</span></v-sheet>
+    </v-sheet>
   </v-dialog>
 </template>
 
 
 <script>
-//make v-model work properly in this
   import { bus } from '@/main'
   import DateArithmetic from '@/services/DateArithmetic'
 
@@ -138,8 +144,18 @@
             isOnlyOneSelected(){
                 return this.dates[0] && !this.dates[1]
             },
+            NoneIsSelected(){
+                return this.dates[0] && this.dates[1]
+            },
             isDialogClosed(){
                 return !this.dialog
+            },
+            tooltip(){
+                if(this.NoneIsSelected){
+                    return 'Pick Start Date'
+                } else {
+                    return 'Pick an End Date'
+                }
             }
         },
 

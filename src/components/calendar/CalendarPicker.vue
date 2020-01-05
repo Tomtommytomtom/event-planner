@@ -23,9 +23,11 @@
                     @input="sendDate"
                     @click:month="sendMonth"
                     scrollable
+                    elevation="0"
                 >
                 </v-date-picker>
                 <v-sheet
+                    tile
                     class="d-flex"
                     color="primary"
                 ><span class="title mx-auto">Calendar Navigation</span></v-sheet>
