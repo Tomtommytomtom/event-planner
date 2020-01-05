@@ -1,6 +1,8 @@
 import EventService from './EventService'
 import DateArithmetic from './DateArithmetic'
 
+let recurringIds = 1
+
 //------------------------------------------Mutators------------------------------------
 
 
@@ -10,6 +12,7 @@ import DateArithmetic from './DateArithmetic'
 
 const applySingleRecurringToStatic = event => {                   //TODO further clean this module, before submitting.
     const eventToAdd = giveNewEventARecurringId(event)
+    console.log('recurring id', eventToAdd.recurringId)
     EventService.addOne(eventToAdd)
 
     let nextEvent = getNextEvent(eventToAdd)
@@ -24,9 +27,10 @@ const applySingleRecurringToStatic = event => {                   //TODO further
 }
 
 const giveNewEventARecurringId = event => {
+    console.log(recurringIds)
     return {
         ...event,
-        recurringId: EventService.getHighestAttributeInArray('recurringId') + 1
+        recurringId: recurringIds++
     }
 }
 

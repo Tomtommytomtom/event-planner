@@ -1,8 +1,8 @@
 import RecurringEventService from "./RecurringEventService"
-import { stat } from "fs"
 import DateArithmetic from "./DateArithmetic"
 
 let staticEvents = []
+let ids = 1
 
 const getAll = () => {
   return staticEvents
@@ -86,7 +86,7 @@ const deleteStaticEventsAndRecurringAfterDate = (recurringEvent) => {
 const giveNewEventAnId = event => {
   return {
     ...event,
-    id: getHighestAttributeInArray('id') + 1
+    id: ids++
   }
 }
 
@@ -102,6 +102,10 @@ const getFirstEventOfRecurringId = (recurringId) => {
 
 const getHighestAttributeInArray = (attribute) => {
   return staticEvents.reduce((acc, curr) => {
+    console.log(acc, 'accumulator', curr, 'curr')
+    if(!curr && !acc){
+      return 0
+    }
     return acc[attribute] >= curr[attribute]
         ? acc[attribute]
         : curr[attribute]
