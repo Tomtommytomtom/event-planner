@@ -58,7 +58,12 @@
             :event-margin-bottom="3"
             :now="today"
             :type="type"
-            :short-intervals="true"
+
+            :short-intervals="false"
+            :interval-minutes=180
+            :interval-count=9
+            interval-height='100px'
+
             @moved="sendDate"
             @click:day="openFormAndSendDay"
             @click:event="showEvent"
