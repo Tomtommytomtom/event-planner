@@ -31,7 +31,8 @@ const giveNewEventARecurringId = event => {
 const getYearsToAddInDays = (event) => {
     const dayInAYear = 365
     const type = event.type.split('-')[0]
-    switch(event.type){
+    console.log(type)
+    switch(type){
         case 'daily':
             return dayInAYear * event.frequenzy * 2
         case 'weekly':
@@ -40,6 +41,8 @@ const getYearsToAddInDays = (event) => {
             return dayInAYear * 50
         case 'annually':
             return dayInAYear * 200
+        case 'weekdays':
+            return dayInAYear * 2
     }
 } 
 
