@@ -21,8 +21,8 @@ const dateObjectToString = (dateObject) => {
 }
 
 const isEventBeforeEvent = (eventOne, eventTwo) => {
-    eventOneObj.split(' ')[0] = dateStringToObject(eventOne)
-    eventTwoObj.split(' ')[0] = dateStringToObject(eventTwo)
+    const eventOneObj = dateStringToObject(eventOne.start.split(' ')[0])
+    const eventTwoObj = dateStringToObject(eventTwo.start.split(' ')[0])
 
     return eventOneObj < eventTwoObj
 }
