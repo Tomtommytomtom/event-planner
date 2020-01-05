@@ -39,8 +39,10 @@ export default {
 
     methods:{
         resetDatePicker(){
-            const tableDate = this.date.split('-').splice(0,2).join('-')
-            this.$refs.datepicker.tableDate = tableDate
+            if(this.$refs.datepicker){
+                const tableDate = this.date.split('-').splice(0,2).join('-')
+                this.$refs.datepicker.tableDate = tableDate
+            }
         },
         sendMonth(month){
             console.log('heya')

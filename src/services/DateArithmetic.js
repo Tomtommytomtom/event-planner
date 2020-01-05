@@ -27,6 +27,13 @@ const isEventBeforeEvent = (eventOne, eventTwo) => {
     return eventOneObj < eventTwoObj
 }
 
+const isDateBeforeDate = (stringOne,stringTwo) => {
+    const eventOne = dateStringToObject(stringOne)
+    const eventTwo = dateStringToObject(stringTwo)
+    
+    return eventOne < eventTwo
+}
+
 const doesEventStartBeforeOrInMonth = (eventStart, dateInMonth) => {
 
     const startObj = dateStringToObject(eventStart)
@@ -197,5 +204,6 @@ export default {
     doesEventStartAfterOrOnDate,
     getDateInWords,
     isMoreThanTwoYearsInTheFuture,
-    isEventBeforeEvent
+    isEventBeforeEvent,
+    isDateBeforeDate
 }

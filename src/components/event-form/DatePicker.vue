@@ -25,6 +25,10 @@
       @input="incrementClicks"
     >
     </v-date-picker>
+    <v-snackbar
+        :value="true"
+        :timeout=0
+    >{{ this.dates[0] }} and {{this.dates[1]}}</v-snackbar>
   </v-dialog>
 </template>
 
@@ -32,6 +36,7 @@
 <script>
 //make v-model work properly in this
   import { bus } from '@/main'
+  import DateArithmetic from '@/services/DateArithmetic'
 
     export default {
         props: ['value','label'],
@@ -68,8 +73,13 @@
                 this.dates = [this.dates[1], this.dates[0]]
             },
             resetDatePicker(){
-                const tableDate = this.dates[0]
-                this.$refs.datepicker.tableDate = tableDate
+                if(this.dates[0] && this.$refs.datepicker){
+                   const tableDate = this.dates[0]
+                   this.$refs.datepicker.tableDate = tableDate 
+                }
+            },
+            resetClicks(){
+                this.clicks = 0
             }
         },
         watch: {
@@ -78,22 +88,23 @@
             },
             clicks(){
                 if(this.clicks == 2){
-                    this.clicks = 0
+                    this.resetClicks()
                     this.dialog = false
                 }
             },
             dialog(){
-                this.setDates()
-                console.log('in here', this.dates)
-                if(!this.dialog){
-                    if(this.dates[0] && !this.dates[1]){
-                    this.$emit('input',{
-                        start: this.dates[0],
-                        end: this.dates[0]
+                this.resetClicks()
+
+                if(this.isDialogClosed){
+                    if(this.isOnlyOneSelected){
+                        this.$emit('input',{
+                            start: this.dates[0],
+                            end: this.dates[0]
                         })
+                    } else {
+                        this.resetDatePicker()
                     }
                 }
-                this.resetDatePicker()
             }
         },
 
@@ -103,22 +114,7 @@
                     return true
                 }
                 else{
-                    const [startYear, startMonth, startDay] = this.dates[0].split('-')
-                    const [endYear, endMonth, endDay] = this.dates[1].split('-')
-
-                    if(startYear > endYear){
-                        console.log(startYear, 'is bigger than', endYear)
-                        return false
-                    } 
-                    if(startMonth > endMonth){
-                        console.log(startMonth, 'is bigger than', endMonth)
-                        return false
-                    } 
-                    if(startDay > endDay && startMonth === endMonth){console.log(
-                        startDay, 'is bigger than', endDay)
-                        return false
-                    } 
-                    return true
+                    return DateArithmetic.isDateBeforeDate(this.dates[0],this.dates[1])
                 }
             },
             dateRangeText() {
@@ -129,7 +125,6 @@
                 } else {
                     return [this.formattedStartDate, this.formattedEndDate].join(' ~ ')
                 }
-
             },
             formattedStartDate() {
                 return this.formatDate(this.dates[0])
@@ -139,6 +134,12 @@
             },
             isSecondClick() {
                 return this.dates.length === 2;
+            },
+            isOnlyOneSelected(){
+                return this.dates[0] && !this.dates[1]
+            },
+            isDialogClosed(){
+                return !this.dialog
             }
         },
 
