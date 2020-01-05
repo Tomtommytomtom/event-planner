@@ -8,14 +8,18 @@
         <slot></slot>
         </v-btn>
         <v-menu
+            ref="menu"
             :close-on-content-click="false"
             v-model="menu"
             right
         >
             <v-date-picker
+                ref="datepicker"
                 v-model="date"
                 @input="sendDate"
                 @click:month="sendMonth"
+                scrollable
+                :disabled="disabled"
             >
             </v-date-picker>
         </v-menu>
@@ -29,10 +33,15 @@ export default {
     data: () => ({
         menu: false,
         date: new Date().toISOString().substr(0,10),
-        type:'month'
+        type:'month',
+        disabled: false
     }),
 
     methods:{
+        resetDatePicker(){
+            const tableDate = this.date.split('-').splice(0,2).join('-')
+            this.$refs.datepicker.tableDate = tableDate
+        },
         sendMonth(month){
             console.log('heya')
             if(this.isTypeMonth){
@@ -42,6 +51,7 @@ export default {
             }
         },
         sendDate(){
+            console.log('this was called for whatever reason')
             this.$emit('input', this.dateToSend)
             this.menu = false
         },
@@ -60,7 +70,7 @@ export default {
 
     computed:{
         dateToSend(){
-            if(this.type === 'month'){
+            if(this.date.length < 8){
                 return this.date + '-01'
             } else {
                 return this.date
@@ -77,6 +87,9 @@ export default {
         },
         calendarType(){
             this.setType()
+        },
+        menu(){
+            this.resetDatePicker()
         }
     }
 }

@@ -16,6 +16,7 @@
             ></v-text-field>
         </template>
     <v-date-picker
+      ref="datepicker"
       v-model="dates"
       reactive
       range
@@ -65,6 +66,10 @@
             },
             swapDates(){
                 this.dates = [this.dates[1], this.dates[0]]
+            },
+            resetDatePicker(){
+                const tableDate = this.dates[0]
+                this.$refs.datepicker.tableDate = tableDate
             }
         },
         watch: {
@@ -77,15 +82,18 @@
                     this.dialog = false
                 }
             },
-            dialog: function(){
+            dialog(){
+                this.setDates()
+                console.log('in here', this.dates)
                 if(!this.dialog){
                     if(this.dates[0] && !this.dates[1]){
                     this.$emit('input',{
                         start: this.dates[0],
                         end: this.dates[0]
-                    })
+                        })
+                    }
                 }
-                }
+                this.resetDatePicker()
             }
         },
 
