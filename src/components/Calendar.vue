@@ -2,8 +2,8 @@
   <v-container class="pa-0">
     <v-row class="fill-height">
       <v-col class="px-2 py-0">
-        <v-sheet elevation="4" height="7vh" dark>
-          <v-toolbar flat dark class="fill-height">
+        <v-sheet height="7vh" dark tile>
+          <v-toolbar flat dark class="fill-height" tile color="grey darken-4" >
             <v-btn color="primary" text class="ml-2 mr-6" @click="setToday">
               Today
             </v-btn>
@@ -46,10 +46,10 @@
             </v-menu>
           </v-toolbar>
         </v-sheet>
+        <v-divider></v-divider>
         <v-sheet height="86vh">
           <v-calendar
             dark
-
             ref="calendar"
             v-model="focus"
             color="primary"
