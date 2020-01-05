@@ -24,6 +24,7 @@
                         :items="typeOptions"
                         outlined
                         dense
+                        color="primary"
                     >
                     </v-autocomplete>
                 </v-col>

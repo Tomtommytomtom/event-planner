@@ -1,5 +1,6 @@
 <template>
     <v-text-field
+        color="primary"
         ref="field"
         prepend-inner-icon="mdi-minus"
         append-icon="mdi-plus"

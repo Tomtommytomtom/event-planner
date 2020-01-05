@@ -54,6 +54,7 @@
             ref="calendar"
             v-model="focus"
             color="primary"
+            class="white--text"
             :events="events"
             :event-color="getEventColor"
             :event-margin-bottom="3"
