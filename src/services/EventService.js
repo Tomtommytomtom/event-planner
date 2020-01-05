@@ -1,8 +1,62 @@
-import RecurringEventService from "./RecurringEventService"
 import DateArithmetic from "./DateArithmetic"
 
-let staticEvents = []
-let ids = 1
+let staticEvents = [
+  {
+    name: 'Vue Conf',
+    details: 'Vue.js Convention in Austin Texas at the Austin Convention Center',
+    color: '#3eb882',
+    start: '2020-03-02',
+    end: '2020-03-04',
+    id: 1,
+    type: 'none',
+    frequenzy: 0
+  },
+  {
+    name: 'Viscom Dusseldorf',
+    details: 'International Trade Fair for Visual Communication',
+    color: 'primary',
+    start:'2020-01-07',
+    end: '2020-01-09',
+    id: 2,
+    type: 'none',
+    frequenzy: 0
+  },
+  {
+    name: 'Mobile Documentation for Industry 4.0 Seminar',
+    details: 'Mobile Documentation for Industry 4.0 Seminar will give you an insight into the current state of mobile documentation on smartphones and tablet computers.',
+    color: 'primary',
+    start:'2020-01-14',
+    end: '2020-01-15',
+    id: 3,
+    type: 'none',
+    frequenzy: 0
+  },
+  {
+    name: 'Infratech Essen',
+    details: 'The main objective of this international expo is to bring members of consulting and engineering firms, architects and landscape designers under one roof and also to give them an opportunity to have a face.',
+    color: 'primary',
+    start:'2020-01-14',
+    end: '2020-01-16',
+    id: 4,
+    type: 'none',
+    frequenzy: 0
+  },
+  {
+    name: 'Machine Learning and Artificial Intelligence - Compact Knowledge for Specialists and Executives Seminar',
+    details: 'Machine Learning and Artificial Intelligence - Compact Knowledge for Specialists and Executives Seminar will explain and classify a wide range of technical terms and convey various machine learning concepts....',
+    color: 'primary',
+    start:'2020-01-28',
+    end: '2020-01-29',
+    id: 5,
+    type: 'none',
+    frequenzy: 0
+  }
+]
+
+//let staticEvents = []
+let ids = 2
+
+
 
 const getAll = () => {
   return staticEvents
