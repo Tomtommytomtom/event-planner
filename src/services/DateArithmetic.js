@@ -2,7 +2,6 @@
 const addDaysToDate = (date, days) => {
     const dateWithoutTime = date.split(' ')[0]
     let dateObject = dateStringToObject(dateWithoutTime)
-
     dateObject.setDate(dateObject.getDate() + days + 1)
 
     return dateObjectToString(dateObject)

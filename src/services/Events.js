@@ -1,8 +1,11 @@
 import DateArithmetic from './DateArithmetic'
 
 let id = 6
+let recurringIds = 1
 
-class Event {
+const DAYS_IN_YEAR = 365
+
+export default class Event {
     constructor({ name, details, start, end, color }){
         this.name = name
         this.details = details
@@ -12,8 +15,8 @@ class Event {
         this.id = id++
     }
 
-    getNext(){
-        return false
+    getNextDate(){
+        return this.addTimeBackTo(this.getNextDays())
     }
 
     getStartDay() {
@@ -25,7 +28,8 @@ class Event {
     }
 
     getStartTime(){
-        const time = this.end.split(' ')[1]
+        const time = this.start.split(' ')[1]
+        return time
             ? ' ' + time
             : ''
     }
@@ -43,13 +47,19 @@ class Event {
             end: end + this.getEndTime()
         }
     }
+
+    getNextDays(){
+        return { start: this.start, end: this.end }
+    }
 }
 
 class FrequentEvent extends Event {
-    constructor({ name, details, start, end, color, type, frequenzy }){
-        super(name, details, start, end, color)
+    constructor(event , type, frequenzy, recurringId){
+        super(event)
         this.type = type
         this.frequenzy = frequenzy
+
+        this.recurringId = recurringId || recurringIds++
     }
 
     getNextDays(){
@@ -59,44 +69,47 @@ class FrequentEvent extends Event {
         }
     }
 
-    getNextDate(){
-        return this.addTimeBackTo(this.getNextDays())
-    }
-
     createDuplicateWithNextDate(){
+        const { start, end } = this.getNextDate()
         return new FrequentEvent({
             ...this,
-            ...this.getNextDate()
-        })
+            start,
+            end
+        }, this.type, this.frequenzy, this.recurringId)
+    }
+
+    getAmountOfDaysToBeRepeated(){
+        return this.type === 'weekly'
+            ? DAYS_IN_YEAR * 7 * this.frequenzy
+            : DAYS_IN_YEAR * 2 * this.frequenzy 
     }
 }
 
 class MonthlyEvent extends Event {
-    constructor(name, details, start, end, color, type, frequenzy){
-        super(name, details, start, end, color)
+    constructor(event, type, last){
+        super(event)
         this.type = type
         this.frequenzy = frequenzy
+        this.last = last
     }
 
     getNextDays(){
+        return {
 
-    }
-
-    getNextDate(){
-        return this.addTimeBackTo(this.getNextDays())
+        }
     }
 }
 
 class AnnualEvent extends Event {
-    constructor(name, details, start, end, color, type, frequenzy){
-        super(name, details, start, end, color)
+    constructor(event, type, frequenzy){
+        super(event)
         this.type = type
         this.frequenzy = frequenzy
     }
-
-    getNext(){
-        
-    }
 }
 
-export default Event;
+export {
+    FrequentEvent,
+    MonthlyEvent,
+    AnnualEvent
+}

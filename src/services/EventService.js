@@ -1,5 +1,6 @@
 import DateArithmetic from "./DateArithmetic"
 import Event from './Events'
+import { FrequentEvent, MonthlyEvent, AnnualEvent, } from './Events'
 
 let staticEvents = [
   {
@@ -71,12 +72,15 @@ const addOrUpdate = event => {
 }
 
 const addOne = event => {
-  console.log(event)
   const eventToAdd = new Event(event)
-  console.log(eventToAdd)
   staticEvents.push(eventToAdd)
 
 }
+
+const createDaily = event => {
+  return new FrequentEvent(event, event.type, event.frequenzy)
+}
+
 
 const updateEvent = eventToUpdate => {
   staticEvents = staticEvents.filter( event => event.id !== eventToUpdate.id )
@@ -192,5 +196,6 @@ export default {
   updateRecurringEventsInStatic,
   deleteStaticEventsAndRecurring,
   deleteStaticEventsAndRecurringAfterDate,
-  updateRecurringEventsInStaticAfterEventStart
+  updateRecurringEventsInStaticAfterEventStart,
+  createDaily
 }

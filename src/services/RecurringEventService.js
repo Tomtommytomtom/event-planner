@@ -4,19 +4,17 @@ import DateArithmetic from './DateArithmetic'
 let recurringIds = 1
 
 
-const applySingleRecurringToStatic = event => {                   
-    const eventToAdd = giveNewEventARecurringId(event)
-
+const applySingleRecurringToStatic = event => {         
+    let eventToAdd = EventService.createDaily(event)
+    let nextEvent = eventToAdd.createDuplicateWithNextDate()
     EventService.addOne(eventToAdd)
-
-    let nextEvent = getNextEvent(eventToAdd)
-
-    const daysToAdd = getYearsToAddInDays(eventToAdd)
+    const daysToAdd = eventToAdd.getAmountOfDaysToBeRepeated()
     const threshold = DateArithmetic.addDaysToDate(nextEvent.start, daysToAdd)
 
     while(shouldBeApplied(nextEvent.start, threshold)){
         EventService.addOne(nextEvent)
-        nextEvent = getNextEvent(nextEvent)
+        nextEvent = nextEvent.createDuplicateWithNextDate()
+        console.log(nextEvent)
     }
 }
 
@@ -46,49 +44,49 @@ const getYearsToAddInDays = (event) => {
     }
 } 
 
-const getNextEvent = event => {
+// const getNextEvent = event => {
 
-    let nextDateAndTime = {}
-    const type = event.type.split('-')[0]
+//     let nextDateAndTime = {}
+//     const type = event.type.split('-')[0]
 
-    switch(type){
-        case 'daily':
-            nextDateAndTime = getNextDateByFrequenzy(event)
-            break
-        case 'weekly':
-            const weeklyEvent = {
-                ...event,
-                frequenzy: event.frequenzy*7
-            }
-            nextDateAndTime = getNextDateByFrequenzy(weeklyEvent)
-            break
-        case 'monthly':
-            nextDateAndTime = getNextDateForMonthly(event)
-            break
-        case 'monthlylast':
-            nextDateAndTime = getLastWeekdayForMonthly(event)
-            break
-        case 'annually':
-            if(!event.frequenzy){
-                nextDateAndTime = getNextDateForAnnual(event)
-            } else {
-                nextDateAndTime = event
-                for (let i = 0; i < event.frequenzy; i++){
-                    nextDateAndTime = getNextDateForAnnual(nextDateAndTime)
-                }
-            }
-            break
-        case 'weekdays':
-            nextDateAndTime = getNextDateForWeekdays(event)
-            break
-    }
-    const nextEvent = {
-        ...event,
-        ...addEventTimeBack(nextDateAndTime, event)
-    }
+//     switch(type){
+//         case 'daily':
+//             nextDateAndTime = getNextDateByFrequenzy(event)
+//             break
+//         case 'weekly':
+//             const weeklyEvent = {
+//                 ...event,
+//                 frequenzy: event.frequenzy*7
+//             }
+//             nextDateAndTime = getNextDateByFrequenzy(weeklyEvent)
+//             break
+//         case 'monthly':
+//             nextDateAndTime = getNextDateForMonthly(event)
+//             break
+//         case 'monthlylast':
+//             nextDateAndTime = getLastWeekdayForMonthly(event)
+//             break
+//         case 'annually':
+//             if(!event.frequenzy){
+//                 nextDateAndTime = getNextDateForAnnual(event)
+//             } else {
+//                 nextDateAndTime = event
+//                 for (let i = 0; i < event.frequenzy; i++){
+//                     nextDateAndTime = getNextDateForAnnual(nextDateAndTime)
+//                 }
+//             }
+//             break
+//         case 'weekdays':
+//             nextDateAndTime = getNextDateForWeekdays(event)
+//             break
+//     }
+//     const nextEvent = {
+//         ...event,
+//         ...addEventTimeBack(nextDateAndTime, event)
+//     }
 
-    return nextEvent
-}
+//     return nextEvent
+// }
 
 const getNextDateByFrequenzy = event => {
     return {
