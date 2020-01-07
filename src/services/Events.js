@@ -1,6 +1,6 @@
 import DateArithmetic from './DateArithmetic'
 
-let id = 6
+let ids = 6
 let recurringIds = 1
 
 const DAYS_IN_YEAR = 365
@@ -12,7 +12,8 @@ export default class Event {
         this.start = start
         this.end = end
         this.color = color
-        this.id = id++
+        this.id = ids++
+        console.log(ids, this)
     }
 
     getNextDate(){

@@ -254,7 +254,7 @@ import { bus } from '@/main'
         return ''
       },
       deleteNonRecurring(){
-
+        console.log(this.selectedEvent.recurringId)
         if(!this.selectedEvent.recurringId){
           return true
         } else {

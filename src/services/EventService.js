@@ -63,6 +63,10 @@ const getAll = () => {
   return staticEvents
 }
 
+const pushEvent = event => {
+  staticEvents.push(event)
+}
+
 const addOrUpdate = event => {
   if(event.id){
     updateEvent(event)
@@ -143,13 +147,6 @@ const deleteStaticEventsAndRecurringAfterDate = (recurringEvent) => {
   })
 }
 
-const giveNewEventAnId = event => {
-  return {
-    ...event,
-    id: ids++
-  }
-}
-
 const getFirstEventOfRecurringId = (recurringId) => {
   return staticEvents
     .filter(event => event.recurringId === recurringId)
@@ -197,5 +194,6 @@ export default {
   deleteStaticEventsAndRecurring,
   deleteStaticEventsAndRecurringAfterDate,
   updateRecurringEventsInStaticAfterEventStart,
-  createDaily
+  createDaily,
+  pushEvent
 }

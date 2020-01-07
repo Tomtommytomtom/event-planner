@@ -7,12 +7,12 @@ let recurringIds = 1
 const applySingleRecurringToStatic = event => {         
     let eventToAdd = EventService.createDaily(event)
     let nextEvent = eventToAdd.createDuplicateWithNextDate()
-    EventService.addOne(eventToAdd)
+    EventService.pushEvent(eventToAdd)
     const daysToAdd = eventToAdd.getAmountOfDaysToBeRepeated()
     const threshold = DateArithmetic.addDaysToDate(nextEvent.start, daysToAdd)
 
     while(shouldBeApplied(nextEvent.start, threshold)){
-        EventService.addOne(nextEvent)
+        EventService.pushEvent(nextEvent)
         nextEvent = nextEvent.createDuplicateWithNextDate()
         console.log(nextEvent)
     }
