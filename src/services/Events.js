@@ -122,8 +122,12 @@ class FrequentEvent extends Event {
         })
     }
 
+    isWeekly(){
+        return event.type.includes('weekly')
+    }
+
     getFrequenzy(){
-        if(this.type === 'weekly'){
+        if(this.isWeekly){
             return this.frequenzy * 7
         } else {
             return this.frequenzy
