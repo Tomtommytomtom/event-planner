@@ -1,4 +1,5 @@
 import DateArithmetic from "./DateArithmetic"
+import Event from './Events'
 
 let staticEvents = [
   {
@@ -70,7 +71,9 @@ const addOrUpdate = event => {
 }
 
 const addOne = event => {
-  const eventToAdd = giveNewEventAnId(event)
+  console.log(event)
+  const eventToAdd = new Event(event)
+  console.log(eventToAdd)
   staticEvents.push(eventToAdd)
 
 }
