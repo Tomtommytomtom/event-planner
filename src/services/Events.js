@@ -52,10 +52,43 @@ export default class Event {
     getNextDays(){
         return { start: this.start, end: this.end }
     }
+
+    getDurationOfEvent(){
+        if(this.getStartDay() === this.getEndDay()){
+            return 0
+        } else {
+            return DateArithmetic.getDifference(this.getEndDay(), this.getStartDay())
+        }
+    }
+
+    getNextMonth(){
+        const [year, month, day] = this.getStartDay.split('-')
+
+        if(+month + 1 < 13){
+        return `${year}-${+month + 1}-01` 
+        } else {
+        return `${+year + 1}-01-01`
+        }
+    }
+
+    getWeekday(){
+        return DateArithmetic.getWeekday(this.getStartDay())
+    }
+
+    getDateInXDays(days){
+        return DateArithmetic.addDaysToDate(this.getStartDay(), days)
+    }
+
+    getTomorrow(){
+        this.getDateInXDays(1)
+    }
+    getWeekdayInXDays(days){
+        return DateArithmetic.getWeekday(this.getDateInXDays(days))
+    }
 }
 
 class FrequentEvent extends Event {
-    constructor(event , type, frequenzy, recurringId){
+    constructor(event , { type, frequenzy, recurringId }){
         super(event)
         this.type = type
         this.frequenzy = frequenzy
@@ -65,18 +98,17 @@ class FrequentEvent extends Event {
 
     getNextDays(){
         return {
-            start: DateArithmetic.addDaysToDate(this.getStartDay(),this.frequenzy),
-            end: DateArithmetic.addDaysToDate(this.getStartDay(),this.frequenzy)
+            start: this.getDateInXDays(this.frequenzy),
+            end: this.getDateInXDays(this.frequenzy)
         }
     }
 
     createDuplicateWithNextDate(){
-        const { start, end } = this.getNextDate()
+        console.log(this,'inspect this')
         return new FrequentEvent({
             ...this,
-            start,
-            end
-        }, this.type, this.frequenzy, this.recurringId)
+            ...this.getNextDate()
+        },this)
     }
 
     getAmountOfDaysToBeRepeated(){
@@ -87,11 +119,16 @@ class FrequentEvent extends Event {
 }
 
 class MonthlyEvent extends Event {
-    constructor(event, type, last){
+    constructor(event, type, recurringId){
         super(event)
         this.type = type
         this.frequenzy = frequenzy
-        this.last = last
+
+        this.recurringId = recurringId || recurringIds++
+    }
+
+    isOnLastWeekday(){
+        return this.type === 'monthlylast'
     }
 
     getNextDays(){
@@ -102,15 +139,63 @@ class MonthlyEvent extends Event {
 }
 
 class AnnualEvent extends Event {
-    constructor(event, type, frequenzy){
+    constructor(event, type, frequenzy, recurringId){
         super(event)
         this.type = type
         this.frequenzy = frequenzy
+
+        this.recurringId = recurringId || recurringIds++
+    }
+
+    getNextDays(){
+        const duration = this.getDurationOfEvent()
+
+        return {
+            start: this.getSameDayInFrequenzyYears(),
+            end: DateArithmetic.addDaysToDate(this.getSameDayInFrequenzyYears(), duration)
+        }
+    }
+
+    getSameDayInFrequenzyYears(){
+        const[year, month , day] = this.getStartDay.split('-')
+        return [+year + this.frequenzy, month, day].join('-')
+    }
+}
+
+class WeekdayEvent extends Event {
+    constructor(event, type, frequenzy, weekdays, recurringId){
+        super(event)
+        this.type = type
+        this.weekdays = weekdays
+        this.frequenzy = frequenzy
+
+        this.recurringId = recurringId || recurringIds ++
+    }
+
+    getNextDays(){
+        let daysToAdd
+        const getWeekday = DateArithmetic.getWeekday
+        const duration = this.getDurationOfEvent()
+
+        for(let i = 1 + this.frequenzy ; i <= 7 + this.frequenzy ; i++){
+            if(weekdays[this.getWeekdayInXDays(i)]){       // example weekdays array: [true, false, false, true, false, false, true] where [Sun,Mon,Tue,Wedn,Thur,Fri,Sat] 
+                daysToAdd = i
+                break
+            }
+        }
+
+        const newStartDate = this.getDateInXDays(daysToAdd)
+
+        return {
+            start: newStartDate,
+            end: DateArithmetic.addDaysToDate(newStartDate, duration)
+        }
     }
 }
 
 export {
     FrequentEvent,
     MonthlyEvent,
-    AnnualEvent
+    AnnualEvent,
+    WeekdayEvent
 }
