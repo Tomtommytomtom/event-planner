@@ -18,98 +18,25 @@ const applySingleRecurringToStatic = event => {
     }
 }
 
-const giveNewEventARecurringId = event => {
-
-    return {
-        ...event,
-        recurringId: recurringIds++
-    }
-}
-
-const getYearsToAddInDays = (event) => {
-    const dayInAYear = 365
-    const type = event.type.split('-')[0]
-
-    switch(type){
-        case 'daily':
-            return dayInAYear * event.frequenzy * 2
-        case 'weekly':
-            return dayInAYear * event.frequenzy * 7
-        case 'monthly':
-            return dayInAYear * 50
-        case 'annually':
-            return dayInAYear * 200
-        case 'weekdays':
-            return dayInAYear * 2
-    }
-} 
-
-// const getNextEvent = event => {
-
-//     let nextDateAndTime = {}
+// const getYearsToAddInDays = (event) => {
+//     const dayInAYear = 365
 //     const type = event.type.split('-')[0]
 
 //     switch(type){
 //         case 'daily':
-//             nextDateAndTime = getNextDateByFrequenzy(event)
-//             break
+//             return dayInAYear * event.frequenzy * 2
 //         case 'weekly':
-//             const weeklyEvent = {
-//                 ...event,
-//                 frequenzy: event.frequenzy*7
-//             }
-//             nextDateAndTime = getNextDateByFrequenzy(weeklyEvent)
-//             break
+//             return dayInAYear * event.frequenzy * 7
 //         case 'monthly':
-//             nextDateAndTime = getNextDateForMonthly(event)
-//             break
-//         case 'monthlylast':
-//             nextDateAndTime = getLastWeekdayForMonthly(event)
-//             break
+//             return dayInAYear * 50
 //         case 'annually':
-//             if(!event.frequenzy){
-//                 nextDateAndTime = getNextDateForAnnual(event)
-//             } else {
-//                 nextDateAndTime = event
-//                 for (let i = 0; i < event.frequenzy; i++){
-//                     nextDateAndTime = getNextDateForAnnual(nextDateAndTime)
-//                 }
-//             }
-//             break
+//             return dayInAYear * 200
 //         case 'weekdays':
-//             nextDateAndTime = getNextDateForWeekdays(event)
-//             break
+//             return dayInAYear * 2
 //     }
-//     const nextEvent = {
-//         ...event,
-//         ...addEventTimeBack(nextDateAndTime, event)
-//     }
-
-//     return nextEvent
-// }
-
-const getNextDateByFrequenzy = event => {
-    return {
-        start: DateArithmetic.addDaysToDate(event.start, event.frequenzy),
-        end: DateArithmetic.addDaysToDate(event.end, event.frequenzy)
-    }
-}
-
-const getNextDateForAnnual = event => {
-    const start = event.start.split(' ')[0]
-
-    const end = event.start.split(' ')[0]
-
-    const startNextYear = getSameDateNextYear(start)
-
-    const duration = getDurationOfEvent(event)
+// } 
 
 
-    return {
-        start: startNextYear,
-        end: DateArithmetic.addDaysToDate(startNextYear,duration)
-    }
-}
 
 const getNextDateForMonthly = event => {
     return getNthWeekdayForMonthly(event)
