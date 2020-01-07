@@ -145,8 +145,10 @@ export default {
                     case "Monthly":
                         if(newType.includes('last')){
                             result  = 'monthlylast'
+                            frequenzy = 1
                         break
                         } else {
+                            frequenzy = 1
                             result  = 'monthly'
                         break
                         }

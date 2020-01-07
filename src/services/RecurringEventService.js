@@ -4,7 +4,8 @@ import DateArithmetic from './DateArithmetic'
 let recurringIds = 1
 
 
-const applySingleRecurringToStatic = event => {         
+const applySingleRecurringToStatic = event => {    
+    console.log(event)     
     let eventToAdd = EventService.createAddAndReturnRecurring(event)
 
     let nextEvent = eventToAdd.createDuplicateWithNextDate()
@@ -15,7 +16,6 @@ const applySingleRecurringToStatic = event => {
     while(shouldBeApplied(nextEvent.start, threshold)){
         EventService.pushEvent(nextEvent)
         nextEvent = nextEvent.createDuplicateWithNextDate()
-        console.log(nextEvent)
     }
 }
 

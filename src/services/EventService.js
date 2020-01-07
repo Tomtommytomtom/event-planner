@@ -90,33 +90,34 @@ const createAddAndReturnRecurring = event => {
 }
 
 const createRecurring = event => {
-  switch(event.type){
+  switch(event.type.split('-')[0]){
     case 'daily':
     case 'weekly':
-      return createDaily(event)
+      return createFrequent(event)
     case 'weekdays':
       return createWeekdays(event)
     case 'monthly':
+    case 'monthlylast':
       return createMonthly(event)
     case 'annually':
       return createAnnual(event)
   }
 }
 
-const createDaily = event => {
-  console.log(event,'also inspect this')
-  return new FrequentEvent(event, {
-    type: event.type,
-    frequenzy: event.frequenzy
-  })
+const createFrequent = event => {
+  return new FrequentEvent(event)
 }
 
 const createWeekdays = event => {
-  return new WeekdayEvent(event, event.type, event.frequenzy, event.weekdays)  
+  return new WeekdayEvent(event)  
 }
 
 const createMonthly = event => {
-  return new MonthlyEvent(event, event.type)
+  return new MonthlyEvent(event)
+}
+
+const createAnnual = event => {
+  return new AnnualEvent(event)
 }
 
 
