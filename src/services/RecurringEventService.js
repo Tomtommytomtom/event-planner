@@ -5,9 +5,10 @@ let recurringIds = 1
 
 
 const applySingleRecurringToStatic = event => {         
-    let eventToAdd = EventService.createDaily(event)
+    let eventToAdd = EventService.createAddAndReturnRecurring(event)
+
     let nextEvent = eventToAdd.createDuplicateWithNextDate()
-    EventService.pushEvent(eventToAdd)
+
     const daysToAdd = eventToAdd.getAmountOfDaysToBeRepeated()
     const threshold = DateArithmetic.addDaysToDate(nextEvent.start, daysToAdd)
 
@@ -16,6 +17,10 @@ const applySingleRecurringToStatic = event => {
         nextEvent = nextEvent.createDuplicateWithNextDate()
         console.log(nextEvent)
     }
+}
+
+const shouldBeApplied = (eventStart, date) => {
+    return DateArithmetic.doesEventStartBeforeDate(eventStart, date)
 }
 
 // const getYearsToAddInDays = (event) => {
@@ -74,43 +79,6 @@ const getNextDateForWeekdays = event => {
         end: DateArithmetic.getNextWeekday(event.end)
     }
 }
-
-const addEventTimeBack = (dateAndTime,event) => {
-    return {
-        start: dateAndTime.start + getEventTime(event.start),
-        end: dateAndTime.end + getEventTime(event.end)
-    }
-}
-
-const getEventTime = dateAndTime => {
-    const time = dateAndTime.split(' ')[1]
-
-    return !time 
-        ? '' 
-        : ' ' + time
-}
-
-const shouldBeApplied = (eventStart, date) => {
-    return DateArithmetic.doesEventStartBeforeDate(eventStart, date)
-}
-
-
-
-const getSameDateNextYear = event => {
-    const[year, month , day] = event.split('-')
-    return [+year + 1, month, day].join('-')
-}
-
-const getDurationOfEvent = event => {
-    const [startDate] = event.start.split(' ')
-    const [endDate] = event.end.split(' ')
-    if(startDate === endDate){
-        return 0
-    } else {
-        return DateArithmetic.getDifference(endDate, startDate)
-    }
-}
-
 
 const getNextMonth = date => {
     const [year, month, day] = date.split('-')
