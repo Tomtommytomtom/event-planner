@@ -1,5 +1,5 @@
 import DateArithmetic from "./DateArithmetic"
-import Event from './Events'
+import Event, { WeekdayEvent } from './Events'
 import { FrequentEvent, MonthlyEvent, AnnualEvent, } from './Events'
 
 let staticEvents = [
@@ -77,12 +77,46 @@ const addOrUpdate = event => {
 
 const addOne = event => {
   const eventToAdd = new Event(event)
-  staticEvents.push(eventToAdd)
+  pushEvent(eventToAdd)
 
 }
 
+const createAddAndReturnRecurring = event => {
+  const recurring = createRecurring(event)
+
+  staticEvents.push(recurring)
+
+  return recurring
+}
+
+const createRecurring = event => {
+  switch(event.type){
+    case 'daily':
+    case 'weekly':
+      return createDaily(event)
+    case 'weekdays':
+      return createWeekdays(event)
+    case 'monthly':
+      return createMonthly(event)
+    case 'annually':
+      return createAnnual(event)
+  }
+}
+
 const createDaily = event => {
-  return new FrequentEvent(event, event.type, event.frequenzy)
+  console.log(event,'also inspect this')
+  return new FrequentEvent(event, {
+    type: event.type,
+    frequenzy: event.frequenzy
+  })
+}
+
+const createWeekdays = event => {
+  return new WeekdayEvent(event, event.type, event.frequenzy, event.weekdays)  
+}
+
+const createMonthly = event => {
+  return new MonthlyEvent(event, event.type)
 }
 
 
@@ -183,6 +217,7 @@ const doesEventStartInMonth = (event, date) => {
 }
 
 export default {
+  pushEvent,
   addOne,
   updateEvent,
   getAll,
@@ -194,6 +229,5 @@ export default {
   deleteStaticEventsAndRecurring,
   deleteStaticEventsAndRecurringAfterDate,
   updateRecurringEventsInStaticAfterEventStart,
-  createDaily,
-  pushEvent
+  createAddAndReturnRecurring
 }
