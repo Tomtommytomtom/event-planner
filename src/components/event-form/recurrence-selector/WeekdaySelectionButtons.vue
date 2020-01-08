@@ -16,17 +16,18 @@
                 class=" mx-2"
                 v-for="n in 7"
                 :key="n"
-                :value="n - 1"
+                :value="weekdayIndex[n - 1]"
                 @click="update"
             >
                 {{ buttonLabels[n - 1] }}
             </v-btn>
         </v-btn-toggle>
+        <p>{{selectedWeekdays}}</p>
     </div>
 </template>
 <script>
 export default {
-    props: ['value','currentWeekday'],
+    props: ['value'],
 
     data: () => ({
         buttonLabels : [
@@ -38,18 +39,23 @@ export default {
             'S',
             'S'
         ],
+        weekdayIndex: [1,2,3,4,5,6,0],
         selectedWeekdays: []
     }),
     methods: {
         update(){
-            console.log('click',this.selectedWeekdays)
+            console.log(this.selectedWeekdays)
             this.$emit('input', this.selectedWeekdays)
         },
     },
     watch: {
-        currentWeekday(){
-            this.selectedWeekdays = this.currentWeekday
+        value(){
+            this.selectedWeekdays = this.value
         },
+    },
+    created(){
+        console.log(this.value,this.selectedWeekdays)
+        this.selectedWeekdays = this.value
     }
 }
 </script>

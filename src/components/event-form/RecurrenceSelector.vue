@@ -18,7 +18,7 @@
                 @close-form="customOptionsDialog = false"
                 @reset-form="resetCustom"
                 v-model="customOptionSelected"
-                :curr-weekday="currWeekday"
+                :curr-weekday="currWeekdayIndex"
             >
             </custom-option-form>
         </v-dialog>
@@ -52,10 +52,11 @@ export default {
             'Friday',
             'Saturday'
         ],
-        weekdaysSelected: []
+        selectedWeekdays: []
     }),
     methods:{
         sendType(){
+            console.log('inside recurrence',this.customOptionSelected)
             this.$emit('input', this.customOptionSelected)
         },
         setValue(){
@@ -131,7 +132,7 @@ export default {
                 const selected = newType.split(' ')[0]
                 let frequenzy = this.frequenzy
                 let result = this.recurringType
-                this.weekdaysSelected = []
+                this.selectedWeekdays = []
 
                 switch(selected){
                     case "Doesn't":
@@ -162,7 +163,7 @@ export default {
                     case "Every":
                         result  = 'weekdays'
                         frequenzy = 1
-                        this.weekdaysSelected = [false,true,true,true,true,true,false]
+                        this.selectedWeekdays = [1,2,3,4,5]
                         break
                     case "...Custom":
                         this.customOptionsDialog = true
@@ -179,19 +180,22 @@ export default {
                        type: this.recurringType,
                        frequenzy: this.frequenzy,
                        customString: this.customString,
-                       weekdaysSelected: this.weekdaysSelected
+                       selectedWeekdays: this.selectedWeekdays
                    }
                },
                set(newOption){
                    this.recurringType = newOption.type
                    this.frequenzy = newOption.frequenzy
                    this.customString = newOption.customString
-                   this.weekdaysSelected = newOption.weekdaysSelected 
+                   this.selectedWeekdays = newOption.selectedWeekdays 
                }
         },
         isCurrWeekdayLast(){
         const result = DateArithmetic.isLastWeekdayOfMonth(this.startDate)
         return result
+        },
+        currWeekdayIndex(){
+            return DateArithmetic.getWeekday(this.startDate)
         },
         currWeekday(){
             return this.weekdays[DateArithmetic.getWeekday(this.startDate)]

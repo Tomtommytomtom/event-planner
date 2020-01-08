@@ -33,7 +33,6 @@
             <weekday-selection-buttons
                 v-model="selectedWeekdays"
                 v-if="isSelectionWeekly"
-                :current-weekday="currentWeekday"
                 class="ml-4"
             >
             </weekday-selection-buttons>
@@ -60,7 +59,7 @@ import IncrementTextField from './IncrementTextField'
 import WeekdaySelectionButtons from './WeekdaySelectionButtons'
 
 export default {
-    props: ['value', 'currentWeekday'], 
+    props: ['value', 'currWeekday'], 
 
     components: {
         IncrementTextField,
@@ -81,15 +80,17 @@ export default {
             'weekly',
             'annually'
         ],
-        selectedWeekdays: [false,false,true,false,false,false,false]
+        selectedWeekdays: []
     }),
 
     methods: {
         saveOptions(){
+            console.log(this.selectedWeekdays)
             this.$emit('input', {
                 frequenzy: +this.frequenzyCounter,
                 type: this.customType,
-                customString: this.customString
+                customString: this.customString,
+                selectedWeekdays: this.selectedWeekdays
             })
             this.saveForm()
         },
@@ -125,6 +126,15 @@ export default {
         isSelectionWeekly(){
             return this.customType === 'weekly-custom'
         }
+    },
+    watch:{
+        currWeekday(){
+            this.selectedWeekdays = [this.currWeekday]
+        }
+    },
+    created(){
+        console.log(this.currWeekday)
+        this.selectedWeekdays = [this.currWeekday]
     }
 }
 </script>

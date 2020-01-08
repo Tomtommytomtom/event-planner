@@ -297,15 +297,11 @@ class WeekdayEvent extends Event {
     }
 
     getLastDayOfWeekThisShouldBeApplied(){
-        return this.weekdays.reduce((acc,curr,index) => {
-            return curr
-                ? index
-                : acc
-        },this.getWeekday())
+        return Math.max(...this.weekdays)
     }
 
     getFirstDayOfWeekThisShouldBeApplied(){
-        return this.weekdays.indexOf(true)
+        return Math.min(...this.weekdays)
     }
 }
 
