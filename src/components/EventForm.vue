@@ -164,6 +164,8 @@ export default {
 
 
     data: () => ({
+        eventObject: {},
+
         componentColor: 'primary',
 
         recurringInfo: {
@@ -385,6 +387,7 @@ export default {
         })
         bus.$on('editEvent', event => {
             this.currEvent = event
+            console.log(this.eventObject)
             this.editEvent()
         })
 

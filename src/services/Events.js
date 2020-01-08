@@ -69,12 +69,19 @@ export default class Event {
     }
 
     getNextMonth(){
+        return this.getMonthInXMonths(1)
+    }
+
+    getMonthInXMonths(monthsToAdd){
         const [year, month, day] = this.getStartDay().split('-')
 
-        if(+month + 1 < 13){
-        return `${year}-${+month + 1}-01` 
+        const yearCarry = Math.floor((+month + monthsToAdd )/ 12)
+        const remainingMonths = monthsToAdd % 12
+
+        if(yearCarry === 0){
+        return `${year}-${+month +remainingMonths}-01` 
         } else {
-        return `${+year + 1}-01-01`
+        return `${+year + yearCarry}-${remainingMonths}-01`
         }
     }
 
@@ -197,6 +204,10 @@ class MonthlyEvent extends Event {
         }
     }
 
+    getNextMonth(){
+        return this.getMonthInXMonths(this.frequenzy)
+    }
+
     getDaysToBeRepeatedMultiplier(){
         return 50
     }
@@ -243,6 +254,7 @@ class AnnualEvent extends Event {
 class WeekdayEvent extends Event {
     constructor(event){
         super(event)
+        console.log('inside weekdayevent constructor', event)
         this.type = event.type
         this.weekdays = event.weekdays
         this.frequenzy = event.frequenzy
