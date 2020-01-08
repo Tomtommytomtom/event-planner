@@ -29,6 +29,15 @@
                     </v-autocomplete>
                 </v-col>
             </v-row>
+
+            <weekday-selection-buttons
+                v-model="selectedWeekdays"
+                v-if="isSelectionWeekly"
+                :current-weekday="currentWeekday"
+                class="ml-4"
+            >
+            </weekday-selection-buttons>
+
             <v-container class="d-flex justify-end">
                 <v-btn
                     text
@@ -48,12 +57,14 @@
 
 <script>
 import IncrementTextField from './IncrementTextField'
+import WeekdaySelectionButtons from './WeekdaySelectionButtons'
 
 export default {
-    props: ['value'], 
+    props: ['value', 'currentWeekday'], 
 
     components: {
-        IncrementTextField
+        IncrementTextField,
+        WeekdaySelectionButtons
     },
 
     data: () => ({
@@ -69,7 +80,8 @@ export default {
             'daily',
             'weekly',
             'annually'
-        ]
+        ],
+        selectedWeekdays: [false,false,true,false,false,false,false]
     }),
 
     methods: {
@@ -109,6 +121,9 @@ export default {
 
             }
             
+        },
+        isSelectionWeekly(){
+            return this.customType === 'weekly-custom'
         }
     }
 }

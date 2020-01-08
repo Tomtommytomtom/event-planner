@@ -18,6 +18,7 @@
                 @close-form="customOptionsDialog = false"
                 @reset-form="resetCustom"
                 v-model="customOptionSelected"
+                :curr-weekday="currWeekday"
             >
             </custom-option-form>
         </v-dialog>
