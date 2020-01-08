@@ -51,6 +51,7 @@ export default {
             'Friday',
             'Saturday'
         ],
+        weekdaysSelected: []
     }),
     methods:{
         sendType(){
@@ -129,6 +130,7 @@ export default {
                 const selected = newType.split(' ')[0]
                 let frequenzy = this.frequenzy
                 let result = this.recurringType
+                this.weekdaysSelected = []
 
                 switch(selected){
                     case "Doesn't":
@@ -153,10 +155,13 @@ export default {
                         break
                         }
                     case "Annually":
+                        frequenzy = 1
                         result  = 'annually'
                         break
                     case "Every":
                         result  = 'weekdays'
+                        frequenzy = 1
+                        this.weekdaysSelected = [false,true,true,true,true,true,false]
                         break
                     case "...Custom":
                         this.customOptionsDialog = true
@@ -172,14 +177,15 @@ export default {
                    return {
                        type: this.recurringType,
                        frequenzy: this.frequenzy,
-                       customString: this.customString
+                       customString: this.customString,
+                       weekdaysSelected: this.weekdaysSelected
                    }
                },
                set(newOption){
-
                    this.recurringType = newOption.type
                    this.frequenzy = newOption.frequenzy
                    this.customString = newOption.customString
+                   this.weekdaysSelected = newOption.weekdaysSelected 
                }
         },
         isCurrWeekdayLast(){

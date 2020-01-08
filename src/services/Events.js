@@ -96,6 +96,14 @@ export default class Event {
     getWeekdayInXDays(days){
         return DateArithmetic.getWeekday(this.getDateInXDays(days))
     }
+
+    getEditMessage(){
+        return `Successfully editeddsadsadassda ${this.name}!`
+    }
+
+    isSunday(){
+        return this.getWeekday() === 0
+    }
 }
 
 
@@ -123,11 +131,11 @@ class FrequentEvent extends Event {
     }
 
     isWeekly(){
-        return event.type.includes('weekly')
+        return this.type.includes('weekly')
     }
 
     getFrequenzy(){
-        if(this.isWeekly){
+        if(this.isWeekly()){
             return this.frequenzy * 7
         } else {
             return this.frequenzy
@@ -242,14 +250,24 @@ class WeekdayEvent extends Event {
         this.recurringId = event.recurringId || recurringIds ++
     }
 
+    createDuplicateWithNextDate(){
+        return new WeekdayEvent({
+            ...this,
+            ...this.getNextDate()
+        })
+    }
+
     getNextDays(){
-        let daysToAdd
-        const getWeekday = DateArithmetic.getWeekday
+        let daysToAdd = 0
         const duration = this.getDurationOfEvent()
 
-        for(let i = 1 + this.frequenzy ; i <= 7 + this.frequenzy ; i++){
-            if(weekdays[this.getWeekdayInXDays(i)]){       // example weekdays array: [true, false, false, true, false, false, true] where [Sun,Mon,Tue,Wedn,Thur,Fri,Sat] 
-                daysToAdd = i
+        if(this.getLastDayOfWeekThisShouldBeApplied() === this.getWeekday()){
+           daysToAdd += (this.frequenzy - 1) *7
+        }
+
+        for(let i = 1; i <= 7; i++){
+            if(this.weekdays[this.getWeekdayInXDays(i)]){     
+                daysToAdd += i
                 break
             }
         }
@@ -264,6 +282,18 @@ class WeekdayEvent extends Event {
 
     getDaysToBeRepeatedMultiplier(){
         return 2
+    }
+
+    getLastDayOfWeekThisShouldBeApplied(){
+        return this.weekdays.reduce((acc,curr,index) => {
+            return curr
+                ? index
+                : acc
+        },this.getWeekday())
+    }
+
+    getFirstDayOfWeekThisShouldBeApplied(){
+        return this.weekdays.indexOf(true)
     }
 }
 

@@ -471,6 +471,7 @@ export default {
                         color: this.selectedColor,
                         type: this.recurringInfo.type,
                         frequenzy: this.recurringInfo.frequenzy,
+                        weekdays: this.recurringInfo.weekdaysSelected,
                         recurringId: this.recurringId
                     }
                     return event
@@ -484,7 +485,8 @@ export default {
                 this.selectedColor = newEvent.color
                 this.recurringInfo = {
                     type: newEvent.type,
-                    frequenzy: newEvent.frequenzy
+                    frequenzy: newEvent.frequenzy,
+                    weekdaysSelected: newEvent.weekdays
                 },
                 this.recurringId = newEvent.recurringId
             }
