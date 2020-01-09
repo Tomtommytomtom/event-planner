@@ -1,7 +1,6 @@
 import EventService from './EventService'
 import DateArithmetic from './DateArithmetic'
 
-let recurringIds = 1
 
 
 const applySingleRecurringToStatic = event => {    

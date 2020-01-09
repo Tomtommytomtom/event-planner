@@ -1,4 +1,5 @@
 import Event from './Events'
+import DateArithmetic from '../DateArithmetic'
 
 export default class WeekdayEvent extends Event {
     constructor(event){

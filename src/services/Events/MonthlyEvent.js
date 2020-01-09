@@ -1,4 +1,5 @@
 import Event from './Events'
+import DateArithmetic from '../DateArithmetic'
 
 export default class MonthlyEvent extends Event {
     constructor(event){
