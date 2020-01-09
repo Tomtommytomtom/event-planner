@@ -1,12 +1,16 @@
 <template>
   <div>
-      <p class="ml-4">On</p>
-      <v-row justify="center" no-gutters>
+      
+      <v-row justify="center" align="center" no-gutters>
+        <p class="ma-4">On</p>
         <v-btn
-            class="mx-2"
+            class="mx-2 body-2"
+            style="border-width: 1px"
+            :class="{
+                'primary' : isActive[weekday],
+            }"
             small
             fab
-            color="primary"
             elevation="0"
             v-for="weekday in weekdays"
             :key="weekday"
@@ -60,6 +64,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>
