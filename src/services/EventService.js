@@ -1,6 +1,9 @@
 import DateArithmetic from "./DateArithmetic"
-import Event, { WeekdayEvent } from './Events'
-import { FrequentEvent, MonthlyEvent, AnnualEvent, } from './Events'
+import Event from './Events/Events'
+import FrequentEvent from './Events/FrequentEvent'
+import MonthlyEvent from './Events/MonthlyEvent'
+import AnnualEvent from './Events/AnnualEvent'
+import WeekdayEvent from './Events/WeekdayEvent'
 
 let staticEvents = [
   {
@@ -56,8 +59,6 @@ let staticEvents = [
 ]
 
 let ids = 6
-
-
 
 const getAll = () => {
   return staticEvents
