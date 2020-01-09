@@ -1,18 +1,21 @@
 <template>
   <div>
-      <v-btn
-        class="mx-2"
-        small
-        fab
-        color="primary"
-        elevation="0"
-        v-for="weekday in weekdays"
-        :key="weekday"
-        :outlined="!isActive[weekday]"
-        @click="sendSelected(weekday)"
-      >
-        {{ weekdayLabels[weekday] }}
-      </v-btn>
+      <p class="ml-4">On</p>
+      <v-row justify="center" no-gutters>
+        <v-btn
+            class="mx-2"
+            small
+            fab
+            color="primary"
+            elevation="0"
+            v-for="weekday in weekdays"
+            :key="weekday"
+            :outlined="!isActive[weekday]"
+            @click="sendSelected(weekday)"
+        >
+            {{ weekdayLabels[weekday] }}
+        </v-btn>
+      </v-row>
   </div>
 </template>
 

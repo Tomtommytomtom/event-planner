@@ -34,7 +34,6 @@
                 @input="updateSelectedWeekdays"
                 :current-weekday="currentWeekday"
                 v-if="isSelectionWeekly"
-                class="ml-4"
             >
             </weekday-selection-buttons>
 
