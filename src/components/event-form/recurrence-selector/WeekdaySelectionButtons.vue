@@ -9,7 +9,7 @@
         v-for="weekday in weekdays"
         :key="weekday"
         :outlined="!isActive[weekday]"
-        @click="update(weekday)"
+        @click="sendSelected(weekday)"
       >
         {{ weekdayLabels[weekday] }}
       </v-btn>
@@ -18,28 +18,25 @@
 
 <script>
 export default {
+
+
     props:['currentWeekday'],
 
     data: () => ({
-        isActive: [],
+        isActive: [false,false,false,false,false,false,false],
         weekdays:[1,2,3,4,5,6,0],
-        weekdayLabels: ['S','M','T','W','T','F','S']
+        weekdayLabels: ['S','M','T','W','T','F','S'],
     }),
 
     methods: {
-        update(weekday){
+        sendSelected(weekday){
             if(this.isOnlyOneSelected(weekday)){
-                console.log(weekday)
                 this.updateActiveArray(weekday)
-                console.log(this.isActive)
                 this.$emit('input', this.isActive)
             }
         },
         updateActiveArray(weekday){
-            let temp = this.isActive
-            temp[weekday] = !this.isActive[weekday]
-            this.isActive = undefined
-            this.isActive = temp
+            this.$set(this.isActive,weekday, !this.isActive[weekday])
         },
         isOnlyOneSelected(weekday){
             console.log(weekday, this.isActive)
@@ -53,25 +50,9 @@ export default {
         }
     },
 
-    computed: {
-        isActiveArray:{
-            get(n){
-               return this.isActive[n]
-            },
-            set(n){
-                let temp = this.isActive
-                temp[n] = !this.isActive[n]
-                this.isActive = undefined
-                this.isActive = temp
-            }
-        },
-    },
-
     created(){
-        this.isActive = new Array(this.weekdays.length)
-        this.isActive.fill(false) 
-        console.log(this.currentWeekday)
-        this.isActive[this.currentWeekday] = true       
+        this.updateActiveArray(this.currentWeekday)  
+        console.log(this.isActive)   
     },
 }
 </script>

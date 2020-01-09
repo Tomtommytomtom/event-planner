@@ -78,7 +78,7 @@ export default {
         ],
         typeToDisplay: [
             'daily',
-            'weekly',
+            'weekdays',
             'annually'
         ],
         selectedWeekdays: []
@@ -86,7 +86,6 @@ export default {
 
     methods: {
         saveOptions(){
-            console.log(this.selectedWeekdays)
             this.$emit('input', {
                 frequenzy: +this.frequenzyCounter,
                 type: this.customType,
@@ -108,9 +107,8 @@ export default {
             return this.typeOptions[index]
         },
         updateSelectedWeekdays(selectedWeekdays){
-            console.log(selectedWeekdays,'heheheheheheheh')
             this.selectedWeekdays = selectedWeekdays
-        }
+        },
     },
     computed: {
         customString(){
@@ -128,8 +126,8 @@ export default {
             }
             
         },
-        isSelectionWeekly(){
-            return this.customType === 'weekly-custom'
+          isSelectionWeekly(){
+            return this.customType === 'weekdays-custom'
         }
     },
     created(){
