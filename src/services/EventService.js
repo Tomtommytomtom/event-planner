@@ -58,8 +58,6 @@ let staticEvents = [
   }
 ]
 
-let ids = 6
-
 const getAll = () => {
   return staticEvents
 }
@@ -79,7 +77,6 @@ const addOrUpdate = event => {
 const addOne = event => {
   const eventToAdd = new Event(event)
   pushEvent(eventToAdd)
-
 }
 
 const createAddAndReturnRecurring = event => {
@@ -106,6 +103,7 @@ const createRecurring = event => {
 }
 
 const createFrequent = event => {
+  console.log(event, FrequentEvent)
   return new FrequentEvent(event)
 }
 
@@ -146,7 +144,6 @@ const updateRecurringEventsInStatic = eventToUpdate => {
     }
   })
   staticEvents = staticEvents.concat(updatedEvents)
-
 }
 
 const updateRecurringEventsInStaticAfterEventStart = (eventToUpdate) => {

@@ -1,12 +1,13 @@
+import Event from './Events'
+
 export default class WeekdayEvent extends Event {
     constructor(event){
-        super(event)
+        super(event,true)
         console.log('inside weekdayevent constructor', event)
         this.type = event.type
         this.weekdays = event.weekdays
         this.frequenzy = event.frequenzy
 
-        this.recurringId = event.recurringId || recurringIds ++
     }
 
     createDuplicateWithNextDate(){

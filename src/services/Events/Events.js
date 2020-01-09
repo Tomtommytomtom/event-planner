@@ -1,18 +1,22 @@
 import DateArithmetic from '../DateArithmetic'
 
+const DAYS_IN_YEAR = 365
+
 let ids = 6
 let recurringIds = 1
 
-const DAYS_IN_YEAR = 365
-
 export default class Event {
-    constructor({ name, details, start, end, color }){
+    constructor({ name, details, start, end, color , recurringId},isRecurring){
         this.name = name
         this.details = details
         this.start = start
         this.end = end
         this.color = color
         this.id = ids++
+        if(isRecurring){
+            this.recurringId = recurringId || recurringIds++
+        }
+        
     }
 
     getNextDate(){
@@ -105,7 +109,7 @@ export default class Event {
     }
 
     getEditMessage(){
-        return `Successfully editeddsadsadassda ${this.name}!`
+        return `called getEditMessage() in Event class`
     }
 
     isSunday(){

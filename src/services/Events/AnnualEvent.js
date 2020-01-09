@@ -1,9 +1,10 @@
+import Event from './Events'
+
 export default class AnnualEvent extends Event {
     constructor(event){
-        super(event)
+        super(event,true)
         this.type = event.type
         this.frequenzy = event.frequenzy || 1
-        this.recurringId = event.recurringId || recurringIds++
     }
 
     createDuplicateWithNextDate(){

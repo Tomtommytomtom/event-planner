@@ -1,9 +1,10 @@
+import Event from './Events'
+
 export default class FrequentEvent extends Event {
     constructor(event){
-        super(event)
+        super(event,true)
         this.type = event.type
         this.frequenzy = event.frequenzy
-        this.recurringId = event.recurringId || recurringIds++
     }
 
     getNextDays(){
