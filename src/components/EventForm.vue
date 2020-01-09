@@ -301,7 +301,8 @@ export default {
             this.recurringId = undefined
             this.recurringInfo = {
                 type: 'none',
-                frequenzy: 0
+                frequenzy: 0,
+                weekdays: [false,false,false,false,false,false,false]
             }
         },
         resetDatePicker(){
@@ -474,7 +475,7 @@ export default {
                         color: this.selectedColor,
                         type: this.recurringInfo.type,
                         frequenzy: this.recurringInfo.frequenzy,
-                        weekdays: this.recurringInfo.weekdaysSelected,
+                        weekdays: this.recurringInfo.selectedWeekdays,
                         recurringId: this.recurringId
                     }
                     return event
@@ -489,7 +490,7 @@ export default {
                 this.recurringInfo = {
                     type: newEvent.type,
                     frequenzy: newEvent.frequenzy,
-                    weekdaysSelected: newEvent.weekdays
+                    selectedWeekdays: newEvent.weekdays
                 },
                 this.recurringId = newEvent.recurringId
             }

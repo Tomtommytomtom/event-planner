@@ -18,7 +18,7 @@
                 @close-form="customOptionsDialog = false"
                 @reset-form="resetCustom"
                 v-model="customOptionSelected"
-                :curr-weekday="currWeekdayIndex"
+                :current-weekday="currWeekdayIndex"
             >
             </custom-option-form>
         </v-dialog>
@@ -163,7 +163,7 @@ export default {
                     case "Every":
                         result  = 'weekdays'
                         frequenzy = 1
-                        this.selectedWeekdays = [1,2,3,4,5]
+                        this.selectedWeekdays = [false,true,true,true,true,true,false]
                         break
                     case "...Custom":
                         this.customOptionsDialog = true

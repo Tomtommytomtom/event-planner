@@ -1,62 +1,78 @@
 <template>
-    <div>
-        <p>Repeat On</p>
-        <v-btn-toggle
-            v-model="selectedWeekdays"
-            multiple
-            mandatory
-            active-class=" primary darken-1"
-            rounded
-            borderless
-            dark    
-            class="ml-1" 
-        >
-            <v-btn
-                text
-                class=" mx-2"
-                v-for="n in 7"
-                :key="n"
-                :value="weekdayIndex[n - 1]"
-                @click="update"
-            >
-                {{ buttonLabels[n - 1] }}
-            </v-btn>
-        </v-btn-toggle>
-        <p>{{selectedWeekdays}}</p>
-    </div>
+  <div>
+      <v-btn
+        class="mx-2"
+        small
+        fab
+        color="primary"
+        elevation="0"
+        v-for="weekday in weekdays"
+        :key="weekday"
+        :outlined="!isActive[weekday]"
+        @click="update(weekday)"
+      >
+        {{ weekdayLabels[weekday] }}
+      </v-btn>
+  </div>
 </template>
+
 <script>
 export default {
-    props: ['value'],
+    props:['currentWeekday'],
 
     data: () => ({
-        buttonLabels : [
-            'M',
-            'T',
-            'W',
-            'T',
-            'F',
-            'S',
-            'S'
-        ],
-        weekdayIndex: [1,2,3,4,5,6,0],
-        selectedWeekdays: []
+        isActive: [],
+        weekdays:[1,2,3,4,5,6,0],
+        weekdayLabels: ['S','M','T','W','T','F','S']
     }),
+
     methods: {
-        update(){
-            console.log(this.selectedWeekdays)
-            this.$emit('input', this.selectedWeekdays)
+        update(weekday){
+            if(this.isOnlyOneSelected(weekday)){
+                console.log(weekday)
+                this.updateActiveArray(weekday)
+                console.log(this.isActive)
+                this.$emit('input', this.isActive)
+            }
+        },
+        updateActiveArray(weekday){
+            let temp = this.isActive
+            temp[weekday] = !this.isActive[weekday]
+            this.isActive = undefined
+            this.isActive = temp
+        },
+        isOnlyOneSelected(weekday){
+            console.log(weekday, this.isActive)
+            return this.isActive.reduce((acc, curr, index) => {
+                if(index === weekday){
+                    return acc || !curr
+                } else {
+                    return acc || curr
+                }
+            }, false)
+        }
+    },
+
+    computed: {
+        isActiveArray:{
+            get(n){
+               return this.isActive[n]
+            },
+            set(n){
+                let temp = this.isActive
+                temp[n] = !this.isActive[n]
+                this.isActive = undefined
+                this.isActive = temp
+            }
         },
     },
-    watch: {
-        value(){
-            this.selectedWeekdays = this.value
-        },
-    },
+
     created(){
-        console.log(this.value,this.selectedWeekdays)
-        this.selectedWeekdays = this.value
-    }
+        this.isActive = new Array(this.weekdays.length)
+        this.isActive.fill(false) 
+        console.log(this.currentWeekday)
+        this.isActive[this.currentWeekday] = true       
+    },
 }
 </script>
 
