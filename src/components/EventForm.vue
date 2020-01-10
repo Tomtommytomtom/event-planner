@@ -220,7 +220,7 @@ export default {
 
         }
     }),
-    
+
     methods : {
         submitRecurringEdit(){
             switch(this.editOptionSelected){                      
@@ -247,33 +247,42 @@ export default {
         },
         submitForm(){
             if(this.isEditing){
-                if(this.isRepeating){
-                    this.openEditDialog()
-                    return
-                } else {
-                    EventService.addOrUpdate(this.currEvent)
-                    this.sendEditedEventNotification(`Successfully edited event "${this.currEvent.name}!"`)
-                }
+                this.editEvent()
             } else {    
-                if(this.isRepeating){
-                    this.limitRecurringEvents()
-
-                    RecurringEventService.applySingleRecurringToStatic(this.currEvent)
-                    this.sendAddedEventNotification(`Successfully added recurring event "${this.currEvent.name}"!`)
-                } else {
-                    this.sendAddedEventNotification(`Successfully added event "${this.currEvent.name}"!`)
-                    EventService.addOne(this.currEvent)
-                }
+                this.addEvent()
             }
-            this.clearForm()
-            bus.$emit('refreshEvents') 
+        },
+        editEvent(){
+            if(this.isRepeating){
+                this.openEditDialog()
+                return
+            } else {
+                EventService.addOrUpdate(this.currEvent)
+                this.sendEditedEventNotification(`Successfully edited event "${this.currEvent.name}!"`)
+            }
+            this.clearFormAndRefresh()
+        },
+        addEvent(){
+            if(this.isRepeating){
+                this.limitRecurringEvents()
+                RecurringEventService.applySingleRecurringToStatic(this.currEvent)
+                this.sendAddedEventNotification(`Successfully added recurring event "${this.currEvent.name}"!`)
+            } else {
+                this.sendAddedEventNotification(`Successfully added event "${this.currEvent.name}"!`)
+                EventService.addOne(this.currEvent)
+            }
+            this.clearFormAndRefresh()
         },
         openEditDialog(){
             this.editDialog = true
         },
-        editEvent(){
+        openFormToEditEvent(){
             this.formTitle = `Edit Event "${this.currEvent.name}"`
-            this.dialog = true
+            this.openForm()
+        },
+        clearFormAndRefresh(){
+            this.clearForm()
+            bus.$emit('refreshEvents') 
         },
         clearForm(){
             this.closeForm()
@@ -281,7 +290,7 @@ export default {
             this.resetEditedInfo()
             this.$refs.form.resetValidation()
         },
-        reseInputs(){
+        resetInputs(){
             this.resetRecurringInfo()
             this.resetDatePicker()
             this.resetTextInputFields()
@@ -366,6 +375,9 @@ export default {
         },
         closeForm(){
             this.dialog = false
+        },
+        openForm(){
+            this.dialog = true
         }
     },
     created(){
@@ -394,7 +406,7 @@ export default {
         bus.$on('editEvent', event => {
             this.currEvent = event
             console.log(this.eventObject)
-            this.editEvent()
+            this.openFormToEditEvent()
         })
 
     },
