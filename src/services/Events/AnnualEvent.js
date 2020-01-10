@@ -29,7 +29,19 @@ export default class AnnualEvent extends Event {
         return [+year + this.frequenzy, month, day].join('-')
     }
 
+    toString(){
+        return `"${this.name}" repeating ${this.getRecurringString()}`
+    }
+
     getDaysToBeRepeatedMultiplier(){
         return 150
     }
+
+    getRecurringString(){
+        return this.frequenzy > 1
+            ?   `every ${this.frequenzy} Years`
+            :   'annually'
+    }
+
+    
 }

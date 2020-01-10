@@ -4,7 +4,6 @@ import DateArithmetic from '../DateArithmetic'
 export default class WeekdayEvent extends Event {
     constructor(event){
         super(event,true)
-        console.log('inside weekdayevent constructor', event)
         this.type = event.type
         this.weekdays = event.weekdays
         this.frequenzy = event.frequenzy
@@ -27,6 +26,7 @@ export default class WeekdayEvent extends Event {
         }
 
         for(let i = 1; i <= 7; i++){
+            console.log(this.weekdays[i],'if true add ',i, 'days to date and add')
             if(this.weekdays[this.getWeekdayInXDays(i)]){     
                 daysToAdd += i
                 break
@@ -56,5 +56,31 @@ export default class WeekdayEvent extends Event {
     getFirstDayOfWeekThisShouldBeApplied(){
         return this.weekdays.indexOf(true)
     }
+
+    toString(){
+        return `${this.name} repeating ${this.getRecurringString()}`
+    }
+
+    isWeekly(){
+        return this.frequenzy === 1
+    }
+
+    getRecurringString(){
+        return this.isWeekly()
+            ? `every week on ${this.getRecurringWeekdayString()}`
+            : `every ${this.frequenzy} weeks on ${this.getRecurringWeekdayString()}`
+    }
+
+    getRecurringWeekdayString(){
+        return this.getWeekdayStringList().length === 1
+            ? `${this.getWeekdayStringList[0]}`
+            : `(${this.getWeekdayStringList.join(',')})`
+    }
+
+    getWeekdayStringList(){
+        return this.weekdays.map((weekday,index) => weekday ? DateArithmetic.getWeekdayInWords(index) : weekday).filter(weekday => weekday)
+    }
+
+
 }
 

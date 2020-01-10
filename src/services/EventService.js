@@ -82,7 +82,7 @@ const addOne = event => {
 const createAddAndReturnRecurring = event => {
   const recurring = createRecurring(event)
 
-  staticEvents.push(recurring)
+  pushEvent(recurring)
 
   return recurring
 }

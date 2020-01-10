@@ -164,7 +164,7 @@ export default {
 
 
     data: () => ({
-        eventObject: {},
+        eventClassObject: {},
 
         componentColor: 'primary',
 
@@ -223,20 +223,26 @@ export default {
 
     methods : {
         submitRecurringEdit(){
+            console.log(this.eventClassObject.toString())
             switch(this.editOptionSelected){                      
             case 'Only this event': 
                 EventService.updateEvent(this.currEvent)
-                this.sendEditedEventNotification(`Sucessfully edited single recurring event "${this.currEvent.name}" starting on ${this.eventStartInWords}!`)
+                this.sendEditedEventNotification(
+                    `Sucessfully edited single recurring event "${this.currEvent.name}"
+                    on ${this.eventStartInWords}!`
+                )
                 break
 
             case 'This and all sibling events':
-
                 EventService.updateRecurringEventsInStatic(this.currEvent)
                 this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" events!`)
                 break
 
             case 'This and all following sibling events':
-                this.sendEditedEventNotification(`Sucessfully edited all "${this.currEvent.name}" events starting on the ${this.eventStartInWords} and later!`)
+                this.sendEditedEventNotification(
+                    `Sucessfully edited all "${this.currEvent.name}" events 
+                    starting on the ${this.eventStartInWords} and later!`
+                )
                 EventService.updateRecurringEventsInStaticAfterEventStart(this.currEvent)
                 break
             }
@@ -405,7 +411,6 @@ export default {
         })
         bus.$on('editEvent', event => {
             this.currEvent = event
-            console.log(this.eventObject)
             this.openFormToEditEvent()
         })
 
@@ -497,6 +502,8 @@ export default {
                     return event
             },
             set(newEvent){
+                this.eventClassObject = newEvent
+
                 this.nameInput = newEvent.name
                 this.detailsInput = newEvent.details
                 this.startDateAndTime = newEvent.start

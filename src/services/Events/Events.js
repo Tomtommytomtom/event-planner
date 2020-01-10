@@ -16,7 +16,6 @@ export default class Event {
         if(isRecurring){
             this.recurringId = recurringId || recurringIds++
         }
-        
     }
 
     getNextDate(){
@@ -93,6 +92,10 @@ export default class Event {
         return DateArithmetic.getWeekday(this.getStartDay())
     }
 
+    getWeekdayString(){
+        return DateArithmetic.getWeekdayInWords(this.getWeekday())
+    }
+
     getNthWeekday(){
         return DateArithmetic.getNthWeekday(this.getStartDay())
     }
@@ -108,8 +111,8 @@ export default class Event {
         return DateArithmetic.getWeekday(this.getDateInXDays(days))
     }
 
-    getEditMessage(){
-        return `called getEditMessage() in Event class`
+    toString(){
+        return `"${this.name}"`
     }
 
     isSunday(){

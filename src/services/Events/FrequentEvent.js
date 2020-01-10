@@ -35,8 +35,24 @@ export default class FrequentEvent extends Event {
     }
 
     getDaysToBeRepeatedMultiplier(){
-        return this.type === 'weekly'
+        return this.isWeekly()
             ? 7
             : 2
+    }
+
+    toString(){
+        return `"${this.name}" repeating ${this.getRecurringString()}`
+    }
+    
+    getRecurringTypeInWords(){
+        return this.isWeekly()
+            ? 'week'
+            : 'day'
+    }
+
+    getRecurringString(){
+        return this.frequenzy > 1
+            ? `every ${this.frequenzy} ${this.getRecurringTypeInWords()}s`
+            : `every ${this.getRecurringTypeInWords()}`
     }
 }

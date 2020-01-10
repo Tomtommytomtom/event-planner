@@ -53,4 +53,16 @@ export default class MonthlyEvent extends Event {
     getDaysToBeRepeatedMultiplier(){
         return 50
     }
+
+    toString(){
+        return `"${this.name} repeating ${this.getRecurringString()}`
+    }
+
+    getRecurringString(){
+        return this.isOnLastWeekday()
+            ?`on last ${this.getWeekdayString()}`
+            :`every ${this.getNthWeekday()} ${this.getWeekdayString()}`
+        
+    }
+
 }

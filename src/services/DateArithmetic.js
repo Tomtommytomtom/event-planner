@@ -1,3 +1,5 @@
+const WEEKDAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
+
 
 const addDaysToDate = (date, days) => {
     const dateWithoutTime = date.split(' ')[0]
@@ -167,6 +169,10 @@ const getDateInWords = date => {
     return `${monthsAndDay} ${year}`
 }
 
+const getWeekdayInWords = weekday => {
+    return WEEKDAYS[weekday]
+}
+
 const nth = (day) => {
     return day > 3 && day < 21
           ? 'th'
@@ -204,5 +210,6 @@ export default {
     getDateInWords,
     isMoreThanTwoYearsInTheFuture,
     isEventBeforeEvent,
-    isDateBeforeDate
+    isDateBeforeDate,
+    getWeekdayInWords
 }

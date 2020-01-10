@@ -59,6 +59,7 @@ export default {
 
     created(){
         this.updateActiveArray(this.currentWeekday)  
+        this.$emit('input',this.isActive)
         console.log(this.isActive)   
     },
 }
