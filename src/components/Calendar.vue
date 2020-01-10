@@ -97,7 +97,7 @@
                 >
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
-                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                <v-toolbar-title>{{ selectedEvent.toString() }}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn 
                   icon
