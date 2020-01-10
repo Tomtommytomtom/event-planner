@@ -180,7 +180,6 @@ export default {
         'This and all following sibling events'
         ],
 
-        originalEditedEvent: {},
 
         formTitle: 'Add a New Event',
 
@@ -200,9 +199,6 @@ export default {
             start: null,
             end: null
         },
-
-        startTime: '',
-        endTime: '',
 
         selectedColor: '#F07F1D',
 
@@ -224,6 +220,7 @@ export default {
 
         }
     }),
+    
     methods : {
         submitRecurringEdit(){
             switch(this.editOptionSelected){                      
@@ -276,25 +273,28 @@ export default {
         },
         editEvent(){
             this.formTitle = `Edit Event "${this.currEvent.name}"`
-            this.originalEditedEvent = this.currEvent
             this.dialog = true
         },
-        setColor(colorObject){
-            this.color = colorObject.hex
-        },
         clearForm(){
-            this.dialog = false
-
-            this.formTitle = "Add a New Event"
-
-            this.id = undefined
-            this.selectedColor = '#F07F1D'
-
+            this.closeForm()
+            this.resetInputs()
+            this.resetEditedInfo()
+            this.$refs.form.resetValidation()
+        },
+        reseInputs(){
             this.resetRecurringInfo()
             this.resetDatePicker()
             this.resetTextInputFields()
             this.resetTimePickers()
-            this.$refs.form.resetValidation()
+        },
+        resetEditedInfo(){
+            this.id = undefined
+        },
+        resetColor(){
+            this.selectedColor = '#F07F1D'
+        },
+        resetFormTitle(){
+            this.formTitle = "Add a New Event"
         },
         resetRecurringInfo(){
             this.recurringOptionSelected = "Doesn't repeat"
@@ -364,6 +364,9 @@ export default {
                 })
             }
         },
+        closeForm(){
+            this.dialog = false
+        }
     },
     created(){
         this.setToday()
@@ -379,7 +382,9 @@ export default {
             this.dates.start = dates[0]
             this.dates.end = dates[1]
         })
-        bus.$on('openForm', () => this.dialog = true)
+        
+        bus.$on('openForm', () => this.openForm())
+
         bus.$on('sendStartTime', time => {
                 this.times = {
                     start: time,
@@ -416,7 +421,6 @@ export default {
             }
         },
         endTimeAutocomplete(){
-
             if(this.times.start && !this.times.end){
                 return " 23:59"
             } else if(!this.times.start && !this.times.end){
