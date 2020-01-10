@@ -6,6 +6,14 @@
             dark
         >
             <h1><span class="font-weight-light">EVENT</span><span class="font-weight-regular grey--text text--darken-4">PLANNER</span></h1>
+            <v-spacer></v-spacer>
+            <v-btn
+                color="black"
+                outlined
+                @click="clearData"
+            >
+                DELETE ALL EVENTS
+            </v-btn>
         </v-app-bar>
         <v-content class="grey darken-4 d-flex" dark>
             <calendar></calendar>
@@ -33,5 +41,11 @@ export default {
     data: () => ({
 
     }),
+
+    methods:{
+        clearData(){
+            localStorage.clear()
+        }
+    }
 };
 </script>
