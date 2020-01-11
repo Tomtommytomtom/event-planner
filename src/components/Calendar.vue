@@ -131,40 +131,17 @@
                       </v-btn>
                     </v-card>
                   </v-card>
-                  <v-card v-else dark>
-                    <v-card-title>You're deleting a {{ selectedEvent.type }} recurring Event {{selectedEvent.name}}</v-card-title>
-                    <v-container class="d-flex px-5">
-                        <v-radio-group v-model="radioGroup">
-                          <v-radio
-                            class="text-no-wrap"
-                            color="primary"
-                            v-for="deleteOption in deleteOptions"
-                            :key="deleteOptions.indexOf(deleteOption)"
-                            :label="deleteOption"
-                            :value="deleteOption"
-                          ></v-radio>
-                        </v-radio-group>
-                    </v-container>
-                    <v-card flat class="d-flex ma-0 pa-3">
-                      <v-btn
-                        @click="deleteDialog = false"
-                        text
-                        color="primary"
-                      >
-                        Close
-                      </v-btn>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        @click="deleteSelectedRecurringEvent(selectedEvent)"
-                        text
-                        color="primary"
-                      >
-                        Delete
-                      </v-btn>
-                    </v-card>
-                  </v-card>
+                  <recurring-action-group
+                    v-else
+                    v-model="radioGroup"
+                    :radio-options="deleteOptions"
+                    @close="deleteDialog = false"
+                    @submit="deleteSelectedRecurringEvent(selectedEvent)"
+                    submit-button-label="Delete"
+                  >
+                    You're deleting a {{ selectedEvent.type }} recurring Event {{selectedEvent.name}}
+                  </recurring-action-group>
                 </v-dialog>
-
               </v-toolbar>
               <v-card-text>
                 <span v-html="selectedEvent.details"></span>
@@ -193,12 +170,14 @@ import DateArithmetic from '@/services/DateArithmetic'
 const { nth } = DateArithmetic
 
 import CalendarPicker from './calendar/CalendarPicker'
+import RecurringActionGroup from './helper/RecurringActionGroup'
 
 import { bus } from '@/main'
 
   export default {
     components: {
-        CalendarPicker
+        CalendarPicker,
+        RecurringActionGroup
     },
     data: () => ({
       
@@ -288,6 +267,7 @@ import { bus } from '@/main'
         this.refreshEvents()
       },
       deleteSelectedRecurringEvent(event){
+        console.log('yes we in this deleting thing my mans',this.radioGroup)
         switch(this.radioGroup){
           case 'Only this event': 
             EventService.deleteEvent(event,'id')

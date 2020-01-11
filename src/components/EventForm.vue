@@ -103,40 +103,15 @@
             v-model="editDialog"
             width="80%"
     >
-        <v-card dark>
-            <v-card-title>
-                You're editing {{ currEvent.type }} recurring Event: {{ currEvent.name }} ?
-            </v-card-title>
-            <v-container class="d-flex px-5">
-                <v-radio-group v-model="editOptionSelected">
-                    <v-radio
-                    class="text-no-wrap"
-                    color="primary"
-                    v-for="editOption in editOptions"
-                    :key="editOptions.indexOf(editOption)"
-                    :label="editOption"
-                    :value="editOption"
-                    ></v-radio>
-                </v-radio-group>
-            </v-container>
-                <v-card flat class="d-flex ma-0 pa-3">
-                    <v-btn
-                        @click="editDialog = false"
-                        text
-                        color="primary"
-                    >
-                        Close
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        @click="submitRecurringEdit"
-                        text
-                        color="primary"
-                    >
-                        Apply Changes
-                    </v-btn>
-                </v-card>
-            </v-card>
+        <recurring-action-group
+            v-model="editOptionSelected"
+            :radio-options="editOptions"
+            @close="editDialog = false"
+            @submit="submitRecurringEdit"
+            submit-button-label="Apply Changes"
+        >
+            You're editing {{ currEvent.type }} recurring Event: {{ currEvent.name }} ?
+        </recurring-action-group>
         </v-dialog>
     </v-row>
 </template>
@@ -147,6 +122,7 @@ import DatePicker from './event-form/DatePicker'
 import ColorPicker from './event-form/ColorPicker'
 import RecurrenceSelector from './event-form/RecurrenceSelector'
 import StartAndEndTimePicker from './event-form/StartAndEndTimePicker'
+import RecurringActionGroup from './helper/RecurringActionGroup'
 
 import EventService from '@/services/EventService'
 import RecurringEventService from '@/services/RecurringEventService'
@@ -159,7 +135,8 @@ export default {
        DatePicker,
        ColorPicker,
        RecurrenceSelector,
-       StartAndEndTimePicker
+       StartAndEndTimePicker,
+       RecurringActionGroup
     },
 
 
