@@ -25,7 +25,9 @@
 
 <script>
 export default {
-    props:['currentWeekday'],
+    props:{
+        currentWeekday: Number
+    },
 
     data: function(){
         return {

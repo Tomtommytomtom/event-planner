@@ -27,7 +27,11 @@ export default {
         TimePicker
     },
 
-    props: ['value','currentDates','color'],
+    props: {
+        value: Object,
+        currentDates: Object,
+        color: String
+    },
 
     data: function(){
         return{

@@ -59,7 +59,11 @@ import IncrementTextField from './IncrementTextField'
 import WeekdaySelectionButtons from './WeekdaySelectionButtons'
 
 export default {
-    props: ['value', 'currentWeekday'], 
+
+    props: {
+        value: Object,
+        currentWeekday: Number
+    },
 
     components: {
         IncrementTextField,

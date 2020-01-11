@@ -46,7 +46,11 @@
   import DateArithmetic from '@/services/DateArithmetic'
 
     export default {
-        props: ['value','label','color'],
+        props: {
+            value: Object,
+            label: String,
+            color: String
+        },
 
         data: function(){
             return {

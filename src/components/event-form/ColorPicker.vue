@@ -45,7 +45,9 @@
 
 <script>
 export default {
-    props: ['value'],
+    props: {
+        value: String
+    },
 
     data: function(){
         return{

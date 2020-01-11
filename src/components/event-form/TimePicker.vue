@@ -17,7 +17,11 @@
 
 <script>
     export default {
-        props: ['value','label','color'],
+        props: {
+            value: String,
+            label: String,
+            color: String
+        },
 
         data: function(){
             return {

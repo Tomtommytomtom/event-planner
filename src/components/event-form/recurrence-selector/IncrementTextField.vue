@@ -16,7 +16,10 @@
 
 <script>
 export default {
-    props: ['value'],
+    
+    props: {
+        value: Number
+    },
 
     data: function(){
         return {
