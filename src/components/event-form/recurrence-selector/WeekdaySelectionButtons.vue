@@ -25,15 +25,15 @@
 
 <script>
 export default {
-
-
     props:['currentWeekday'],
 
-    data: () => ({
-        isActive: [false,false,false,false,false,false,false],
-        weekdays:[1,2,3,4,5,6,0],
-        weekdayLabels: ['S','M','T','W','T','F','S'],
-    }),
+    data: function(){
+        return {
+            isActive: [false,false,false,false,false,false,false],
+            weekdays:[1,2,3,4,5,6,0],
+            weekdayLabels: ['S','M','T','W','T','F','S'],
+        }
+    },
 
     methods: {
         sendSelected(weekday){
@@ -60,7 +60,6 @@ export default {
     created(){
         this.updateActiveArray(this.currentWeekday)  
         this.$emit('input',this.isActive)
-        console.log(this.isActive)   
     },
 }
 </script>

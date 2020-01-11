@@ -29,13 +29,12 @@ export default {
 
     props: ['value','currentDates','color'],
 
-    data: () => ({
-        times: {
-            start: null,
-            end: null
-        },
-        dates: {}
-    }),
+    data: function(){
+        return{
+            times: this.value,
+            dates: this.currentDates
+        }
+    },
 
     methods: {
         setTimes(){
@@ -102,12 +101,6 @@ export default {
             }
         }
     },
-
-    created(){
-        this.setTimes()
-        this.setDates()
-    },
-
     watch:{
         value(){
             this.setTimes()    

@@ -47,10 +47,12 @@
 export default {
     props: ['value'],
 
-    data: () => ({
-        dialog: false,
-        color: ''
-    }),
+    data: function(){
+        return{
+            dialog: false,
+            color: this.value
+        }
+    },
     methods:{
         updateColor(){
             this.$emit('input', this.color)
@@ -60,9 +62,6 @@ export default {
         value(){
             this.color = this.value
         }
-    },
-    created(){
-        this.color = this.value
     }
 }
 </script>

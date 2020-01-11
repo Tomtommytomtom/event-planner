@@ -94,24 +94,24 @@
                             text 
                             :disabled="!valid" 
                             @click="submitForm"
-                    >Save</v-btn>
-                </v-card-actions>
-            </v-form>
-        </v-card>
-    </v-dialog>
-    <v-dialog
+                        >Save</v-btn>
+                    </v-card-actions>
+                </v-form>
+            </v-card>
+        </v-dialog>
+        <v-dialog
             v-model="editDialog"
             width="80%"
-    >
-        <recurring-action-group
-            v-model="editOptionSelected"
-            :radio-options="editOptions"
-            @close="editDialog = false"
-            @submit="submitRecurringEdit"
-            submit-button-label="Apply Changes"
         >
-            You're editing {{ currEvent.type }} recurring Event: {{ currEvent.name }} ?
-        </recurring-action-group>
+            <recurring-action-group
+                v-model="editOptionSelected"
+                :radio-options="editOptions"
+                @close="editDialog = false"
+                @submit="submitRecurringEdit"
+                submit-button-label="Apply Changes"
+            >
+                You're editing {{ currEvent.type }} recurring Event: {{ currEvent.name }} ?
+            </recurring-action-group>
         </v-dialog>
     </v-row>
 </template>

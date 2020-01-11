@@ -66,22 +66,24 @@ export default {
         WeekdaySelectionButtons
     },
 
-    data: () => ({
-        valid: true,
-        customType: 'daily-custom',
-        frequenzyCounter: 1,
-        typeOptions: [
-            'Days',
-            'Weeks',
-            'Years'
-        ],
-        typeToDisplay: [
-            'daily',
-            'weekdays',
-            'annually'
-        ],
-        selectedWeekdays: []
-    }),
+    data: function(){
+        return {
+            valid: true,
+            customType: 'daily-custom',
+            frequenzyCounter: 1,
+            typeOptions: [
+                'Days',
+                'Weeks',
+                'Years'
+            ],
+            typeToDisplay: [
+                'daily',
+                'weekdays',
+                'annually'
+            ],
+            selectedWeekdays: [] 
+        }
+    },
 
     methods: {
         saveOptions(){
@@ -136,8 +138,5 @@ export default {
             return this.customType === 'weekdays-custom'
         }
     },
-    created(){
-        console.log(this.currentWeekday,'inside custom option form')
-    }
 }
 </script>

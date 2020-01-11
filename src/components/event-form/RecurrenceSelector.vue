@@ -37,23 +37,25 @@ export default {
         CustomOptionForm
     },
 
-    data: () => ({
-        customString: '',
-        customOptionsDialog: false,
-        recurringType: '',
-        frequenzy: 0,
-        startDate: new Date().toISOString().substr(0,10),
-        weekdays: [
-            'Sunday',
-            'Monday',
-            'Tuesday',
-            'Wednesday',
-            'Thursday',
-            'Friday',
-            'Saturday'
-        ],
-        selectedWeekdays: []
-    }),
+    data: function(){
+        return{
+            customString: '',
+            customOptionsDialog: false,
+            recurringType: this.value.type,
+            frequenzy: this.value.frequenzy,
+            startDate: this.currStartDate.split(' ')[0],
+            weekdays: [
+                'Sunday',
+                'Monday',
+                'Tuesday',
+                'Wednesday',
+                'Thursday',
+                'Friday',
+                'Saturday'
+            ],
+            selectedWeekdays: [] 
+        }
+    },
     methods:{
         sendType(){
             console.log('inside recurrence',this.customOptionSelected)
@@ -71,10 +73,6 @@ export default {
             this.recurringType = 'none'
             this.customString = ''
         }
-    },
-    created(){
-        this.setValue()
-        this.setStartDate()
     },
     computed:{
         recurringOptionsDisplay(){

@@ -19,13 +19,15 @@
     export default {
         props: ['value','label','color'],
 
-        data: () => ({
-            dialog: false,
-            hours: null,
-            minutes: null,
-            time: '00:00',
-            items: [] 
-        }),
+        data: function(){
+            return {
+                dialog: false,
+                hours: null,
+                minutes: null,
+                time: this.value,
+                items: []  
+            }
+        },
         methods :{
             setInitialTime(){
                 this.time = this.value
@@ -66,9 +68,7 @@
                 }
             }
         },
-
         created(){
-            this.setInitialTime()
             this.items = this.getTimes()
         },
         watch: {

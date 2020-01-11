@@ -48,11 +48,13 @@
     export default {
         props: ['value','label','color'],
 
-        data: () => ({
-            clicks: 0,
-            dates: [],
-            dialog: false,
-        }),
+        data: function(){
+            return {
+                clicks: 0,
+                dates: [this.value.start,this.value.end],
+                dialog: false,
+            }
+        },
 
         methods: {
             incrementClicks(){
@@ -114,7 +116,6 @@
                 }
             }
         },
-
         computed: {
             isDateComboValid(){
                 if(!this.dates[1]){
@@ -158,10 +159,6 @@
                     return 'Pick an End Date'
                 }
             }
-        },
-
-        created(){
-            this.dates = [this.value.start, this.value.end]
         },
     }
 </script>

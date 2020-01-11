@@ -18,9 +18,11 @@
 export default {
     props: ['value'],
 
-    data: () => ({
-        counter: 0
-    }),
+    data: function(){
+        return {
+            counter: this.value
+        }
+    },
     methods:{
         incrementCounter(){
             this.$refs.field.focus()
@@ -52,9 +54,6 @@ export default {
                 return false
             }
         }
-    },
-    created(){
-        this.counter = this.value
     },
     watch: {
         counter(){
