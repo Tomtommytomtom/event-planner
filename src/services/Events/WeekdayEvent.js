@@ -33,7 +33,7 @@ export default class WeekdayEvent extends Event {
             }
         }
 
-        const newStartDate = this.getDateInXDays(daysToAdd)
+        const newStartDate = this.getStartDateInXDays(daysToAdd)
 
         return {
             start: newStartDate,

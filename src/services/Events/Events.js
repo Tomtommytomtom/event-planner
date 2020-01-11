@@ -102,10 +102,10 @@ export default class Event {
     }
 
     getTomorrow(){
-        this.getDateInXDays(1)
+        this.getStartDateInXDays(1)
     }
     getWeekdayInXDays(days){
-        return DateArithmetic.getWeekday(this.getDateInXDays(days))
+        return DateArithmetic.getWeekday(this.getStartDateInXDays(days))
     }
 
     toString(){
