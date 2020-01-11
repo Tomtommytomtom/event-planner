@@ -1,3 +1,4 @@
+
 const WEEKDAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 
 
@@ -22,33 +23,28 @@ const dateObjectToString = (dateObject) => {
 }
 
 const isEventBeforeEvent = (eventOne, eventTwo) => {
-    const eventOneObj = dateStringToObject(eventOne.start.split(' ')[0])
-    const eventTwoObj = dateStringToObject(eventTwo.start.split(' ')[0])
+    const firstDate = eventOne.start.split(' ')[0]
+    const secondDate = eventTwo.start.split(' ')[0]
 
-    return eventOneObj < eventTwoObj
+    isDateBeforeDate(firstDate, secondDate)
 }
 
-const isDateBeforeDate = (stringOne,stringTwo) => {
+const isDateBeforeDate = (stringOne,stringTwo) => { //unit test
     const eventOne = dateStringToObject(stringOne)
     const eventTwo = dateStringToObject(stringTwo)
     
     return eventOne < eventTwo
 }
 
-const doesEventStartBeforeOrInMonth = (eventStart, dateInMonth) => {
-
+const doesEventStartBeforeOrInMonth = (eventStart, dateInMonth) => { //maybe refactor
     const startObj = dateStringToObject(eventStart)
     const monthObj = dateStringToObject(getLastDayOfMonth(dateInMonth))
-
 
     return startObj <= monthObj
 }
 
-const doesEventStartAfterOrOnDate = (eventStart, date) => {
-    const eventStartObj = dateStringToObject(eventStart)
-    const dateObj = dateStringToObject(date)
-
-    return eventStartObj >= dateObj
+const isDateEqualOrAfter = (eventStart, date) => { //maybe refactor
+    return !isDateBeforeDate(eventStart, date)
 }
 
 const getFirstWeekdayOfMonth = (weekday, date) => {
@@ -206,12 +202,14 @@ export default {
     getMonthAndDayInWords,
     isLastWeekdayOfMonth,
     getDateofLastWeekdayInMonth,
-    doesEventStartAfterOrOnDate,
+    doesEventStartAfterOrOnDate: isDateEqualOrAfter,
     getDateInWords,
     isMoreThanTwoYearsInTheFuture,
     isEventBeforeEvent,
     isDateBeforeDate,
     getWeekdayInWords,
     nth,
-    getLastDayOfMonth
+    getLastDayOfMonth,
+    dateStringToObject,
+    dateObjectToString
 }
