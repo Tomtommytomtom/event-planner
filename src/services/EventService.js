@@ -174,6 +174,10 @@ const deleteEvent = (eventToDelete, identifier) => {
   staticEvents = staticEvents.filter(event => event[identifier] !== eventToDelete[identifier])  
 }
 
+const deleteAll = () => {
+  staticEvents = []
+}
+
 const deleteStaticEventsAndRecurringAfterDate = (recurringEvent) => {
   staticEvents = staticEvents.filter(event => {
     return !(event.recurringId === recurringEvent.recurringId && DateArithmetic.doesEventStartAfterOrOnDate(event.start, recurringEvent.start))
@@ -228,5 +232,6 @@ export default {
   deleteStaticEventsAndRecurring,
   deleteStaticEventsAndRecurringAfterDate,
   updateRecurringEventsInStaticAfterEventStart,
-  createAddAndReturnRecurring
+  createAddAndReturnRecurring,
+  deleteAll
 }

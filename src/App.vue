@@ -12,7 +12,7 @@
                 outlined
                 @click="clearData"
             >
-                DELETE ALL EVENTS
+                DELETE ALL EVENTS (debug)
             </v-btn>
         </v-app-bar>
         <v-content class="grey darken-4 d-flex" dark>
@@ -28,6 +28,8 @@ import Calendar from '@/components/Calendar'
 import EventForm from '@/components/EventForm'
 import Notifications from '@/components/Notifications'
 
+import EventService from '@/services/EventService'
+import { bus } from './main'
 
 export default {
     name: 'App',
@@ -45,6 +47,8 @@ export default {
     methods:{
         clearData(){
             localStorage.clear()
+            EventService.deleteAll()
+            bus.$emit('refreshEvents')
         }
     }
 };
