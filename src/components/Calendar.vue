@@ -187,9 +187,10 @@
 </template>
 
 <script>
-
 import RecurringEventService from '@/services/RecurringEventService'
 import EventService from '@/services/EventService'
+import DateArithmetic from '@/services/DateArithmetic'
+const { nth } = DateArithmetic
 
 import CalendarPicker from './calendar/CalendarPicker'
 
@@ -240,8 +241,8 @@ import { bus } from '@/main'
         const endYear = end.year
         const suffixYear = startYear === endYear ? '' : endYear
 
-        const startDay = start.day + this.nth(start.day)
-        const endDay = end.day + this.nth(end.day)
+        const startDay = start.day + nth(start.day)
+        const endDay = end.day + nth(end.day)
 
         switch (this.type) {
           case 'month':
@@ -369,11 +370,6 @@ import { bus } from '@/main'
         this.start = start
         this.end = end
       },
-      nth (d) {
-        return d > 3 && d < 21
-          ? 'th'
-          : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
-      },
     },
     created(){
         this.refreshEvents()
@@ -381,7 +377,6 @@ import { bus } from '@/main'
     },
     watch: {
         focus(){
-
            bus.$emit('sendSelectedDate', this.focus)
         },
     }
