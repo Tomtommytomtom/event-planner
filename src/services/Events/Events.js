@@ -76,16 +76,9 @@ export default class Event {
     }
 
     getMonthInXMonths(monthsToAdd){
-        const [year, month, day] = this.getStartDay().split('-')
+        const [year, month, day] = DateArithmetic.addMonthsToDate(this.getStartDay(),monthsToAdd).split('-')
 
-        const yearCarry = Math.floor((+month + monthsToAdd )/ 12)
-        const remainingMonths = monthsToAdd % 12
-
-        if(yearCarry === 0){
-        return `${year}-${+month +remainingMonths}-01` 
-        } else {
-        return `${+year + yearCarry}-${remainingMonths}-01`
-        }
+        return `${year}-${month}-01`
     }
 
     getWeekday(){
