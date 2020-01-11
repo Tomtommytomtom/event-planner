@@ -112,7 +112,7 @@ export default class Event {
     }
 
     toString(){
-        return `"${this.name}"`
+        return `${this.name}`
     }
 
     isSunday(){
