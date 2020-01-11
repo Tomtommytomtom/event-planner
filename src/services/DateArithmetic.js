@@ -211,5 +211,7 @@ export default {
     isMoreThanTwoYearsInTheFuture,
     isEventBeforeEvent,
     isDateBeforeDate,
-    getWeekdayInWords
+    getWeekdayInWords,
+    nth,
+    getLastDayOfMonth
 }
