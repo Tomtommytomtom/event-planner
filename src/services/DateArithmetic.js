@@ -47,14 +47,6 @@ const isDateEqualOrAfter = (eventStart, date) => { //maybe refactor
     return !isDateBeforeDate(eventStart, date)
 }
 
-const getFirstWeekdayOfMonth = (weekday, date) => {
-    let [year, month] = date.split('-')
-    var day = 1
-    for(day = 1 ; new Date(year, +month - 1, day).getDay() !== weekday; day++ ){
-    }
-    return [year, month, day].join('-')
-}
-
 const getWeekday = (date) => {
     return dateStringToObject(date).getDay()
 }
@@ -193,7 +185,6 @@ export default {
     addDaysToDate,
     doesEventStartBeforeDate: doesEventStartBeforeOrInMonth,
     getWeekday,
-    getFirstWeekdayOfMonth,
     getWeekday,
     getNextWeekday,
     getDifference,
