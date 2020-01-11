@@ -44,9 +44,9 @@ test('should convert dateObject to YYYY-MM-DD string', () => {
     const dateObjectToString = DateArithmetic.dateObjectToString
 
     let dateObject = new Date(2019,2,5)
-    expect(dateObjectToString(dateObject)).toBe('2019-03-04')
+    expect(dateObjectToString(dateObject)).toBe('2019-03-05')
     dateObject = new Date(2030,1,28)
-    expect(dateObjectToString(dateObject)).toBe('2030-02-27')
+    expect(dateObjectToString(dateObject)).toBe('2030-02-28')
 })
 
 test('should return true if YYYY-MM-DD date one is before date two',() =>{

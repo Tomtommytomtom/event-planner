@@ -5,15 +5,14 @@ const WEEKDAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','S
 const addDaysToDate = (date, days) => {
     const dateWithoutTime = getOnlyDate(date)
     let dateObject = dateStringToObject(dateWithoutTime)
-    dateObject.setDate(dateObject.getDate() + days + 1)
+    dateObject.setDate(dateObject.getDate() + days) 
 
     return dateObjectToString(dateObject)
 }
 
 const addMonthsToDate = (date, months) => {
     let dateObject = dateStringToObject(date)
-    dateObject.setMonth(dateObject.getMonth() + months, dateObject.getDate() + 1)
-    
+    dateObject.setMonth(dateObject.getMonth() + months)
     return dateObjectToString(dateObject)
 }
 
@@ -30,7 +29,9 @@ const dateStringToObject = (date) => {
 }
 
 const dateObjectToString = (dateObject) => {
-    return dateObject.toISOString().substr(0,10)
+    let date = dateObject
+    date.setHours(date.getHours() + 2)
+    return date.toISOString().substr(0,10)
 }
 
 const isEventBeforeEvent = (eventOne, eventTwo) => {
