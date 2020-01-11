@@ -1,5 +1,13 @@
 import DateArithmetic from '../../src/services/DateArithmetic'
-import { exportAllDeclaration } from '@babel/types'
+
+
+test('should add months to a date',() => {
+    const addMonthsToDate = DateArithmetic.addMonthsToDate
+
+    expect(addMonthsToDate('2020-01-01',1)).toBe('2020-02-01')
+    expect(addMonthsToDate('2020-01-01',5)).toBe('2020-06-01')
+    expect(addMonthsToDate('2020-01-07',40)).toBe('2023-05-07')
+})
 
 test('returns day suffix with number input', () => {
     const nth = DateArithmetic.nth
@@ -48,6 +56,8 @@ test('should return true if YYYY-MM-DD date one is before date two',() =>{
     expect(isDateBeforeDate('2020-07-01','2020-05-13')).toBe(false)
     expect(isDateBeforeDate('2025-02-01','2020-01-01')).toBe(false)
 })
+
+
 
 
 
