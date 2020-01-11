@@ -3,11 +3,22 @@ const WEEKDAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','S
 
 
 const addDaysToDate = (date, days) => {
-    const dateWithoutTime = date.split(' ')[0]
+    const dateWithoutTime = getOnlyDate(date)
     let dateObject = dateStringToObject(dateWithoutTime)
     dateObject.setDate(dateObject.getDate() + days + 1)
 
     return dateObjectToString(dateObject)
+}
+
+const addMonthsToDate = (date, months) => {
+    let dateObject = dateStringToObject(date)
+    dateObject.setMonth(dateObject.getMonth() + months, dateObject.getDate() + 1)
+    
+    return dateObjectToString(dateObject)
+}
+
+const getOnlyDate = date => {
+    return date.split(' ')[0]
 }
 
 const dateStringToObject = (date) => {
@@ -36,6 +47,15 @@ const isDateBeforeDate = (stringOne,stringTwo) => { //unit test
     return eventOne < eventTwo
 }
 
+const isDateEqualOrBeforeDate = (stringOne,stringTwo) => {
+    const dateObjects= [dateStringToObject(stringOne),dateStringToObject(stringTwo)]
+    return isDateBeforeDate(stringOne,stringTwo) || areTwoDateObjectsEqual(...dateObjects)
+}
+
+const areTwoDateObjectsEqual = (objOne,objTwo) => {
+    return objOne.getTime() === objTwo.getTime()
+}
+
 const doesEventStartBeforeOrInMonth = (eventStart, dateInMonth) => { //maybe refactor
     const startObj = dateStringToObject(eventStart)
     const monthObj = dateStringToObject(getLastDayOfMonth(dateInMonth))
@@ -51,14 +71,14 @@ const getWeekday = (date) => {
     return dateStringToObject(date).getDay()
 }
 
-const getNthWeekday = (date) => {
+const getNthWeekday = (date) => { //dont like this
     const weekday = getWeekday(date)
     const [year, month, day] = date.split('-')
 
     let numberOfWeekdaysUpUntilDate = 0
     let dateCounter = `${year}-${month}-01`
 
-    while(dateStringToObject(dateCounter) <= dateStringToObject(date)){
+    while(isDateEqualOrBeforeDate(dateCounter, date)){
         if(getWeekday(dateCounter) === weekday){
             numberOfWeekdaysUpUntilDate++
         }                
@@ -67,14 +87,13 @@ const getNthWeekday = (date) => {
     return [numberOfWeekdaysUpUntilDate, weekday]
 }
 
-const getNthWeekdayOfMonth = (nth, weekday, date) => {
+const getNthWeekdayOfMonth = (nth, weekday, date) => { //dont like this either
     let currNth = 0
     let currWeekday = date
     
     while(nth !== currNth){
         if(weekday === dateStringToObject(currWeekday).getDay()){
             currNth++
-            
             if(currNth === nth){
                 break
             }
@@ -172,12 +191,6 @@ const getLastDayOfMonth = date => {
     return new Date(year, month, 1).toISOString().substr(0,10)
 }
 
-const isMoreThanTwoYearsInTheFuture = (eventDate, date) => {
-    const dayInAYear = 365
-    const difference = getDifference(date, eventDate)
-    return difference > (dayInAYear * 2)
-}
-
 
 
 
@@ -195,12 +208,12 @@ export default {
     getDateofLastWeekdayInMonth,
     doesEventStartAfterOrOnDate: isDateEqualOrAfter,
     getDateInWords,
-    isMoreThanTwoYearsInTheFuture,
     isEventBeforeEvent,
     isDateBeforeDate,
     getWeekdayInWords,
     nth,
     getLastDayOfMonth,
     dateStringToObject,
-    dateObjectToString
+    dateObjectToString,
+    addMonthsToDate
 }
