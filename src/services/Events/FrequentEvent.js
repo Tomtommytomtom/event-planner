@@ -10,8 +10,8 @@ export default class FrequentEvent extends Event {
 
     getNextDays(){
         return {
-            start: this.getDateInXDays(this.getFrequenzy()),
-            end: this.getDateInXDays(this.getFrequenzy())
+            start: this.getStartDateInXDays(this.getFrequenzy()),
+            end: this.getEndDateInXDays(this.getFrequenzy())
         }
     }
 

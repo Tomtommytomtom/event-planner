@@ -93,8 +93,12 @@ export default class Event {
         return DateArithmetic.getNthWeekday(this.getStartDay())
     }
 
-    getDateInXDays(days){
+    getStartDateInXDays(days){
         return DateArithmetic.addDaysToDate(this.getStartDay(), days)
+    }
+
+    getEndDateInXDays(days){
+        return DateArithmetic.addDaysToDate(this.getEndDay(), days)
     }
 
     getTomorrow(){
