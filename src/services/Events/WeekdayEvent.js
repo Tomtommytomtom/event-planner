@@ -58,7 +58,7 @@ export default class WeekdayEvent extends Event {
     }
 
     toString(){
-        return `${this.name} repeating ${this.getRecurringString()}`
+        return `"${this.name}" repeating ${this.getRecurringString()}`
     }
 
     isWeekly(){
@@ -73,8 +73,8 @@ export default class WeekdayEvent extends Event {
 
     getRecurringWeekdayString(){
         return this.getWeekdayStringList().length === 1
-            ? `${this.getWeekdayStringList[0]}`
-            : `(${this.getWeekdayStringList.join(',')})`
+            ? `${this.getWeekdayStringList()[0]}`
+            : `(${this.getWeekdayStringList().join(', ')})`
     }
 
     getWeekdayStringList(){
