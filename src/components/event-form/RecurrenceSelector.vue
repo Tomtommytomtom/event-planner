@@ -15,7 +15,7 @@
             v-model="customOptionsDialog"
         >
             <custom-option-form
-                @close-form="customOptionsDialog = false"
+                @save-form="customOptionsDialog = false"
                 @reset-form="resetCustom"
                 v-model="customOptionSelected"
                 :current-weekday="currWeekdayIndex"
@@ -212,12 +212,9 @@ export default {
     },
     watch: {
         value(){
-
-
             this.setValue()
         },
         currStartDate(){
-
             this.setStartDate()
         },
         customOptionSelected(){

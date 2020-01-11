@@ -94,10 +94,17 @@ export default {
             this.saveForm()
         },
         saveForm(){
-            this.$emit('close-form')
+            this.$emit('save-form')
         },
         resetForm(){
             this.$emit('reset-form')
+            
+            this.frequenzyCounter = 1
+            this.resetSelectedWeekdays()
+        },
+        resetSelectedWeekdays(){
+            this.selectedWeekdays.fill(false)
+            this.$set(this.selectedWeekdays,this.currentWeekday,true)
         },
         customTypeToDisplay(customType){
             const type = customType.split('-')[0]
