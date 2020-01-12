@@ -1,4 +1,4 @@
-import DateArithmetic from "./DateArithmetic"
+import DateArithmetic from './DateArithmetic'
 import Event from './Events/Events'
 import FrequentEvent from './Events/FrequentEvent'
 import MonthlyEvent from './Events/MonthlyEvent'
@@ -67,7 +67,7 @@ const pushEvent = event => {
 }
 
 const addOrUpdate = event => {
-  if(event.id){
+  if (event.id) {
     updateEvent(event)
   } else {
     addOne(event)
@@ -88,7 +88,7 @@ const createAddAndReturnRecurring = event => {
 }
 
 const createRecurring = event => {
-  switch(event.type.split('-')[0]){
+  switch (event.type.split('-')[0]) {
     case 'daily':
     case 'weekly':
       return createFrequent(event)
@@ -103,12 +103,11 @@ const createRecurring = event => {
 }
 
 const createFrequent = event => {
-  
   return new FrequentEvent(event)
 }
 
 const createWeekdays = event => {
-  return new WeekdayEvent(event)  
+  return new WeekdayEvent(event)
 }
 
 const createMonthly = event => {
@@ -119,18 +118,16 @@ const createAnnual = event => {
   return new AnnualEvent(event)
 }
 
-
 const updateEvent = eventToUpdate => {
-  staticEvents = staticEvents.filter( event => event.id !== eventToUpdate.id )
-  staticEvents.push(eventToUpdate) 
-
+  staticEvents = staticEvents.filter(event => event.id !== eventToUpdate.id)
+  staticEvents.push(eventToUpdate)
 }
 
 const updateRecurringEventsInStatic = eventToUpdate => {
   let updatedEvents = []
 
   staticEvents = staticEvents.filter(event => {
-    if(eventToUpdate.recurringId === event.recurringId){
+    if (eventToUpdate.recurringId === event.recurringId) {
       const eventWithCorrectId = {
         ...eventToUpdate,
         start: event.start,
@@ -146,11 +143,17 @@ const updateRecurringEventsInStatic = eventToUpdate => {
   staticEvents = staticEvents.concat(updatedEvents)
 }
 
-const updateRecurringEventsInStaticAfterEventStart = (eventToUpdate) => {
+const updateRecurringEventsInStaticAfterEventStart = eventToUpdate => {
   let updatedEvents = []
 
   staticEvents = staticEvents.filter(event => {
-    if(eventToUpdate.recurringId === event.recurringId && DateArithmetic.doesEventStartAfterOrOnDate(event.start,eventToUpdate.start)){
+    if (
+      eventToUpdate.recurringId === event.recurringId &&
+      DateArithmetic.doesEventStartAfterOrOnDate(
+        event.start,
+        eventToUpdate.start
+      )
+    ) {
       const eventWithCorrectId = {
         ...eventToUpdate,
         start: event.start,
@@ -171,39 +174,42 @@ const deleteStaticEventsAndRecurring = recurringEvent => {
 }
 
 const deleteEvent = (eventToDelete, identifier) => {
-  staticEvents = staticEvents.filter(event => event[identifier] !== eventToDelete[identifier])  
+  staticEvents = staticEvents.filter(
+    event => event[identifier] !== eventToDelete[identifier]
+  )
 }
 
 const deleteAll = () => {
   staticEvents = []
 }
 
-const deleteStaticEventsAndRecurringAfterDate = (recurringEvent) => {
+const deleteStaticEventsAndRecurringAfterDate = recurringEvent => {
   staticEvents = staticEvents.filter(event => {
-    return !(event.recurringId === recurringEvent.recurringId && DateArithmetic.doesEventStartAfterOrOnDate(event.start, recurringEvent.start))
+    return !(
+      event.recurringId === recurringEvent.recurringId &&
+      DateArithmetic.doesEventStartAfterOrOnDate(
+        event.start,
+        recurringEvent.start
+      )
+    )
   })
 }
 
-const getFirstEventOfRecurringId = (recurringId) => {
-  return staticEvents
-    .filter(event => event.recurringId === recurringId)
-    .reduce((acc, curr) => {
-      return DateArithmetic.isEventBeforeEvent(acc, curr)
-        ? acc
-        : curr
-    })
-}
+// const getFirstEventOfRecurringId = recurringId => {
+//   return staticEvents
+//     .filter(event => event.recurringId === recurringId)
+//     .reduce((acc, curr) => {
+//       return DateArithmetic.isEventBeforeEvent(acc, curr) ? acc : curr
+//     })
+// }
 
-const getHighestAttributeInArray = (attribute) => {
+const getHighestAttributeInArray = attribute => {
   return staticEvents.reduce((acc, curr) => {
-
-    if(!curr && !acc){
+    if (!curr && !acc) {
       return 0
     }
-    return acc[attribute] >= curr[attribute]
-        ? acc[attribute]
-        : curr[attribute]
-  },0)
+    return acc[attribute] >= curr[attribute] ? acc[attribute] : curr[attribute]
+  }, 0)
 }
 
 const getAllEventsInMonth = date => {
@@ -211,11 +217,11 @@ const getAllEventsInMonth = date => {
 }
 
 const doesEventStartInMonth = (event, date) => {
-  const [eventYear, eventMonth, ] = event.start.split('-')
-  const [dateYear, dateMonth, ] = date.split('-')
+  const [eventYear, eventMonth] = event.start.split('-')
+  const [dateYear, dateMonth] = date.split('-')
 
-  if(eventYear != dateYear) return false
-  if(eventMonth != dateMonth) return false
+  if (eventYear != dateYear) return false
+  if (eventMonth != dateMonth) return false
   return true
 }
 
