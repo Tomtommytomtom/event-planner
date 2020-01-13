@@ -52,7 +52,7 @@ export default {
       this.$set(this.isActive, weekday, !this.isActive[weekday])
     },
     isOnlyOneSelected(weekday) {
-      console.log(weekday, this.isActive)
+      
       return this.isActive.reduce((acc, curr, index) => {
         if (index === weekday) {
           return acc || !curr

@@ -263,7 +263,6 @@ export default {
       this.refreshEvents()
     },
     deleteSelectedRecurringEvent(event) {
-      console.log('yes we in this deleting thing my mans', this.radioGroup)
       switch (this.radioGroup) {
         case 'Only this event':
           EventService.deleteEvent(event, 'id')

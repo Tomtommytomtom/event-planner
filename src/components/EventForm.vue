@@ -317,7 +317,6 @@ export default {
 
   methods: {
     submitRecurringEdit() {
-      console.log(this.eventClassObject.toString())
       switch (this.editOptionSelected) {
         case 'Only this event':
           EventService.updateEvent(this.currEvent)

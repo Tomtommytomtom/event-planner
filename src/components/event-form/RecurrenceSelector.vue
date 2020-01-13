@@ -206,7 +206,7 @@ export default {
   },
   methods: {
     sendType() {
-      console.log('inside recurrence', this.customOptionSelected)
+      
       this.$emit('input', this.customOptionSelected)
     },
     setValue() {

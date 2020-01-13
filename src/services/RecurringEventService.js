@@ -2,7 +2,7 @@ import EventService from './EventService'
 import DateArithmetic from './DateArithmetic'
 
 const applySingleRecurringToStatic = event => {
-  console.log(event)
+  
   let eventToAdd = EventService.createAddAndReturnRecurring(event)
 
   let nextEvent = eventToAdd.createDuplicateWithNextDate()

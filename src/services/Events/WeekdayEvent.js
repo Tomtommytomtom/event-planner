@@ -25,7 +25,7 @@ export default class WeekdayEvent extends Event {
     }
 
     for (let i = 1; i <= 7; i++) {
-      console.log(this.weekdays[i], 'if true add ', i, 'days to date and add')
+      
       if (this.weekdays[this.getWeekdayInXDays(i)]) {
         daysToAdd += i
         break

@@ -210,7 +210,7 @@ const getWeekdayInWords = weekday => {
 }
 
 const nth = day => {
-  console.log('we made it in')
+  
   return day > 3 && day < 21
     ? 'th'
     : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][day % 10]

@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     close() {
-      console.log(this.selectedOption, this.radioOptions)
+      
       this.$emit('close')
     },
     submit() {
