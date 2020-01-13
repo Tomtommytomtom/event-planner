@@ -39,8 +39,19 @@ module.exports = {
         ]
       }
     ],
-    "vue/no-v-html": true,
-
+    'vue/no-v-html': true,
+    'vue/html-self-closing': [
+      'error',
+      {
+        html: {
+          void: 'never',
+          normal: 'always',
+          component: 'always'
+        },
+        svg: 'always',
+        math: 'always'
+      }
+    ]
   },
   parserOptions: {
     parser: 'babel-eslint'

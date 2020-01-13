@@ -18,7 +18,7 @@
             >
               <v-icon>mdi-chevron-left</v-icon>
             </v-btn>
-            <v-spacer></v-spacer>
+            <v-spacer />
             <calendar-picker
               :events="events"
               v-show="!$vuetify.breakpoint.xsOnly"
@@ -26,7 +26,7 @@
               :calendar-type="type"
               >{{ title }}</calendar-picker
             >
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn
               elevation="1"
               dark
@@ -59,7 +59,7 @@
             </v-menu>
           </v-toolbar>
         </v-sheet>
-        <v-divider></v-divider>
+        <v-divider />
         <v-sheet height="86vh">
           <v-calendar
             dark
@@ -84,8 +84,7 @@
             @click:interval="sendDateAndTime"
             @click:time="sendDateAndTime"
             @change="updateRange"
-          >
-          </v-calendar>
+          />
           <v-menu
             v-model="selectedOpen"
             :close-on-content-click="false"
@@ -100,7 +99,7 @@
                 <v-toolbar-title>{{
                   selectedEvent.toString()
                 }}</v-toolbar-title>
-                <v-spacer></v-spacer>
+                <v-spacer />
                 <v-btn icon @click="deleteDialog = true">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
@@ -115,7 +114,7 @@
                       <v-btn @click="deleteDialog = false" text color="primary">
                         Close
                       </v-btn>
-                      <v-spacer></v-spacer>
+                      <v-spacer />
                       <v-btn
                         @click="deleteSelectedEvent(selectedEvent)"
                         text
@@ -139,7 +138,7 @@
                 </v-dialog>
               </v-toolbar>
               <v-card-text>
-                <span v-html="selectedEvent.details"></span>
+                <span v-html="selectedEvent.details" />
               </v-card-text>
               <v-card-actions>
                 <v-btn text color="primary" @click="selectedOpen = false">

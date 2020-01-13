@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-btn @click="menu = true" color="primary" outlined>
-      <slot></slot>
+      <slot />
     </v-btn>
     <v-menu ref="menu" :close-on-content-click="false" v-model="menu" right>
       <v-sheet dark>
@@ -14,8 +14,7 @@
           scrollable
           elevation="0"
           :events="functionEvents"
-        >
-        </v-date-picker>
+        />
         <v-sheet tile class="d-flex" color="primary"
           ><span class="title mx-auto">Calendar Navigation</span></v-sheet
         >

@@ -10,8 +10,7 @@
     v-model="counter"
     outlined
     dense
-  >
-  </v-text-field>
+  />
 </template>
 
 <script>

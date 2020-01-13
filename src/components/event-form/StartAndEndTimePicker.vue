@@ -1,18 +1,10 @@
 <template>
   <v-row>
     <v-col>
-      <time-picker
-        :color="color"
-        v-model="startTime"
-        label="Start Time"
-      ></time-picker>
+      <time-picker :color="color" v-model="startTime" label="Start Time" />
     </v-col>
     <v-col>
-      <time-picker
-        :color="color"
-        v-model="endTime"
-        label="End Time"
-      ></time-picker>
+      <time-picker :color="color" v-model="endTime" label="End Time" />
     </v-col>
   </v-row>
 </template>

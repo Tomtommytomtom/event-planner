@@ -25,8 +25,7 @@
           v-model="color"
           @input="updateColor"
           flat
-        >
-        </v-color-picker>
+        />
         <v-btn @click="dialog = false" text color="primary" class="mx-2 mt-2"
           >save
         </v-btn>

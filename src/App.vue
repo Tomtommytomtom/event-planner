@@ -7,15 +7,15 @@
           >PLANNER</span
         >
       </h1>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn color="black" outlined @click="clearData">
         DELETE ALL EVENTS (debug)
       </v-btn>
     </v-app-bar>
     <v-content class="grey darken-4 d-flex" dark>
-      <calendar></calendar>
-      <event-form></event-form>
-      <notifications></notifications>
+      <calendar />
+      <event-form />
+      <notifications />
     </v-content>
   </v-app>
 </template>

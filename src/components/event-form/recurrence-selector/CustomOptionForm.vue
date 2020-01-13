@@ -7,8 +7,7 @@
           <v-card-text>Repeat every</v-card-text>
         </v-col>
         <v-col class="mr-1 mt-2">
-          <increment-text-field v-model="frequenzyCounter">
-          </increment-text-field>
+          <increment-text-field v-model="frequenzyCounter" />
         </v-col>
         <v-col class="mx-2 mt-2">
           <v-autocomplete
@@ -17,8 +16,7 @@
             outlined
             dense
             color="primary"
-          >
-          </v-autocomplete>
+          />
         </v-col>
       </v-row>
 
@@ -26,8 +24,7 @@
         @input="updateSelectedWeekdays"
         :current-weekday="currentWeekday"
         v-if="isSelectionWeekly"
-      >
-      </weekday-selection-buttons>
+      />
 
       <v-container class="d-flex justify-end">
         <v-btn text color="primary" @click="resetForm">Cancel</v-btn>

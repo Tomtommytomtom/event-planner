@@ -35,8 +35,7 @@
               outlined
               :rules="[rules.required, rules.nameCounter, rules.nonWhiteSpaces]"
               counter="140"
-            >
-            </v-text-field>
+            />
             <v-textarea
               :color="componentColor"
               v-model="detailsInput"
@@ -47,7 +46,7 @@
               counter="500"
               :rules="[rules.descriptionCounter]"
               no-resize
-            ></v-textarea>
+            />
           </v-container>
           <v-container>
             <v-row>
@@ -56,7 +55,7 @@
                   :color="componentColor"
                   v-model="dates"
                   label="Event Duration"
-                ></date-picker>
+                />
               </v-col>
               <v-col>
                 <recurrence-selector
@@ -64,22 +63,21 @@
                   v-model="recurringInfo"
                   :curr-start-date="dates.start"
                   :disabled="isEditing"
-                >
-                </recurrence-selector>
+                />
               </v-col>
             </v-row>
           </v-container>
-          <v-divider class="mb-7"></v-divider>
+          <v-divider class="mb-7" />
           <v-container>
             <start-and-end-time-picker
               :color="componentColor"
               v-model="times"
               :current-dates="dates"
-            ></start-and-end-time-picker>
+            />
           </v-container>
           <v-card-actions>
-            <color-picker v-model="selectedColor"></color-picker>
-            <v-spacer></v-spacer>
+            <color-picker v-model="selectedColor" />
+            <v-spacer />
             <v-btn color="primary" text @click="clearForm">cancel</v-btn>
             <v-btn color="primary" text :disabled="!valid" @click="submitForm"
               >Save</v-btn

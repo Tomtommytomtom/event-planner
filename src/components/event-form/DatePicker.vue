@@ -11,7 +11,7 @@
         readonly
         v-on="on"
         :color="color"
-      ></v-text-field>
+      />
     </template>
     <v-sheet dark>
       <v-date-picker
@@ -24,8 +24,7 @@
         @change="sendData"
         @input="incrementClicks"
         :elevation="0"
-      >
-      </v-date-picker>
+      />
       <v-sheet class="d-flex" color="primary" tile
         ><span class="title mx-auto">{{ tooltip }}</span></v-sheet
       >
