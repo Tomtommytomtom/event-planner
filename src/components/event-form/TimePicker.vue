@@ -1,16 +1,16 @@
 <template>
   <v-autocomplete
     ref="autocomplete"
-    :color="color"
-    @click:prepend="$refs.autocomplete.focus()"
     v-model="timeDisplay"
+    :color="color"
     placeholder="00:00"
     :label="label"
     :items="items"
-    @change="updateTime"
     outlined
     dense
     prepend-icon="mdi-calendar-clock"
+    @click:prepend="$refs.autocomplete.focus()"
+    @change="updateTime"
   />
 </template>
 

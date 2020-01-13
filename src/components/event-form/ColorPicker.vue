@@ -12,21 +12,21 @@
         mdi-brush
       </v-icon>
     </v-btn>
-    <v-btn text @click="dialog = true" color="primary">
+    <v-btn text color="primary" @click="dialog = true">
       pick a color
     </v-btn>
     <v-dialog v-model="dialog" width="fit-content">
       <v-card class="pa-2" dark>
         <v-color-picker
+          v-model="color"
           show-swatches
           hide-canvas
           hide-inputs
           hex
-          v-model="color"
-          @input="updateColor"
           flat
+          @input="updateColor"
         />
-        <v-btn @click="dialog = false" text color="primary" class="mx-2 mt-2"
+        <v-btn text color="primary" class="mx-2 mt-2" @click="dialog = false"
           >save
         </v-btn>
       </v-card>

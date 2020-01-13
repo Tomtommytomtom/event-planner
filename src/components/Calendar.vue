@@ -20,9 +20,9 @@
             </v-btn>
             <v-spacer />
             <calendar-picker
-              :events="events"
               v-show="!$vuetify.breakpoint.xsOnly"
               v-model="focus"
+              :events="events"
               :calendar-type="type"
               >{{ title }}</calendar-picker
             >
@@ -62,9 +62,9 @@
         <v-divider />
         <v-sheet height="86vh">
           <v-calendar
-            dark
             ref="calendar"
             v-model="focus"
+            dark
             color="primary"
             class="white--text"
             :events="events"
@@ -111,14 +111,14 @@
                     >
                     <v-card-text>Are you sure you want to delete?</v-card-text>
                     <v-card flat class="d-flex ma-0 pa-3">
-                      <v-btn @click="deleteDialog = false" text color="primary">
+                      <v-btn text color="primary" @click="deleteDialog = false">
                         Close
                       </v-btn>
                       <v-spacer />
                       <v-btn
-                        @click="deleteSelectedEvent(selectedEvent)"
                         text
                         color="primary"
+                        @click="deleteSelectedEvent(selectedEvent)"
                       >
                         Delete
                       </v-btn>
@@ -128,9 +128,9 @@
                     v-else
                     v-model="radioGroup"
                     :radio-options="deleteOptions"
+                    submit-button-label="Delete"
                     @close="deleteDialog = false"
                     @submit="deleteSelectedRecurringEvent(selectedEvent)"
-                    submit-button-label="Delete"
                   >
                     You're deleting a {{ selectedEvent.type }} recurring Event
                     {{ selectedEvent.name }}
@@ -138,7 +138,9 @@
                 </v-dialog>
               </v-toolbar>
               <v-card-text>
-                <span v-html="selectedEvent.details" />
+                <span>
+                  {{ selectedEvent.details }}
+                </span>
               </v-card-text>
               <v-card-actions>
                 <v-btn text color="primary" @click="selectedOpen = false">

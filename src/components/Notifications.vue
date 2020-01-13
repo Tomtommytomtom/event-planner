@@ -21,8 +21,6 @@
 import { bus } from '@/main'
 
 export default {
-  props: ['value'],
-
   data: () => ({
     message: 'default',
 

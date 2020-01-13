@@ -1,19 +1,19 @@
 <template>
   <div>
-    <v-btn @click="menu = true" color="primary" outlined>
+    <v-btn color="primary" outlined @click="menu = true">
       <slot />
     </v-btn>
-    <v-menu ref="menu" :close-on-content-click="false" v-model="menu" right>
+    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" right>
       <v-sheet dark>
         <v-date-picker
-          color="primary"
           ref="datepicker"
           v-model="date"
-          @input="sendDate"
-          @click:month="sendMonth"
+          color="primary"
           scrollable
           elevation="0"
           :events="functionEvents"
+          @input="sendDate"
+          @click:month="sendMonth"
         />
         <v-sheet tile class="d-flex" color="primary"
           ><span class="title mx-auto">Calendar Navigation</span></v-sheet

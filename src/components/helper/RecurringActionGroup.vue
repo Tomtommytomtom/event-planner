@@ -6,10 +6,10 @@
     <v-container class="d-flex px-5">
       <v-radio-group v-model="selectedOption">
         <v-radio
-          class="text-no-wrap"
-          color="primary"
           v-for="radioOption in radioOptions"
           :key="radioOptions.indexOf(radioOption)"
+          class="text-no-wrap"
+          color="primary"
           :label="radioOption"
           :value="radioOption"
           @click="send()"
@@ -18,10 +18,10 @@
     </v-container>
     <v-card flat class="d-flex ma-0 pa-3">
       <v-spacer />
-      <v-btn @click="close()" text color="primary">
+      <v-btn text color="primary" @click="close()">
         Cancel
       </v-btn>
-      <v-btn @click="submit()" text color="primary">
+      <v-btn text color="primary" @click="submit()">
         {{ submitButtonLabel }}
       </v-btn>
     </v-card>

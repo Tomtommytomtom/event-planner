@@ -1,10 +1,10 @@
 <template>
   <v-row>
     <v-col>
-      <time-picker :color="color" v-model="startTime" label="Start Time" />
+      <time-picker v-model="startTime" :color="color" label="Start Time" />
     </v-col>
     <v-col>
-      <time-picker :color="color" v-model="endTime" label="End Time" />
+      <time-picker v-model="endTime" :color="color" label="End Time" />
     </v-col>
   </v-row>
 </template>

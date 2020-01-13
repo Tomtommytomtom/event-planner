@@ -3,6 +3,8 @@
     <v-row justify="center" align="center" no-gutters>
       <p class="ma-4">On</p>
       <v-btn
+        v-for="weekday in weekdays"
+        :key="weekday"
         class="mx-2 body-2"
         style="border-width: 1px"
         :class="{
@@ -11,8 +13,6 @@
         small
         fab
         elevation="0"
-        v-for="weekday in weekdays"
-        :key="weekday"
         :outlined="!isActive[weekday]"
         @click="sendSelected(weekday)"
       >

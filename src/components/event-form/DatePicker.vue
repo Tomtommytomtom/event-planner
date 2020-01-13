@@ -1,29 +1,29 @@
 <template>
-  <v-dialog width="fit-content" v-model="dialog">
+  <v-dialog v-model="dialog" width="fit-content">
     <template v-slot:activator="{ on }">
       <v-text-field
         v-model="dateRangeText"
         :label="label"
         prepend-icon="mdi-calendar"
-        @click:prepend="dialog = true"
         outlined
         dense
         readonly
-        v-on="on"
         :color="color"
+        @click:prepend="dialog = true"
+        v-on="on"
       />
     </template>
     <v-sheet dark>
       <v-date-picker
-        color="primary"
         ref="datepicker"
         v-model="dates"
+        color="primary"
         reactive
         range
         scrollable
+        :elevation="0"
         @change="sendData"
         @input="incrementClicks"
-        :elevation="0"
       />
       <v-sheet class="d-flex" color="primary" tile
         ><span class="title mx-auto">{{ tooltip }}</span></v-sheet

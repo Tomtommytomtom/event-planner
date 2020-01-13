@@ -1,15 +1,15 @@
 <template>
   <v-text-field
-    color="primary"
     ref="field"
+    v-model="counter"
+    color="primary"
     prepend-inner-icon="mdi-minus"
     append-icon="mdi-plus"
+    outlined
+    dense
     @click:prepend-inner="decrementCounter"
     @click:append="incrementCounter"
     @input="validateAndSend"
-    v-model="counter"
-    outlined
-    dense
   />
 </template>
 

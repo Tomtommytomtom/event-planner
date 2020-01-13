@@ -10,12 +10,12 @@
       label="Recurrence"
       prepend-icon="mdi-calendar-repeat"
     />
-    <v-dialog width="fit-content" v-model="customOptionsDialog">
+    <v-dialog v-model="customOptionsDialog" width="fit-content">
       <custom-option-form
-        @save-form="customOptionsDialog = false"
-        @reset-form="resetCustom"
         v-model="customOptionSelected"
         :current-weekday="currWeekdayIndex"
+        @save-form="customOptionsDialog = false"
+        @reset-form="resetCustom"
       />
     </v-dialog>
   </div>

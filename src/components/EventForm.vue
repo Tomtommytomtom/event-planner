@@ -28,8 +28,8 @@
           </v-card-title>
           <v-container>
             <v-text-field
-              :color="componentColor"
               v-model="nameInput"
+              :color="componentColor"
               dense
               label="Name"
               outlined
@@ -37,8 +37,8 @@
               counter="140"
             />
             <v-textarea
-              :color="componentColor"
               v-model="detailsInput"
+              :color="componentColor"
               dense
               label="Description"
               outlined
@@ -52,15 +52,15 @@
             <v-row>
               <v-col>
                 <date-picker
-                  :color="componentColor"
                   v-model="dates"
+                  :color="componentColor"
                   label="Event Duration"
                 />
               </v-col>
               <v-col>
                 <recurrence-selector
-                  :color="componentColor"
                   v-model="recurringInfo"
+                  :color="componentColor"
                   :curr-start-date="dates.start"
                   :disabled="isEditing"
                 />
@@ -70,8 +70,8 @@
           <v-divider class="mb-7" />
           <v-container>
             <start-and-end-time-picker
-              :color="componentColor"
               v-model="times"
+              :color="componentColor"
               :current-dates="dates"
             />
           </v-container>
@@ -90,9 +90,9 @@
       <recurring-action-group
         v-model="editOptionSelected"
         :radio-options="editOptions"
+        submit-button-label="Apply Changes"
         @close="editDialog = false"
         @submit="submitRecurringEdit"
-        submit-button-label="Apply Changes"
       >
         You're editing {{ currEvent.type }} recurring Event:
         {{ currEvent.name }} ?

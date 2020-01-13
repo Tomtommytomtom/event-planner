@@ -21,9 +21,9 @@
       </v-row>
 
       <weekday-selection-buttons
-        @input="updateSelectedWeekdays"
-        :current-weekday="currentWeekday"
         v-if="isSelectionWeekly"
+        :current-weekday="currentWeekday"
+        @input="updateSelectedWeekdays"
       />
 
       <v-container class="d-flex justify-end">
