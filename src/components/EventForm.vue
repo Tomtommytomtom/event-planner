@@ -276,12 +276,12 @@ export default {
         this.endDateAndTime = newEvent.end
         this.id = newEvent.id
         this.selectedColor = newEvent.color
-        ;(this.recurringInfo = {
+        this.recurringInfo = {
           type: newEvent.type,
           frequenzy: newEvent.frequenzy,
           selectedWeekdays: newEvent.weekdays
-        }),
-          (this.recurringId = newEvent.recurringId)
+        }
+        this.recurringId = newEvent.recurringId
       }
     }
   },
@@ -308,6 +308,7 @@ export default {
         end: ''
       }
     })
+
     bus.$on('editEvent', event => {
       this.currEvent = event
       this.openFormToEditEvent()
